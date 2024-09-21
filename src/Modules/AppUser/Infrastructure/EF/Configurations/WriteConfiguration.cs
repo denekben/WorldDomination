@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Domain
+namespace AppUser.Infrastructure.EF.Configurations
 {
-    public interface IBusinessRule
+    internal class WriteConfiguration
     {
-        bool IsBroken();
-        string Message { get; }
     }
 }

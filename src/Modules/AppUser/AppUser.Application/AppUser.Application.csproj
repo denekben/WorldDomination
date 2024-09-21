@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WorldDomination.Shared\WorldDomination.Shared.csproj" />
+    <ProjectReference Include="..\AppUser.Domain\AppUser.Domain.csproj" />
+    <ProjectReference Include="..\AppUser.Shared\AppUser.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
