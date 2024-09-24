@@ -1,10 +1,8 @@
-﻿namespace Shared.Queries
-{
-    public interface IQuery
-    {
-    }
+﻿using MediatR;
 
-    public interface IQuery<T> : IQuery
+namespace WorldDomination.Shared.Queries
+{
+    public interface IQuery<out TResponse> : IRequest<TResponse>
     {
     }
 }

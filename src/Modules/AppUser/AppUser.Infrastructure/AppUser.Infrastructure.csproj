@@ -13,9 +13,13 @@
 
   <ItemGroup>
     <Folder Include="EF\Migrations\" />
-    <Folder Include="EF\Contexts\" />
     <Folder Include="EF\Repositories\" />
-    <Folder Include="EF\Services\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
   </ItemGroup>
 
 </Project>

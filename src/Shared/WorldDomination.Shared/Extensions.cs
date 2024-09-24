@@ -3,13 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Shared.Commands;
-using Shared.Dispatchers;
 using Shared.Events;
 using Shared.Exceptions;
 using Shared.Messaging;
 using Shared.Postgres;
-using Shared.Queries;
+using System.Reflection;
 
 namespace Shared
 {
@@ -21,14 +19,15 @@ namespace Shared
         public static IServiceCollection AddSharedFramework(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddErrorHandling();
-            services.AddCommands();
             services.AddEvents();
-            services.AddQueries();
             services.AddMessaging();
             services.AddPostgres(configuration);
             services.AddControllers();
-            services.AddSingleton<IDispatcher, InMemoryDispatcher>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddMediatR(configuration =>
+            {
+                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            });
             services.AddSwaggerGen(swagger =>
             {
                 swagger.EnableAnnotations();

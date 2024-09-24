@@ -1,10 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace Shared.Queries
+namespace WorldDomination.Shared.Queries
 {
-    public interface IQueryHandler<in TQuery, TResult> where TQuery : class, IQuery<TResult>
+    public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, TResponse>
+        where TQuery : IQuery<TResponse>
     {
-        Task<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
     }
 }

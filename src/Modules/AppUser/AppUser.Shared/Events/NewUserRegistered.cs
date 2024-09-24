@@ -2,5 +2,5 @@
 
 namespace AppUser.Shared.Events
 {
-    public record NewUserRegistered(Guid Id, string Username) : IEvent;
+    public record NewUserRegistered(string Id, string Username, string Email) : IEvent;
 }
