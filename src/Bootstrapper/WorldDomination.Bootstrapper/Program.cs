@@ -15,7 +15,7 @@ app.UseAppUserModule();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapGet("/", ctx => ctx.Response.WriteAsync("NPay API"));
+    endpoints.MapGet("/", ctx => ctx.Response.WriteAsync(":^)"));
 });
 
 app.Run();

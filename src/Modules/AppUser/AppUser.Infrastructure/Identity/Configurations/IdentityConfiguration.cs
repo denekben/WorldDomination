@@ -1,10 +1,11 @@
 ﻿using AppUser.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AppUser.Infrastructure.Identity.Configurations
 {
-    public class RoleConfiguration
+    internal class IdentityConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         public void Configure(EntityTypeBuilder<IdentityRole> modelBuilder)
         {

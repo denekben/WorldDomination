@@ -32,7 +32,8 @@ namespace AppUser.Application.Commands.Users.Handlers
                 throw new BadRequestException("Cannot delete user");
             }
 
-            await _userRepository.DeleteAsync(new Guid(command.UserId));
+            var user = await _userRepository.GetAsync(new Guid(command.UserId));
+            await _userRepository.DeleteAsync(user);
             _logger.LogInformation($"User {command.UserId} deleted");
 
             await Task.CompletedTask;

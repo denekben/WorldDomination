@@ -27,8 +27,6 @@ namespace AppUser.Infrastructure.DomainUser.Configurations
                 .Property(u => u.Email)
                 .HasConversion(name => name.Value, name => new Email(name));
 
-            builder.HasOne(u => u.ActivityStatus);
-
             builder.ToTable("Users");
         }
 
@@ -68,7 +66,9 @@ namespace AppUser.Infrastructure.DomainUser.Configurations
         {
             builder.HasKey(status => status.UserId);
 
-            builder.HasOne(status => status.User);
+            builder
+                .Property(status => status.UserId)
+                .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder.ToTable("ActivityStatuses");
         }
