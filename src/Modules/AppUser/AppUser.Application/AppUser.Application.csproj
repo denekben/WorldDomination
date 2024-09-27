@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Users\Handlers\" />
+    <Folder Include="Commands\Achievments\" />
+    <Folder Include="Query\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 namespace AppUser.Shared.Events
 {
-    public record UserDeleted(Guid Id) : IEvent
+    public record UserDeleted(string UserId) : IEvent
     {
     }
 }

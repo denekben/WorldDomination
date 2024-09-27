@@ -1,6 +1,7 @@
 ﻿namespace AppUser.Shared.DTOs
 {
-    public class UserDto
+    public sealed record UserDto()
     {
+
     }
 }

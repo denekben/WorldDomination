@@ -1,53 +1,63 @@
-﻿using AppUser.Domain.ValueObjects;
-using UserAccess.Domain.ValueObjects;
+﻿using AppUser.Domain.Entities.Relationships;
+using AppUser.Domain.ValueObjects;
 using WorldDomination.Shared.Domain;
 
 namespace UserAccess.Domain.Entities
 {
-    public sealed class User 
+    public sealed class User
     {
         public IdValueObject Id { get; private set; }
-        public string Username { get; private set; }
-        public string Email { get; private set; }
-        public IReadOnlyList<UserRole> Roles { get => _roles; }
-        public UserActivityStatus ActivityStatus { get; private set; }
-        public IReadOnlyList<UserAchievment> Achievments { get => _achievments; }
+        public Username Username { get; private set; }
+        public Email Email { get; private set; }
+        public string ProfileImagePath { get; private set; }
+        public ActivityStatus ActivityStatus { get; private set; }
+        public ICollection<UserAchievment> Achievments { get; set; }
         public DateTime CreatedTime { get; private set; }
         public DateTime UpdatedTime { get; private set; }
 
-        private List<UserRole> _roles = new();
-        private List<UserAchievment> _achievments = new();
-
         // EF
         private User() { }
-
-        public static User CreateMember(
-            string id,
-            string name,
-            string email)
-        {
-            return new User(id, name, email, UserRole.Member);
-        }
-
-        public static User CreateAdmin(
-            string id,
-            string name,
-            string email)
-        {
-            return new User(id, name, email, UserRole.Admin);
-        }
 
         private User(
             string id,
             string name,
             string email,
-            UserRole role)
+            string profileImagePath)
         {
             Id = new Guid(id);
             Username = name;
             Email = email;
-            _roles.Add(role);
-            CreatedTime = DateTime.Now;
+            ProfileImagePath = profileImagePath;
+            CreatedTime = DateTime.UtcNow;
+        }
+
+        public static User CreateUser(
+            string id,
+            string name,
+            string email,
+            string profileImagePath = "")
+        {
+            if(string.IsNullOrEmpty(profileImagePath))
+            {
+                profileImagePath = GenerateRandomCode().ToString();
+            }
+            return new User(id, name, email, profileImagePath );
+        }
+
+        public void ChangeUsername(string username)
+        {
+            Username = username;
+        }
+
+        public void ChangeProfileImagePath(string path)
+        {
+            ProfileImagePath = path;
+        }
+
+        private static int GenerateRandomCode()
+        {
+            Random _random = new Random();
+            return _random.Next(10);
         }
     }
 }
