@@ -4,7 +4,5 @@ using System;
 
 namespace AppUser.Application.Queries
 {
-    public record GetUser(Guid id) : IRequest<UserDto>
-    {
-    }
+    public record GetUserProfile(Guid id) : IRequest<UserProfileDto>;
 }

@@ -15,10 +15,10 @@ namespace AppUser.Infrastructure.Identity.Services
         private readonly UserManager<AuthUser> _userManager;
         private readonly SignInManager<AuthUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly TokenService _tokenService;
+        private readonly ITokenService _tokenService;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public AuthService(UserManager<AuthUser> userManager, SignInManager<AuthUser> signInManager, RoleManager<IdentityRole> roleManager, TokenService tokenService, IHttpContextAccessor contextAccessor)
+        public AuthService(UserManager<AuthUser> userManager, SignInManager<AuthUser> signInManager, RoleManager<IdentityRole> roleManager, ITokenService tokenService, IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;

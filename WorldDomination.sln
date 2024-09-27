@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppUser.Shared", "src\Modul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppUser.Infrastructure", "src\Modules\AppUser\AppUser.Infrastructure\AppUser.Infrastructure.csproj", "{B3A21E36-5C5B-4FD9-9270-135BB9472153}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppUser.WebUI", "src\Modules\AppUser\AppUser.WebUI\AppUser.WebUI.csproj", "{8F8582E8-BAAF-43DA-BC23-7C5DC81148E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{B3A21E36-5C5B-4FD9-9270-135BB9472153}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3A21E36-5C5B-4FD9-9270-135BB9472153}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3A21E36-5C5B-4FD9-9270-135BB9472153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F8582E8-BAAF-43DA-BC23-7C5DC81148E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F8582E8-BAAF-43DA-BC23-7C5DC81148E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F8582E8-BAAF-43DA-BC23-7C5DC81148E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F8582E8-BAAF-43DA-BC23-7C5DC81148E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{0B119620-3BC2-4063-8620-CBC11306258C} = {EEB8EEE3-9ADF-40EB-9159-A70C5065CCCA}
 		{4BBBF935-A08F-4291-B1E7-BDD3C45F2403} = {EEB8EEE3-9ADF-40EB-9159-A70C5065CCCA}
 		{B3A21E36-5C5B-4FD9-9270-135BB9472153} = {EEB8EEE3-9ADF-40EB-9159-A70C5065CCCA}
+		{8F8582E8-BAAF-43DA-BC23-7C5DC81148E0} = {EEB8EEE3-9ADF-40EB-9159-A70C5065CCCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49726C65-068A-4C96-ABC3-A4AF76A13BF0}

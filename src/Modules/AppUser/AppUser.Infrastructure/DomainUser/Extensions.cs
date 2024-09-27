@@ -1,6 +1,6 @@
 ﻿using AppUser.Application.Services;
 using AppUser.Infrastructure.DomainUser.Contexts;
-using AppUser.Infrastructure.Identity.Services;
+using AppUser.Infrastructure.DomainUser.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Postgres;
 
@@ -12,8 +12,8 @@ namespace AppUser.Infrastructure.DomainUser
         {
             services.AddPostgres<UserReadDbContext>();
             services.AddPostgres<UserWriteDbContext>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<IProfileImageService, ProfileImageService>();
 
             return services;
         }

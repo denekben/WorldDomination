@@ -2,21 +2,18 @@
 using AppUser.Application.Services;
 using AppUser.Domain.Repositories;
 using AppUser.Shared.DTOs;
-using AppUser.Shared.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Shared.Messaging;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AppUser.Application.Commands.Auth.Handlers
+namespace AppUser.Application.Commands.Users.Handlers
 {
     internal class ChangeUsernameHandler : IRequestHandler<ChangeUsername, UserIdentityDto>
     {
         private readonly ILogger<ChangeUsernameHandler> _logger;
         private readonly IAuthService _authService;
-        private readonly IMessageBroker _messageBroker;
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
 
@@ -25,7 +22,6 @@ namespace AppUser.Application.Commands.Auth.Handlers
         {
             _logger = logger;
             _authService = authService;
-            _messageBroker = messageBroker;
             _tokenService = tokenService;
             _userRepository = userRepository;
         }
@@ -35,7 +31,7 @@ namespace AppUser.Application.Commands.Auth.Handlers
             // Identity user
             var (userId, username) = command;
 
-            if(!await _authService.UpdateUserName(userId.ToString(), username))
+            if (!await _authService.UpdateUserName(userId.ToString(), username))
             {
                 throw new BadRequestException("Cannot change username");
             }
@@ -44,14 +40,11 @@ namespace AppUser.Application.Commands.Auth.Handlers
 
             var (_, _, email, roles) = await _authService.GetUserDetailsAsync(userId.ToString());
 
-            var token =  _tokenService.GenerateAccessToken(email, username, roles);
+            var token = _tokenService.GenerateAccessToken(email, username, roles);
             if (token == null)
             {
                 throw new BadRequestException("Cannot generate access token");
             }
-
-            await _messageBroker.PublishAsync(new UsernameChangedEvent(command.UserId.ToString(), command.Username));
-
 
             // Domain user
             var user = await _userRepository.GetAsync(userId);

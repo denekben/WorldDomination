@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\Achievments\" />
-    <Folder Include="Query\" />
   </ItemGroup>
 
 </Project>

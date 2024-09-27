@@ -3,7 +3,6 @@ using AppUser.Application.Services;
 using AppUser.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Shared.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 

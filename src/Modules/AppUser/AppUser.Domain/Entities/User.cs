@@ -1,4 +1,5 @@
-﻿using AppUser.Domain.Entities.Relationships;
+﻿using AppUser.Domain.Entities;
+using AppUser.Domain.Entities.Relationships;
 using AppUser.Domain.ValueObjects;
 using WorldDomination.Shared.Domain;
 
@@ -11,7 +12,7 @@ namespace UserAccess.Domain.Entities
         public Email Email { get; private set; }
         public string ProfileImagePath { get; private set; }
         public ActivityStatus ActivityStatus { get; private set; }
-        public ICollection<UserAchievment> Achievments { get; set; }
+        public ICollection<UserAchievment> UserAchievments { get; private set; }
         public DateTime CreatedTime { get; private set; }
         public DateTime UpdatedTime { get; private set; }
 

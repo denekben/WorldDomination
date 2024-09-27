@@ -1,4 +1,5 @@
-﻿using WorldDomination.Shared.Domain;
+﻿using AppUser.Domain.Entities.Relationships;
+using WorldDomination.Shared.Domain;
 
 namespace AppUser.Domain.Entities
 {
@@ -7,6 +8,7 @@ namespace AppUser.Domain.Entities
         public IdValueObject Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
+        public ICollection<UserAchievment> UserAchievments { get; private set; }
 
         // EF
         private Achievment() { }

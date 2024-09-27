@@ -7,7 +7,7 @@ namespace AppUser.Infrastructure
 {
     public static class Extensions
     {
-        public static IServiceCollection AddUserInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAppUserInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddUserDAL();
             services.AddUserIdentity(configuration);

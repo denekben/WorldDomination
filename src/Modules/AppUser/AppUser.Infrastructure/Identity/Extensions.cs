@@ -1,5 +1,7 @@
-﻿using AppUser.Infrastructure.Identity.Contexts;
+﻿using AppUser.Application.Services;
+using AppUser.Infrastructure.Identity.Contexts;
 using AppUser.Infrastructure.Identity.Models;
+using AppUser.Infrastructure.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +15,9 @@ namespace AppUser.Infrastructure.Identity
     {
         public static IServiceCollection AddUserIdentity(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
+
             services.AddPostgres<AuthDbContext>();
 
             services.AddIdentity<AuthUser, IdentityRole>(options =>

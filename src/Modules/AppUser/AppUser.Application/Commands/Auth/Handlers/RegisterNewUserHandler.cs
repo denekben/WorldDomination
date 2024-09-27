@@ -1,15 +1,11 @@
 ﻿using AppUser.Application.Exceptions;
 using AppUser.Application.Services;
+using AppUser.Domain.Entities;
 using AppUser.Domain.Repositories;
 using AppUser.Shared.DTOs;
-using AppUser.Shared.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Shared.Messaging;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using UserAccess.Domain.Entities;
@@ -18,20 +14,20 @@ namespace AppUser.Application.Commands.Auth.Handlers
 {
     internal class RegisterNewUserHandler : IRequestHandler<RegisterNewUser, UserIdentityDto>
     {
-        private readonly IMessageBroker _messageBroker;
         private readonly ILogger<RegisterNewUserHandler> _logger;
         private readonly IAuthService _authService;
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
+        private readonly IActivityStatusRepository _activityStatusRepository;
 
-        public RegisterNewUserHandler(IMessageBroker messageBroker,
-            ILogger<RegisterNewUserHandler> logger, IAuthService authService, ITokenService tokenService, IUserRepository userRepository)
+        public RegisterNewUserHandler(ILogger<RegisterNewUserHandler> logger, IAuthService authService,
+            ITokenService tokenService, IUserRepository userRepository, IActivityStatusRepository activityStatusRepository)
         {
             _tokenService = tokenService;
-            _messageBroker = messageBroker;
             _logger = logger;
             _authService = authService;
             _userRepository = userRepository;
+            _activityStatusRepository = activityStatusRepository;
         }
 
         public async Task<UserIdentityDto> Handle(RegisterNewUser command, CancellationToken cancellationToken)
@@ -66,8 +62,17 @@ namespace AppUser.Application.Commands.Auth.Handlers
             {
                 throw new BadRequestException("Cannot create user");
             }
-
             _logger.LogInformation($"User {userId} created.");
+
+
+            // ActivityStatus
+            var activityStatus = ActivityStatus.Create(new Guid(userId));
+            if (activityStatus == null)
+            {
+                throw new BadRequestException("Cannot create activity status");
+            }
+            _logger.LogInformation($"ActivityStatus for {userId} created.");
+            await _activityStatusRepository.AddAsync(activityStatus);
 
             await _userRepository.AddAsync(user);
 

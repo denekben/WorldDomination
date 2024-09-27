@@ -9,5 +9,6 @@ namespace AppUser.Domain.Entities.Relationships
         public IdValueObject AchievmentId { get; private set; }
         public User User { get; private set; }
         public Achievment Achievment { get; private set; }
+        public DateTime AchievedTime { get; private set; }
     }
 }
