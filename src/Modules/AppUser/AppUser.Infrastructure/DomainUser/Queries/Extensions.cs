@@ -1,6 +1,5 @@
 ﻿using AppUser.Infrastructure.DomainUser.ReadModels;
 using AppUser.Shared.DTOs;
-using System.Diagnostics.Metrics;
 
 namespace AppUser.Infrastructure.DomainUser.Queries
 {
@@ -14,7 +13,7 @@ namespace AppUser.Infrastructure.DomainUser.Queries
                 user.Username,
                 user.Email,
                 user.ProfileImagePath,
-                user.ActivityStatus.AsDto(),
+                user.ActivityStatusReadModel.AsDto(),
                 user.UserAchievments?.Select(ua => ua.AchievmentReadModel.AsDto()).ToList()
             );
         }

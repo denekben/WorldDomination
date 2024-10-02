@@ -7,5 +7,6 @@
         public string? Country { get; set; }
         public int? RoundNumber { get; set; }
         public string? GameRole { get; set; }
+        public UserReadModel UserReadModel { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppUser.Infrastructure.DomainUser.Migrations
 {
     [DbContext(typeof(UserReadDbContext))]
-    [Migration("20240927171412_Init_UserRead")]
+    [Migration("20241002162703_Init_UserRead")]
     partial class Init_UserRead
     {
         /// <inheritdoc />
@@ -47,27 +47,30 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
 
             modelBuilder.Entity("AppUser.Infrastructure.DomainUser.ReadModels.ActivityStatusReadModel", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GameRole")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("IsInGameStatus")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("RoundNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int?>("RoundNumber")
+                        .HasColumnType("integer");
 
-                    b.HasKey("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("ActivityStatuses", "AppUser");
                 });
@@ -96,9 +99,6 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ActivityStatusUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -106,7 +106,11 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedTime")
+                    b.Property<string>("ProfileImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Username")
@@ -115,9 +119,18 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActivityStatusUserId");
-
                     b.ToTable("Users", "AppUser");
+                });
+
+            modelBuilder.Entity("AppUser.Infrastructure.DomainUser.ReadModels.ActivityStatusReadModel", b =>
+                {
+                    b.HasOne("AppUser.Infrastructure.DomainUser.ReadModels.UserReadModel", "UserReadModel")
+                        .WithOne("ActivityStatusReadModel")
+                        .HasForeignKey("AppUser.Infrastructure.DomainUser.ReadModels.ActivityStatusReadModel", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserReadModel");
                 });
 
             modelBuilder.Entity("AppUser.Infrastructure.DomainUser.ReadModels.UserAchievmentReadModel", b =>
@@ -139,17 +152,6 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
                     b.Navigation("UserReadModel");
                 });
 
-            modelBuilder.Entity("AppUser.Infrastructure.DomainUser.ReadModels.UserReadModel", b =>
-                {
-                    b.HasOne("AppUser.Infrastructure.DomainUser.ReadModels.ActivityStatusReadModel", "ActivityStatus")
-                        .WithMany()
-                        .HasForeignKey("ActivityStatusUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActivityStatus");
-                });
-
             modelBuilder.Entity("AppUser.Infrastructure.DomainUser.ReadModels.AchievmentReadModel", b =>
                 {
                     b.Navigation("UserAchievments");
@@ -157,6 +159,9 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
 
             modelBuilder.Entity("AppUser.Infrastructure.DomainUser.ReadModels.UserReadModel", b =>
                 {
+                    b.Navigation("ActivityStatusReadModel")
+                        .IsRequired();
+
                     b.Navigation("UserAchievments");
                 });
 #pragma warning restore 612, 618

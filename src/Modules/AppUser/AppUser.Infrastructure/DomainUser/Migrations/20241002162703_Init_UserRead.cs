@@ -29,22 +29,6 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ActivityStatuses",
-                schema: "AppUser",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsInGameStatus = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: false),
-                    RoundNumber = table.Column<string>(type: "text", nullable: false),
-                    GameRole = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActivityStatuses", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 schema: "AppUser",
                 columns: table => new
@@ -52,19 +36,36 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Username = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    ActivityStatusUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProfileImagePath = table.Column<string>(type: "text", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    UpdatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ActivityStatuses",
+                schema: "AppUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsInGameStatus = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    RoundNumber = table.Column<int>(type: "integer", nullable: true),
+                    GameRole = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActivityStatuses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_ActivityStatuses_ActivityStatusUserId",
-                        column: x => x.ActivityStatusUserId,
+                        name: "FK_ActivityStatuses_Users_UserId",
+                        column: x => x.UserId,
                         principalSchema: "AppUser",
-                        principalTable: "ActivityStatuses",
-                        principalColumn: "UserId",
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -97,21 +98,26 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ActivityStatuses_UserId",
+                schema: "AppUser",
+                table: "ActivityStatuses",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserAchievments_AchievmentId",
                 schema: "AppUser",
                 table: "UserAchievments",
                 column: "AchievmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_ActivityStatusUserId",
-                schema: "AppUser",
-                table: "Users",
-                column: "ActivityStatusUserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ActivityStatuses",
+                schema: "AppUser");
+
             migrationBuilder.DropTable(
                 name: "UserAchievments",
                 schema: "AppUser");
@@ -122,10 +128,6 @@ namespace AppUser.Infrastructure.DomainUser.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "AppUser");
-
-            migrationBuilder.DropTable(
-                name: "ActivityStatuses",
                 schema: "AppUser");
         }
     }

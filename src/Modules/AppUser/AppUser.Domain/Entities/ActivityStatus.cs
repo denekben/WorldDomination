@@ -1,4 +1,5 @@
-﻿using UserAccess.Domain.Entities;
+﻿using AppUser.Domain.ValueObjects;
+using UserAccess.Domain.Entities;
 using WorldDomination.Shared.Domain;
 
 namespace AppUser.Domain.Entities
@@ -6,7 +7,7 @@ namespace AppUser.Domain.Entities
     public sealed class ActivityStatus
     {
         public IdValueObject UserId { get; private set; }
-        public string IsInGameStatus { get; private set; }
+        public IsInGameStatus IsInGameStatus { get; private set; }
         public string? Country { get; private set; }
         public int? RoundNumber { get; private set; }
         public string? GameRole { get; private set; }
@@ -15,14 +16,12 @@ namespace AppUser.Domain.Entities
         // EF
         private ActivityStatus() { }
 
-        private ActivityStatus(Guid userId)
-        {
-            UserId = userId;
-        }
-
         public static ActivityStatus Create(Guid userId)
         {
-            return new ActivityStatus { UserId = userId };
+            return new ActivityStatus { 
+                UserId = userId,
+                IsInGameStatus = IsInGameStatus.NotInGame
+            };
         }
 
         public override string ToString()

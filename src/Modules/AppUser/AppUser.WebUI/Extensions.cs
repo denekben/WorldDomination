@@ -1,4 +1,5 @@
-﻿using AppUser.Infrastructure;
+﻿using AppUser.Application;
+using AppUser.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ namespace AppUser.WebUI
         public static IServiceCollection AddAppUserModule(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAppUserInfrastructure(configuration);
+            services.AddAppUserApplication();
 
             return services;
         }

@@ -62,6 +62,8 @@ namespace AppUser.Application.Commands.Auth.Handlers
             {
                 throw new BadRequestException("Cannot create user");
             }
+            await _userRepository.AddAsync(user);
+
             _logger.LogInformation($"User {userId} created.");
 
 
@@ -71,10 +73,9 @@ namespace AppUser.Application.Commands.Auth.Handlers
             {
                 throw new BadRequestException("Cannot create activity status");
             }
-            _logger.LogInformation($"ActivityStatus for {userId} created.");
             await _activityStatusRepository.AddAsync(activityStatus);
 
-            await _userRepository.AddAsync(user);
+            _logger.LogInformation($"ActivityStatus for {userId} created.");
 
             return new UserIdentityDto(new Guid(userId), username, token);
         }

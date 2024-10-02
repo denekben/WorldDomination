@@ -8,10 +8,10 @@ namespace UserAccess.Domain.Entities
     public sealed class User
     {
         public IdValueObject Id { get; private set; }
-        public Username Username { get; private set; }
-        public Email Email { get; private set; }
+        public string Username { get; private set; }
+        public string Email { get; private set; }
         public string ProfileImagePath { get; private set; }
-        public ActivityStatus ActivityStatus { get; private set; }
+        public ActivityStatus? ActivityStatus { get; private set; }
         public ICollection<UserAchievment>? UserAchievments { get; private set; }
         public DateTime CreatedTime { get; private set; }
         public DateTime? UpdatedTime { get; private set; }
@@ -42,7 +42,7 @@ namespace UserAccess.Domain.Entities
             {
                 profileImagePath = GenerateRandomCode().ToString();
             }
-            return new User(id, name, email, profileImagePath );
+            return new User(id, name, email, profileImagePath);
         }
 
         public void ChangeUsername(string username)

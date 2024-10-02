@@ -1,4 +1,5 @@
-﻿using AppUser.Infrastructure.DomainUser.ReadModels;
+﻿using AppUser.Domain.Entities;
+using AppUser.Infrastructure.DomainUser.ReadModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,6 +13,11 @@ namespace AppUser.Infrastructure.DomainUser.Configurations
             builder.ToTable("Users");
 
             builder.HasKey(u=>u.Id);
+
+            builder
+                .HasOne(u => u.ActivityStatusReadModel)
+                .WithOne(a => a.UserReadModel)
+                .HasForeignKey<ActivityStatusReadModel>(a => a.UserId);
         }
 
         public void Configure(EntityTypeBuilder<AchievmentReadModel> builder)

@@ -122,13 +122,13 @@ namespace AppUser.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81d48fc7-040c-4b02-a8c9-03d1b9aa444c",
+                            Id = "1a23c6f2-d053-4af4-a22f-58ef24c49022",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4fcfcc6e-f3ba-44a3-8ce3-e2ee38cb208f",
+                            Id = "3cd242b0-23d1-4b7b-8a8a-e5ef4bb44649",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         });

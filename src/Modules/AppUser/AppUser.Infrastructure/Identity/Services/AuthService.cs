@@ -1,6 +1,7 @@
 ﻿using AppUser.Application.Exceptions;
 using AppUser.Application.Services;
 using AppUser.Infrastructure.Identity.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -66,7 +67,7 @@ namespace AppUser.Infrastructure.Identity.Services
         // Return multiple value
         public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email)
         {
-            if (_userManager.Users.FirstOrDefaultAsync(user=>user.Email == email) != null || _userManager.Users.FirstOrDefaultAsync(user => user.UserName == userName) != null)
+            if (await _userManager.Users.FirstOrDefaultAsync(user=>user.Email == email) != null || await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == userName) != null)
             {
                 throw new BadRequestException("Email or Username already taken");
             }

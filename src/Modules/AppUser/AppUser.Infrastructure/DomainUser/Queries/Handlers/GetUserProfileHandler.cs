@@ -19,7 +19,7 @@ namespace AppUser.Infrastructure.DomainUser.Queries.Handlers
         public async Task<UserProfileDto> Handle(GetUserProfile query, CancellationToken cancellationToken)
         {
             return await _users
-                .Include(u => u.ActivityStatus)
+                .Include(u => u.ActivityStatusReadModel)
                 .Include(u => u.UserAchievments)
                 .Where(u => u.Id == query.id)
                 .Select(u => u.AsDto())

@@ -5,6 +5,7 @@ using Shared;
 var builder = WebApplication
     .CreateBuilder(args);
 
+// Modules
 builder.Services
     .AddAppUserModule(builder.Configuration)
     .AddSharedFramework(builder.Configuration);
@@ -17,7 +18,7 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 
-
+// Modules
 app.UseSharedFramework();
 app.UseAppUserModule();
 

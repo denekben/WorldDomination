@@ -3,6 +3,7 @@ using System;
 using AppUser.Infrastructure.DomainUser.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppUser.Infrastructure.DomainUser.Migrations
 {
     [DbContext(typeof(UserReadDbContext))]
-    partial class UserReadDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241002170149_ActivityFix_UserRead")]
+    partial class ActivityFix_UserRead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

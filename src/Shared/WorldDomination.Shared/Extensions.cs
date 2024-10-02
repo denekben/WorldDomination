@@ -32,7 +32,7 @@ namespace Shared
 
         public static IApplicationBuilder UseSharedFramework(this IApplicationBuilder app)
         {
-            app.UseErrorHandling();
+            //app.UseErrorHandling();
             return app;
         }
     }

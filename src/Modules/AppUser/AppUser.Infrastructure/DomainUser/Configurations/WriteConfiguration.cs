@@ -20,12 +20,9 @@ namespace AppUser.Infrastructure.DomainUser.Configurations
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder
-                .Property(u => u.Username)
-                .HasConversion(name => name.Value, name => new Username(name));
-
-            builder
-                .Property(u => u.Email)
-                .HasConversion(name => name.Value, name => new Email(name));
+                .HasOne(u => u.ActivityStatus)
+                .WithOne(a => a.User)
+                .HasForeignKey<ActivityStatus>(a=>a.UserId);
 
             builder.ToTable("Users");
         }
@@ -64,11 +61,16 @@ namespace AppUser.Infrastructure.DomainUser.Configurations
 
         public void Configure(EntityTypeBuilder<ActivityStatus> builder)
         {
-            builder.HasKey(status => status.UserId);
+            builder
+                .HasKey(a => a.UserId);
 
             builder
                 .Property(status => status.UserId)
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder
+                .Property(status => status.IsInGameStatus)
+                .HasConversion(isingamestatus => isingamestatus.Value, isingamestatus =>new IsInGameStatus(isingamestatus));
 
             builder.ToTable("ActivityStatuses");
         }
