@@ -5,9 +5,7 @@
         string Username,
         string Email,
         string ProfileImagePath,
-        string ActivityStatus,
-        ICollection<UserAchievmentDto> Achievments,
-        DateTime CreatedTime,
-        DateTime UpdatedTime  
+        ActivityStatusDto ActivityStatus,
+        IEnumerable<AchievmentDto>? Achievments
     );
 }

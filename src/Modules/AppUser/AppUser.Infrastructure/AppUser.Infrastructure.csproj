@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="DomainUser\Migrations\" />
-    <Folder Include="DomainUser\Queries\Handlers\" />
     <Folder Include="Identity\Migrations\" />
   </ItemGroup>
 

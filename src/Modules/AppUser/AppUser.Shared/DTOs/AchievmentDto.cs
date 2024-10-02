@@ -1,6 +1,6 @@
 ﻿namespace AppUser.Shared.DTOs
 {
-    public sealed record UserAchievmentDto(
+    public sealed record AchievmentDto (
         string AchievmentName,
         string Description
     );

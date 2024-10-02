@@ -1,6 +1,6 @@
 ﻿namespace AppUser.Infrastructure.DomainUser.ReadModels
 {
-    internal class UserAchievmentReadModel
+    public class UserAchievmentReadModel
     {
         public Guid UserId { get; set; }
         public Guid AchievmentId { get; set; }

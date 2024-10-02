@@ -6,6 +6,8 @@ namespace AppUser.Infrastructure.DomainUser.Contexts
 {
     public sealed class UserReadDbContext : DbContext
     {
+        public DbSet<UserReadModel> Users { get; set; }
+
         public UserReadDbContext(DbContextOptions<UserReadDbContext> options): base(options)
         {
         }

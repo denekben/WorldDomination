@@ -1,4 +1,5 @@
 using AppUser.WebUI;
+using Microsoft.OpenApi.Models;
 using Shared;
 
 var builder = WebApplication
@@ -8,14 +9,28 @@ builder.Services
     .AddAppUserModule(builder.Configuration)
     .AddSharedFramework(builder.Configuration);
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "WorldDomination", Version = "v1" }));
+
 var app = builder.Build();
+
+
 
 app.UseSharedFramework();
 app.UseAppUserModule();
-app.UseEndpoints(endpoints =>
+
+if (app.Environment.IsDevelopment())
 {
-    endpoints.MapControllers();
-    endpoints.MapGet("/", ctx => ctx.Response.WriteAsync(":^)"));
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

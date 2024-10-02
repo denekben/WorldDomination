@@ -13,5 +13,5 @@
   <ItemGroup>
     <ProjectReference Include="..\AppUser.Infrastructure\AppUser.Infrastructure.csproj" />
   </ItemGroup>
-
+	
 </Project>
