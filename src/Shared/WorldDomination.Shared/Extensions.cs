@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Shared.Events;
 using Shared.Exceptions;
 using Shared.Messaging;
 using Shared.Postgres;
-using System.Reflection;
+using System;
 
 namespace Shared
 {
@@ -22,17 +23,21 @@ namespace Shared
             services.AddMessaging();
             services.AddPostgres(configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddMediatR(configuration =>
-            {
-                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            });
+            services.AddMediatR(configuration => 
+                configuration.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+            );
+            services.AddControllers();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(options =>
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = ApiTitle, Version = ApiVersion }));
 
             return services;
         }
 
         public static IApplicationBuilder UseSharedFramework(this IApplicationBuilder app)
         {
-            //app.UseErrorHandling();
+            app.UseErrorHandling();
+
             return app;
         }
     }

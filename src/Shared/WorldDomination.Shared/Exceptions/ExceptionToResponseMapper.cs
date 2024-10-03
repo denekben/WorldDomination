@@ -10,11 +10,13 @@ namespace Shared.Exceptions
         private static readonly ConcurrentDictionary<Type, string> Codes = new();
 
         public ExceptionResponse Map(Exception exception)
-        {
-            return new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(exception), exception.Message))
-                , HttpStatusCode.BadRequest);
-
-        }
+            => exception switch
+            {
+                WorldDominationException ex => new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message))
+                    , HttpStatusCode.BadRequest),
+                _ => new ExceptionResponse(new ErrorsResponse(new Error("error", "There was an error.")),
+                    HttpStatusCode.InternalServerError)
+            };
 
         private record Error(string Code, string Message);
 

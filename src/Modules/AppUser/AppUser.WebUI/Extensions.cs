@@ -11,7 +11,6 @@ namespace AppUser.WebUI
         public static IServiceCollection AddAppUserModule(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAppUserInfrastructure(configuration);
-            services.AddAppUserApplication();
 
             return services;
         }
