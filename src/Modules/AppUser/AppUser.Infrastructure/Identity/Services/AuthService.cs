@@ -47,6 +47,10 @@ namespace AppUser.Infrastructure.Identity.Services
             }
 
             var result = await _userManager.AddToRoleAsync(user, role);
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 
@@ -58,7 +62,10 @@ namespace AppUser.Infrastructure.Identity.Services
             }
 
             var result = await _roleManager.CreateAsync(new IdentityRole(roleName));
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
 
         }
@@ -78,7 +85,10 @@ namespace AppUser.Infrastructure.Identity.Services
             };
 
             var result = await _userManager.CreateAsync(user, password);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return (result.Succeeded, user.Id);
         }
 
@@ -91,7 +101,10 @@ namespace AppUser.Infrastructure.Identity.Services
             }
 
             var result = await _roleManager.DeleteAsync(roleDetails);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 
@@ -104,6 +117,10 @@ namespace AppUser.Infrastructure.Identity.Services
             }
 
             var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 
@@ -235,6 +252,7 @@ namespace AppUser.Infrastructure.Identity.Services
                 throw new NotFoundException("User not found");
             }
             var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+
             return result.Succeeded;
         }
 
@@ -248,7 +266,10 @@ namespace AppUser.Infrastructure.Identity.Services
 
             user.Email = email;
             var result = await _userManager.UpdateAsync(user);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 
@@ -273,6 +294,10 @@ namespace AppUser.Infrastructure.Identity.Services
                 }
                 role.Name = roleName;
                 var result = await _roleManager.UpdateAsync(role);
+                if (!result.Succeeded)
+                {
+                    throw new ValidationException(result.Errors);
+                }
                 return result.Succeeded;
             }
             return false;
@@ -291,8 +316,15 @@ namespace AppUser.Infrastructure.Identity.Services
                 throw new NotFoundException("Roles not found");
             }
             var result = await _userManager.RemoveFromRolesAsync(user, existingRoles);
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             result = await _userManager.AddToRolesAsync(user, usersRole);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 
@@ -307,7 +339,10 @@ namespace AppUser.Infrastructure.Identity.Services
 
             user.UserName = userName;
             var result = await _userManager.UpdateAsync(user);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 
@@ -322,7 +357,10 @@ namespace AppUser.Infrastructure.Identity.Services
             user.RefresfToken = refreshToken;
             user.RefreshTokenExpires = DateTime.UtcNow.AddDays(360);
             var result = await _userManager.UpdateAsync(user);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
             return result.Succeeded;
         }
 

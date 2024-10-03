@@ -32,7 +32,7 @@ namespace AppUser.WebUI.Controllers
 
         [HttpGet]
         [Route("refresh-token")]
-        public async Task<ActionResult<string>> Refresh(RefreshExpiredToken command)
+        public async Task<ActionResult<string>> Refresh([FromQuery] RefreshExpiredToken command)
         {
             return Ok(await _sender.Send(command));
         }
