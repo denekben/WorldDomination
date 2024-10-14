@@ -19,11 +19,13 @@ namespace Shared.Postgres
             return services;
         }
 
-        public static IServiceCollection AddPostgres<T>(this IServiceCollection services) where T : DbContext
+        public static IServiceCollection AddPostgres<T>(this IServiceCollection services, 
+            QueryTrackingBehavior trackingBehavior = QueryTrackingBehavior.TrackAll) where T : DbContext
         {
             var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
             var connectionString = configuration[$"{SectionName}:{nameof(PostgresOptions.ConnectionString)}"];
-            services.AddDbContext<T>(x => x.UseNpgsql(connectionString));
+            services.AddDbContext<T>(x => x.UseNpgsql(connectionString)
+                                           .UseQueryTrackingBehavior(trackingBehavior));
 
             return services;
         }

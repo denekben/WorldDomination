@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
+using WorldDomination.Shared.Exceptions;
 
 namespace Shared.Exceptions
 {
@@ -35,7 +36,8 @@ namespace Shared.Exceptions
             }
             else
             {
-                return new ExceptionResponse(new ErrorsResponse(new Error("error", "There was an error.")), HttpStatusCode.InternalServerError);
+                throw exception;
+                // return new ExceptionResponse(new ErrorsResponse(new Error("error", "There was an error.")), HttpStatusCode.InternalServerError);
             }
         }
         

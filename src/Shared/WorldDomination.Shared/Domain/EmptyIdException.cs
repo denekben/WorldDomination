@@ -1,4 +1,4 @@
-﻿using Shared.Exceptions;
+﻿using WorldDomination.Shared.Exceptions;
 
 namespace WorldDomination.Shared.Domain
 {

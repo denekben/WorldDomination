@@ -1,4 +1,5 @@
-using AppUser.WebUI;
+using User.WebUI;
+using Identity.WebUI;
 using Shared;
 
 var builder = WebApplication
@@ -6,14 +7,16 @@ var builder = WebApplication
 
 // Modules
 builder.Services
-    .AddAppUserModule(builder.Configuration)
+    .AddIdentityModule(builder.Configuration)
+    .AddUserModule(builder.Configuration)
     .AddSharedFramework(builder.Configuration);
 
 var app = builder.Build();
 
 // Modules
+app.UseIdentityModule();
+app.UseUserModule();
 app.UseSharedFramework();
-app.UseAppUserModule();
 
 if (app.Environment.IsDevelopment())
 {

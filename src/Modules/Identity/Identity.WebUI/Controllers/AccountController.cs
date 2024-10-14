@@ -1,0 +1,42 @@
+﻿using Identity.Application.Commands.Auth;
+using Identity.Shared.DTOs;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Identity.WebUI.Controllers
+{
+    [ApiController]
+    [Route("account")]
+    public class AccountController : ControllerBase
+    {
+        private readonly ISender _sender;
+
+        public AccountController(ISender sender)
+        {
+            _sender = sender;
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<UserIdentityDto>> RegisterAsync(RegisterNewUser command)
+        {
+            return Ok(await _sender.Send(command));
+        }
+
+        [HttpPost]
+        [Route("signin")]
+        public async Task<ActionResult<UserIdentityDto>> SignIn(SignIn command)
+        {
+            return Ok(await _sender.Send(command));
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("refresh-token")]
+        public async Task<ActionResult<string>> Refresh([FromQuery] RefreshExpiredToken command)
+        {
+            return Ok(await _sender.Send(command));
+        }
+    }
+}
