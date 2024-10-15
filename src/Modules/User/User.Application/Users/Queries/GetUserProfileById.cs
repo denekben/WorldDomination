@@ -4,5 +4,5 @@ using System;
 
 namespace User.Application.Users.Queries
 {
-    public record GetUserProfile(Guid id) : IRequest<UserProfileDto?>;
+    public record GetUserProfileById(Guid userId) : IRequest<UserProfileDto>;
 }

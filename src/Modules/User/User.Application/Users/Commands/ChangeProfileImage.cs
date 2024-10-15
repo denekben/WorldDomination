@@ -5,5 +5,5 @@ using Microsoft.AspNetCore.Http;
 
 namespace User.Application.Users.Commands
 {
-    public sealed record ChangeProfileImage(IFormFile? FormFile) : IRequest;
+    public sealed record ChangeProfileImage(IFormFile FormFile) : IRequest;
 }

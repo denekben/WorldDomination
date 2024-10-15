@@ -28,6 +28,8 @@ namespace User.Domain.Entities
             )
         {
             Id = new Guid(id);
+            Name = Name.Create();
+            Bio = Bio.Create();
             Username = username;
             Email = email;
             DefaultProfileImagePath = GenerateDefaultPath();

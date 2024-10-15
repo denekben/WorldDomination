@@ -11,7 +11,7 @@ namespace User.Domain.ValueObjects
             Value = value ?? string.Empty;
         }
 
-        public static Name Create(string? value)
+        public static Name Create(string? value = null)
         {
             if(value?.Length > 50)
             {

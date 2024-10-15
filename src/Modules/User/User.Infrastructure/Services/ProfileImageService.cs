@@ -36,7 +36,7 @@ namespace User.Infrastructure.Services
                 var fileInfo = new FileInfo(tempFilePath);
                 var uploadedFile = await _fileUploader.Upload(fileInfo);
 
-                return uploadedFile.Uuid;
+                return "https://ucarecdn.com/" + uploadedFile.Uuid + "/-/preview/500x500/-/quality/smart/-/format/auto/";
             }
             else
             {

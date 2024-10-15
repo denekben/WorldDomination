@@ -183,8 +183,8 @@ namespace Identity.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "08a356b8-61bc-4f27-87f2-4e4e69d95ca0", null, "Admin", "ADMIN" },
-                    { "f780eae9-5e33-47a8-80a1-c4acb1ab0ef4", null, "Member", "MEMBER" }
+                    { "671f6a3c-eecd-43a4-bee7-d9bdf7fe294e", null, "Admin", "ADMIN" },
+                    { "b0c45d2f-f8ce-4130-8d89-5d4cf270eddf", null, "Member", "MEMBER" }
                 });
 
             migrationBuilder.CreateIndex(

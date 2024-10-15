@@ -33,26 +33,16 @@ namespace User.Application.Users.Commands.Handlers
             var user = await _userRepository.GetAsync(userId) 
                 ?? throw new BadRequestException("Cannot find user");
 
-            if(command.FormFile == null)
+            var imagePath = await _profileImageService.UploadFileAsync(command.FormFile);
+            if (string.IsNullOrEmpty(imagePath))
             {
-                user.ChangeProfileImagePath();
-
-                await _userRepository.UpdateAsync(user);
-                _logger.LogInformation($"User {userId} removed profile image");
+                throw new BadRequestException("Cannot upload image");
             }
-            else
-            {
-                var imagePath = await _profileImageService.UploadFileAsync(command.FormFile);
-                if (string.IsNullOrEmpty(imagePath))
-                {
-                    throw new BadRequestException("Cannot upload image");
-                }
 
-                user.ChangeProfileImagePath(imagePath);
+            user.ChangeProfileImagePath(imagePath);
 
-                await _userRepository.UpdateAsync(user);
-                _logger.LogInformation($"User {userId} changed profile image");
-            }
+            await _userRepository.UpdateAsync(user);
+            _logger.LogInformation($"User {userId} changed profile image");
         }
     }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20241014223845_Init_Auth")]
+    [Migration("20241015150910_Init_Auth")]
     partial class Init_Auth
     {
         /// <inheritdoc />
@@ -125,13 +125,13 @@ namespace Identity.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "08a356b8-61bc-4f27-87f2-4e4e69d95ca0",
+                            Id = "671f6a3c-eecd-43a4-bee7-d9bdf7fe294e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f780eae9-5e33-47a8-80a1-c4acb1ab0ef4",
+                            Id = "b0c45d2f-f8ce-4130-8d89-5d4cf270eddf",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         });

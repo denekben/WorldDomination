@@ -1,4 +1,5 @@
 ﻿using Identity.Application.Commands.Auth;
+using Identity.Application.Commands.Users;
 using Identity.Shared.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,11 +33,26 @@ namespace Identity.WebUI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("refresh-token")]
         public async Task<ActionResult<string>> Refresh([FromQuery] RefreshExpiredToken command)
         {
             return Ok(await _sender.Send(command));
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteAcount(DeleteUser command)
+        {
+            await _sender.Send(command);
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("username")]
+        [Authorize]
+        public async Task<ActionResult<UserIdentityDto>> ChangeUsername(ChangeUsername command)
+        {
+            return Ok(await _sender.Send(command));  
         }
     }
 }

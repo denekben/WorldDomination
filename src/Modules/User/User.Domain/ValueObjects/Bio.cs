@@ -11,7 +11,7 @@ namespace User.Domain.ValueObjects
             Value = value ?? string.Empty;
         }
 
-        public static Bio Create(string? value)
+        public static Bio Create(string? value = null)
         {
             if (value?.Length > 150) {
                 throw new InvalidArgumentDomainException("Bio length must me 150 or less");
