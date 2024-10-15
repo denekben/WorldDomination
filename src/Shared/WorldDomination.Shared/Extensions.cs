@@ -8,6 +8,7 @@ using Shared.Exceptions;
 using Shared.Messaging;
 using Shared.Postgres;
 using System;
+using WorldDomination.Shared.Swagger;
 
 namespace Shared
 {
@@ -26,36 +27,8 @@ namespace Shared
             services.AddMediatR(configuration => 
                 configuration.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
             );
-            services.AddControllers();
-            services.AddEndpointsApiExplorer();
 
-            services.AddSwaggerGen(option =>
-            {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
-                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please enter a valid token",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "Bearer"
-                });
-                option.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
-            });
+            services.AddSwagger();
 
             return services;
         }
