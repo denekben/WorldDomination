@@ -6,11 +6,14 @@ namespace WorldDomination.Shared.Swagger
 {
     internal static class Extensions
     {
+        private const string ApiTitle = "WorldDomination API";
+        private const string ApiVersion = "v1";
+
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = ApiTitle, Version = ApiVersion });
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,

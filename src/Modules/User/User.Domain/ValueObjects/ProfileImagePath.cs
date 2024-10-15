@@ -10,20 +10,16 @@ namespace User.Domain.ValueObjects
             Value = value;
         }
 
-        public static ProfileImagePath Create(string? value = null)
+        public static ProfileImagePath Create(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                return new ProfileImagePath(GenerateRandomCode().ToString());
+                return new ProfileImagePath(value);
             }
             return new ProfileImagePath(value);
         }
 
-        private static int GenerateRandomCode()
-        {
-            Random _random = new Random();
-            return _random.Next(10);
-        }
+
 
         public static implicit operator ProfileImagePath(string value)
             => Create(value);

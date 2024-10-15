@@ -1,9 +1,9 @@
-﻿using Identity.Application.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Security.Claims;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Identity.Infrastructure.Services
+namespace WorldDomination.Shared.Services
 {
     public class HttpContextService : IHttpContextService
     {

@@ -1,4 +1,6 @@
-﻿namespace Identity.Application.Services
+﻿using System;
+
+namespace WorldDomination.Shared.Services
 { 
     public interface IHttpContextService
     {

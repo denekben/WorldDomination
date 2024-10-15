@@ -4,6 +4,7 @@ using MediatR;
 using Shared.Messaging;
 using Identity.Shared.IntegrationEvents;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
+using WorldDomination.Shared.Services;
 
 namespace Identity.Application.Commands.Users.Handlers
 {

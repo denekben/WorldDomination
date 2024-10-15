@@ -31,7 +31,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 14, 22, 37, 57, 923, DateTimeKind.Utc).AddTicks(6167));
+                        .HasDefaultValue(new DateTime(2024, 10, 15, 13, 7, 2, 315, DateTimeKind.Utc).AddTicks(4428));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -43,7 +43,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedTime")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 14, 22, 37, 57, 923, DateTimeKind.Utc).AddTicks(6675));
+                        .HasDefaultValue(new DateTime(2024, 10, 15, 13, 7, 2, 315, DateTimeKind.Utc).AddTicks(4662));
 
                     b.HasKey("Id");
 
@@ -56,18 +56,24 @@ namespace User.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Bio")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 14, 22, 37, 57, 922, DateTimeKind.Utc).AddTicks(4145));
+                        .HasDefaultValue(new DateTime(2024, 10, 15, 13, 7, 2, 314, DateTimeKind.Utc).AddTicks(7205));
+
+                    b.Property<string>("DefaultProfileImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ProfileImagePath")
@@ -77,7 +83,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedTime")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 14, 22, 37, 57, 922, DateTimeKind.Utc).AddTicks(4651));
+                        .HasDefaultValue(new DateTime(2024, 10, 15, 13, 7, 2, 314, DateTimeKind.Utc).AddTicks(7488));
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -99,7 +105,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("AchievedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 14, 22, 37, 57, 925, DateTimeKind.Utc).AddTicks(5195));
+                        .HasDefaultValue(new DateTime(2024, 10, 15, 13, 7, 2, 316, DateTimeKind.Utc).AddTicks(6854));
 
                     b.HasKey("UserId", "AchievmentId");
 

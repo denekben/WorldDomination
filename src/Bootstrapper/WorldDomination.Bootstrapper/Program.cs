@@ -17,7 +17,7 @@ builder.Services
 
 var app = builder.Build();
 
-// Modules
+// Modules //
 app.UseIdentityModule();
 app.UseUserModule();
 app.UseSharedFramework();

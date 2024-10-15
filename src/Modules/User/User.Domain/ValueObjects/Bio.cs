@@ -6,21 +6,21 @@ namespace User.Domain.ValueObjects
     {
         public string Value { get; private set; } = string.Empty;
 
-        private Bio(string value)
+        private Bio(string? value)
         {
-            Value = value;
+            Value = value ?? string.Empty;
         }
 
-        public static Bio Create(string value)
+        public static Bio Create(string? value)
         {
-            if (value.Length > 150) {
+            if (value?.Length > 150) {
                 throw new InvalidArgumentDomainException("Bio length must me 150 or less");
             }
 
             return new Bio(value);
         }
 
-        public static implicit operator Bio(string value) => Create(value);
+        public static implicit operator Bio(string? value) => Create(value);
         public static implicit operator string(Bio bio) => bio.Value;
     }
 }

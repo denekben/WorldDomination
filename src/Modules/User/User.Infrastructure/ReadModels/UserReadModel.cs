@@ -8,6 +8,7 @@
         public string Username { get; set; }
         public string Email { get; set; }
         public string ProfileImagePath { get; set; }
+        public string DefaultProfileImagePath { get; set; }
         public UserStatusReadModel UserStatusReadModel { get; set; }
         public ICollection<UserAchievmentReadModel>? UserAchievments { get; set; }
         public DateTime? CreatedTime { get; set; }

@@ -5,6 +5,7 @@ using Identity.Shared.IntegrationEvents;
 using Identity.Application.Services;
 using Identity.Shared.DTOs;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
+using WorldDomination.Shared.Services;
 
 namespace Identity.Application.Commands.Users.Handlers
 {

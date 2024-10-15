@@ -17,7 +17,6 @@ namespace Identity.Infrastructure
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IHttpContextService, HttpContextService>();
 
             services.AddPostgres<AuthDbContext>();
 

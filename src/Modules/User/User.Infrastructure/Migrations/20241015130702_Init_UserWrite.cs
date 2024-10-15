@@ -22,8 +22,8 @@ namespace User.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 14, 22, 37, 57, 923, DateTimeKind.Utc).AddTicks(6167)),
-                    UpdatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 14, 22, 37, 57, 923, DateTimeKind.Utc).AddTicks(6675))
+                    CreatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 15, 13, 7, 2, 315, DateTimeKind.Utc).AddTicks(4428)),
+                    UpdatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 15, 13, 7, 2, 315, DateTimeKind.Utc).AddTicks(4662))
                 },
                 constraints: table =>
                 {
@@ -36,13 +36,14 @@ namespace User.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Bio = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Bio = table.Column<string>(type: "text", nullable: false),
                     Username = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     ProfileImagePath = table.Column<string>(type: "text", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 14, 22, 37, 57, 922, DateTimeKind.Utc).AddTicks(4145)),
-                    UpdatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 14, 22, 37, 57, 922, DateTimeKind.Utc).AddTicks(4651))
+                    DefaultProfileImagePath = table.Column<string>(type: "text", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 15, 13, 7, 2, 314, DateTimeKind.Utc).AddTicks(7205)),
+                    UpdatedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 15, 13, 7, 2, 314, DateTimeKind.Utc).AddTicks(7488))
                 },
                 constraints: table =>
                 {
@@ -56,7 +57,7 @@ namespace User.Infrastructure.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     AchievmentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AchievedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 14, 22, 37, 57, 925, DateTimeKind.Utc).AddTicks(5195))
+                    AchievedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true, defaultValue: new DateTime(2024, 10, 15, 13, 7, 2, 316, DateTimeKind.Utc).AddTicks(6854))
                 },
                 constraints: table =>
                 {

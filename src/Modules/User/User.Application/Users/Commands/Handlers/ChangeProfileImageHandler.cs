@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using System;
+using WorldDomination.Shared.Services;
 
 namespace User.Application.Users.Commands.Handlers
 {
@@ -14,30 +15,44 @@ namespace User.Application.Users.Commands.Handlers
         private readonly ILogger<ChangeProfileImageHandler> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IProfileImageService _profileImageService;
+        private readonly IHttpContextService _httpContextService;
 
         public ChangeProfileImageHandler(ILogger<ChangeProfileImageHandler> logger, IProfileImageService profileImageService,
-             IUserRepository userRepository)
+             IUserRepository userRepository, IHttpContextService httpContextService)
         {
             _logger = logger;
             _userRepository = userRepository;
             _profileImageService = profileImageService;
+            _httpContextService = httpContextService;
         }
 
         public async Task Handle(ChangeProfileImage command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetAsync(new Guid(command.UserId)) 
+            var userId = _httpContextService.GetCurrentUserId();
+
+            var user = await _userRepository.GetAsync(userId) 
                 ?? throw new BadRequestException("Cannot find user");
 
-            var imagePath = await _profileImageService.UploadFileAsync(command.FormFile);
-            if (string.IsNullOrEmpty(imagePath))
+            if(command.FormFile == null)
             {
-                throw new BadRequestException("Cannot upload image");
+                user.ChangeProfileImagePath();
+
+                await _userRepository.UpdateAsync(user);
+                _logger.LogInformation($"User {userId} removed profile image");
             }
+            else
+            {
+                var imagePath = await _profileImageService.UploadFileAsync(command.FormFile);
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    throw new BadRequestException("Cannot upload image");
+                }
 
-            user.ChangeProfileImagePath(imagePath);
+                user.ChangeProfileImagePath(imagePath);
 
-            await _userRepository.UpdateAsync(user);
-            _logger.LogInformation($"User {command.UserId} changed profile image");
+                await _userRepository.UpdateAsync(user);
+                _logger.LogInformation($"User {userId} changed profile image");
+            }
         }
     }
 }
