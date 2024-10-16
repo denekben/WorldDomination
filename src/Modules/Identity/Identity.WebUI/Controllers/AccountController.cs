@@ -39,20 +39,20 @@ namespace Identity.WebUI.Controllers
             return Ok(await _sender.Send(command));
         }
 
+        [HttpPut]
+        [Route("username")]
+        [Authorize]
+        public async Task<ActionResult<UserIdentityDto>> ChangeUsername(ChangeUsername command)
+        {
+            return Ok(await _sender.Send(command));  
+        }
+
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeleteAcount(DeleteUser command)
         {
             await _sender.Send(command);
             return Ok();
-        }
-
-        [HttpPatch]
-        [Route("username")]
-        [Authorize]
-        public async Task<ActionResult<UserIdentityDto>> ChangeUsername(ChangeUsername command)
-        {
-            return Ok(await _sender.Send(command));  
         }
     }
 }

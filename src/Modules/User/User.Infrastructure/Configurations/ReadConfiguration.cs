@@ -35,7 +35,7 @@ namespace User.Infrastructure.Configurations
 
             builder
                 .HasOne(ua => ua.UserReadModel)
-                .WithMany(u => u.UserAchievments)
+                .WithMany(u => u.UserAchievmentsReadModel)
                 .HasForeignKey(ua => ua.UserId);
 
             builder

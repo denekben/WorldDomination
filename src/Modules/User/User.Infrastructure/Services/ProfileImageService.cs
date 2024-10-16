@@ -10,10 +10,8 @@ namespace User.Infrastructure.Services
     public class ProfileImageService : IProfileImageService
     {
         protected readonly FileUploader _fileUploader;
-        private readonly IConfiguration _config;
         public ProfileImageService(IConfiguration config)
         {
-            _config = config;
             var client = new UploadcareClient(
                 config["UploadcareSettings:PublicKey"],
                 config["UploadcareSettings:PrivateKey"]

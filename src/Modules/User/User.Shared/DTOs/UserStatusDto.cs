@@ -10,7 +10,6 @@ using WorldDomination.Shared.Domain;
 namespace User.Shared.DTOs
 {
     public sealed record UserStatusDto(
-        Guid UserId,
         string ActivityStatus,
         string? Country,
         int? RoundNumber,

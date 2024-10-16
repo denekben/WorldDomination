@@ -6,6 +6,6 @@
         public Guid AchievmentId { get; set; }
         public UserReadModel UserReadModel { get; set; }
         public AchievmentReadModel AchievmentReadModel { get; set; }
-        public DateTime? AchievedTime { get; set; }
+        public DateTime AchievedTime { get; set; }
     }
 }

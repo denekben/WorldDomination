@@ -8,6 +8,9 @@ namespace User.Infrastructure.Contexts
     public sealed class UserReadDbContext : DbContext
     {
         public DbSet<UserReadModel> Users { get; set; }
+        public DbSet<UserAchievmentReadModel> UserAchievments { get; set; }
+        public DbSet<AchievmentReadModel> Achievments { get; set; }
+        public DbSet<UserStatusReadModel> Statuses { get; set; }
 
         public UserReadDbContext(DbContextOptions<UserReadDbContext> options) : base(options)
         {

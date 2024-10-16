@@ -18,19 +18,17 @@ namespace User.WebUI.Controllers
             _sender = sender;
         }
 
+        [HttpGet]
+        [Route("profile/{id:guid}")]
+        public async Task<ActionResult<UserDto>> GetUserProfileById([FromRoute] GetUserProfileById command)
+        {
+            return Ok(await _sender.Send(command));
+        }
+
         [HttpPut]
         [Route("profile/image")]
         [Authorize]
         public async Task<IActionResult> ChangeProfileImage([FromForm] ChangeProfileImage command)
-        {
-            await _sender.Send(command);
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Route("profile/image")]
-        [Authorize]
-        public async Task<IActionResult> DeleteProfileImage(DeleteProfileImage command)
         {
             await _sender.Send(command);
             return Ok();
@@ -45,11 +43,13 @@ namespace User.WebUI.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [Route("profile/{userId:guid}")]
-        public async Task<ActionResult<UserProfileDto>> GetUserProfileById([FromRoute] GetUserProfileById command)
+        [HttpDelete]
+        [Route("profile/image")]
+        [Authorize]
+        public async Task<IActionResult> DeleteProfileImage(DeleteProfileImage command)
         {
-            return Ok(await _sender.Send(command));
+            await _sender.Send(command);
+            return Ok();
         }
     }
 }
