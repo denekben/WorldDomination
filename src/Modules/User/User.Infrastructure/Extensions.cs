@@ -20,7 +20,7 @@ namespace User.Infrastructure
             services.AddPostgres<UserReadDbContext>(QueryTrackingBehavior.NoTracking);
             services.AddPostgres<UserWriteDbContext>();
 
-            services.AddScoped<IProfileImageService, ProfileImageService>();
+            services.AddScoped<IProfileImageService, ImageService>();
 
             return services;
         }

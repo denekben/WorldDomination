@@ -7,10 +7,10 @@ using WorldDomination.Shared.Exceptions.CustomExceptions;
 
 namespace User.Infrastructure.Services
 {
-    public class ProfileImageService : IProfileImageService
+    public class ImageService : IProfileImageService
     {
         protected readonly FileUploader _fileUploader;
-        public ProfileImageService(IConfiguration config)
+        public ImageService(IConfiguration config)
         {
             var client = new UploadcareClient(
                 config["UploadcareSettings:PublicKey"],
@@ -34,7 +34,7 @@ namespace User.Infrastructure.Services
                 var fileInfo = new FileInfo(tempFilePath);
                 var uploadedFile = await _fileUploader.Upload(fileInfo);
 
-                return "https://ucarecdn.com/" + uploadedFile.Uuid + "/-/preview/500x500/-/quality/smart/-/format/auto/";
+                return "https://ucarecdn.com/" + uploadedFile.Uuid + "/-/format/auto/-/quality/smart/";
             }
             else
             {

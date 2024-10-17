@@ -1,11 +1,8 @@
 ﻿namespace User.Shared.DTOs
 {
-    public sealed record UserDto(
+    public record SearchUserDto(
         Guid Id,
-        string Name,
-        string Bio,
         string Username,
-        string Email,
         string ProfileImagePath
     );
 }

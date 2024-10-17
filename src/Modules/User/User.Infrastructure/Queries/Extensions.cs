@@ -5,7 +5,7 @@ namespace User.Infrastructure.Queries
 {
     public static class Extensions
     {
-        public static UserDto AsDto(this UserReadModel user)
+        public static UserDto AsUserDto(this UserReadModel user)
         {
             return new UserDto(
                 user.Id,
@@ -13,13 +13,11 @@ namespace User.Infrastructure.Queries
                 user.Bio,
                 user.Username,
                 user.Email,
-                user.ProfileImagePath,
-                user.UserStatusReadModel.AsDto(),
-                user.UserAchievmentsReadModel?.Select(ua => ua.AsDto()).ToList()
+                user.ProfileImagePath
             );
         }
 
-        public static AchievmentDto AsDto(this AchievmentReadModel achievment)
+        public static AchievmentDto AsAchievmentDto(this AchievmentReadModel achievment)
         {
             return new AchievmentDto(
                 achievment.Id,
@@ -28,7 +26,7 @@ namespace User.Infrastructure.Queries
             );
         }
 
-        public static UserStatusDto AsDto(this UserStatusReadModel status)
+        public static UserStatusDto AsUserStatusDto(this UserStatusReadModel status)
         {
             return new UserStatusDto(
                 status.ActivityStatus,
@@ -38,11 +36,24 @@ namespace User.Infrastructure.Queries
             );
         }
 
-        public static UserAchievmentDto AsDto(this UserAchievmentReadModel userAchievment)
+        public static UserAchievmentDto AsUserAchievmentDto(this UserAchievmentReadModel userAchievment)
         {
+            var achievment = userAchievment.AchievmentReadModel.AsAchievmentDto();
+
             return new UserAchievmentDto(
-                userAchievment.AchievmentReadModel.AsDto(),
+                achievment.Id,
+                achievment.AchievmentName,
+                achievment.Description,
                 userAchievment.AchievedTime
+            );
+        }
+
+        public static SearchUserDto AsSearchUserDto(this UserReadModel user)
+        {
+            return new SearchUserDto(
+                user.Id,
+                user.Username,
+                user.ProfileImagePath
             );
         }
     }

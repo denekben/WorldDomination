@@ -1,7 +1,9 @@
 ﻿namespace User.Shared.DTOs
 {
     public sealed record UserAchievmentDto(
-        AchievmentDto Achievment,
+        Guid Id,
+        string AchievmentName,
+        string Description,
         DateTime AchievedTime
     );
 }

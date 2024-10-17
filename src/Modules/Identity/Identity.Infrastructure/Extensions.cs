@@ -44,6 +44,7 @@ namespace Identity.Infrastructure
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
                     ValidateIssuer = true,
                     ValidIssuer = configuration["JWT:Issuer"],
                     ValidateAudience = true,

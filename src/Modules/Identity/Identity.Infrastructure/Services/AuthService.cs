@@ -22,7 +22,7 @@ namespace Identity.Infrastructure.Services
         }
 
         // Helper
-        public async Task<AuthUser> FindAuthUserById(string userId)
+        public async Task<AuthUser> GetUserById(string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
@@ -31,6 +31,16 @@ namespace Identity.Infrastructure.Services
             }
             return user;
         }
+        public async Task<AuthUser> GetUserByUsername(string username)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+            return user;
+        }
+        //
 
         public async Task<bool> AssignUserToRole(string email, string role)
         {
@@ -104,7 +114,7 @@ namespace Identity.Infrastructure.Services
 
         public async Task<bool> DeleteUserAsync(string userId)
         {
-            var user = await FindAuthUserById(userId);
+            var user = await GetUserById(userId);
 
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -139,7 +149,7 @@ namespace Identity.Infrastructure.Services
 
         public async Task<(string userId, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId)
         {
-            var user = await FindAuthUserById(userId);
+            var user = await GetUserById(userId);
 
             var roles = await _userManager.GetRolesAsync(user);
             if (roles == null)
@@ -191,14 +201,14 @@ namespace Identity.Infrastructure.Services
 
         public async Task<string?> GetUserNameAsync(string userId)
         {
-            var user = await FindAuthUserById(userId);
+            var user = await GetUserById(userId);
 
             return await _userManager.GetUserNameAsync(user);
         }
 
         public async Task<List<string>> GetUserRolesAsync(string userId)
         {
-            var user = await FindAuthUserById(userId);
+            var user = await GetUserById(userId);
 
             var roles = await _userManager.GetRolesAsync(user);
             if (roles == null)
@@ -210,7 +220,7 @@ namespace Identity.Infrastructure.Services
 
         public async Task<bool> IsInRoleAsync(string userId, string role)
         {
-            var user = await FindAuthUserById(userId);
+            var user = await GetUserById(userId);
 
             return await _userManager.IsInRoleAsync(user, role);
         }
@@ -234,7 +244,7 @@ namespace Identity.Infrastructure.Services
 
         public async Task<bool> UpdateUserEmail(string id, string email)
         {
-            var user = await FindAuthUserById(id);
+            var user = await GetUserById(id);
 
             user.Email = email;
             var result = await _userManager.UpdateAsync(user);
@@ -303,7 +313,7 @@ namespace Identity.Infrastructure.Services
         public async Task<bool> UpdateUserName(string id, string userName)
         {
 
-            var user = await FindAuthUserById(id);
+            var user = await GetUserById(id);
 
             user.UserName = userName;
             var result = await _userManager.UpdateAsync(user);
@@ -316,10 +326,10 @@ namespace Identity.Infrastructure.Services
 
         public async Task<bool> UpdateRefreshToken(string id, string refreshToken)
         {
-            var user = await FindAuthUserById(id);
+            var user = await GetUserById(id);
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpires = DateTime.UtcNow.AddDays(360);
+            user.RefreshTokenExpires = DateTime.UtcNow.AddDays(30);
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
@@ -328,11 +338,10 @@ namespace Identity.Infrastructure.Services
             return result.Succeeded;
         }
 
-        public async Task<bool> RefreshTokenExpired(string id)
+        public async Task<bool> IsRefreshTokenValid(string username, string refreshToken)
         {
-            var user = await FindAuthUserById(id);
-
-            return user.RefreshTokenExpires <= DateTime.UtcNow;
+            var user = await GetUserByUsername(username);
+            return (user.RefreshToken == refreshToken && user.RefreshTokenExpires > DateTime.UtcNow);
         }
     }
 }

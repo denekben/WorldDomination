@@ -68,6 +68,8 @@ namespace User.Infrastructure.Configurations
                 .HasDefaultValue(DateTime.UtcNow)
                 .ValueGeneratedOnUpdate();
 
+            builder.HasData(Seed.Achievments);
+
             builder.ToTable("Achievments");
         }
 

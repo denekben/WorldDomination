@@ -22,7 +22,7 @@ namespace User.Domain.Entities
             Description = description;
         }
 
-        public static Achievment CreateNewAchievment(
+        public static Achievment Create(
             string name, string description)
         {
             return new Achievment(name, description);

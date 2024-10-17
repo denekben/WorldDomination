@@ -34,7 +34,7 @@ namespace Identity.WebUI.Controllers
 
         [HttpGet]
         [Route("refresh-token")]
-        public async Task<ActionResult<string>> Refresh([FromQuery] RefreshExpiredToken command)
+        public async Task<ActionResult<string>> Refresh(RefreshExpiredToken command)
         {
             return Ok(await _sender.Send(command));
         }
@@ -42,7 +42,7 @@ namespace Identity.WebUI.Controllers
         [HttpPut]
         [Route("username")]
         [Authorize]
-        public async Task<ActionResult<UserIdentityDto>> ChangeUsername(ChangeUsername command)
+        public async Task<ActionResult<string>> ChangeUsername(ChangeUsername command)
         {
             return Ok(await _sender.Send(command));  
         }

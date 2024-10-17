@@ -6,10 +6,11 @@ using WorldDomination.Shared.Exceptions.CustomExceptions;
 using Microsoft.Extensions.Logging;
 using User.Application.Services;
 using WorldDomination.Shared.Services;
+using Users.Application.Users.Commands;
 
 namespace User.Application.Users.Commands.Handlers
 {
-    internal class DeleteProfileImageHandler : IRequestHandler<DeleteProfileImage>
+    internal class DeleteProfileImageHandler : IRequestHandler<DeleteCurrentUserImage>
     {
         private readonly ILogger<DeleteProfileImageHandler> _logger;
         private readonly IUserRepository _userRepository;
@@ -25,7 +26,7 @@ namespace User.Application.Users.Commands.Handlers
             _httpContextService = httpContextService;
         }
 
-        public async Task Handle(DeleteProfileImage command, CancellationToken cancellationToken)
+        public async Task Handle(DeleteCurrentUserImage command, CancellationToken cancellationToken)
         {
             var userId = _httpContextService.GetCurrentUserId();
 

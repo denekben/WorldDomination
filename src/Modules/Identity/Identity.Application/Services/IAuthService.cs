@@ -19,7 +19,7 @@
 
         // Tokens
         Task<bool> UpdateRefreshToken(string id, string refreshToken);
-        Task<bool> RefreshTokenExpired(string id);
+        Task<bool> IsRefreshTokenValid(string username, string refreshToken);
 
 
         // Role Section

@@ -45,13 +45,15 @@ namespace Identity.Application.Commands.Auth.Handlers
             _logger.LogInformation($"AuthUser {userId} assigned to role Member");
 
             // Identity User tokens
-            await _authService.UpdateRefreshToken(userId, _tokenService.GenerateRefreshToken());
-            string token = _tokenService.GenerateAccessToken(userId, email, username, await _authService.GetUserRolesAsync(userId))
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            await _authService.UpdateRefreshToken(userId, refreshToken);
+            string accessToken = _tokenService.GenerateAccessToken(userId, email, username, await _authService.GetUserRolesAsync(userId))
                 ?? throw new BadRequestException("Cannot generate access token");
 
             await _messageBroker.PublishAsync(new NewUserRegistered(userId, username, email));
 
-            return new UserIdentityDto(new Guid(userId), username, token);
+            return new UserIdentityDto(new Guid(userId), username, accessToken, refreshToken);
         }
     }
 }

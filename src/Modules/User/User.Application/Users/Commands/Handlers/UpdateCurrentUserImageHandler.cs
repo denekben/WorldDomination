@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using System;
 using WorldDomination.Shared.Services;
+using Users.Application.Users.Commands;
 
 namespace User.Application.Users.Commands.Handlers
 {
-    internal class ChangeProfileImageHandler : IRequestHandler<ChangeProfileImage>
+    internal class UpdateCurrentUserImageHandler : IRequestHandler<UpdateCurrentUserImage>
     {
-        private readonly ILogger<ChangeProfileImageHandler> _logger;
+        private readonly ILogger<UpdateCurrentUserImageHandler> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IProfileImageService _profileImageService;
         private readonly IHttpContextService _httpContextService;
 
-        public ChangeProfileImageHandler(ILogger<ChangeProfileImageHandler> logger, IProfileImageService profileImageService,
+        public UpdateCurrentUserImageHandler(ILogger<UpdateCurrentUserImageHandler> logger, IProfileImageService profileImageService,
              IUserRepository userRepository, IHttpContextService httpContextService)
         {
             _logger = logger;
@@ -26,7 +27,7 @@ namespace User.Application.Users.Commands.Handlers
             _httpContextService = httpContextService;
         }
 
-        public async Task Handle(ChangeProfileImage command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateCurrentUserImage command, CancellationToken cancellationToken)
         {
             var userId = _httpContextService.GetCurrentUserId();
 

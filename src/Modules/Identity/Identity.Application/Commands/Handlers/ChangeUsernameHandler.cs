@@ -9,7 +9,7 @@ using WorldDomination.Shared.Services;
 
 namespace Identity.Application.Commands.Users.Handlers
 {
-    internal class ChangeUsernameHandler : IRequestHandler<ChangeUsername, UserIdentityDto>
+    internal class ChangeUsernameHandler : IRequestHandler<ChangeUsername, string>
     {
         private readonly ILogger<ChangeUsernameHandler> _logger;
         private readonly IAuthService _authService;
@@ -27,7 +27,7 @@ namespace Identity.Application.Commands.Users.Handlers
             _httpContextService = httpContextService;
         }
 
-        public async Task<UserIdentityDto> Handle(ChangeUsername command, CancellationToken cancellationToken)
+        public async Task<string> Handle(ChangeUsername command, CancellationToken cancellationToken)
         {
             // Identity user
             var username = command.Username;
@@ -41,14 +41,9 @@ namespace Identity.Application.Commands.Users.Handlers
 
             _logger.LogInformation($"AuthUser {userId} changed username to {username}");
 
-            var (_, _, email, roles) = await _authService.GetUserDetailsAsync(userId.ToString());
-
-            var token = _tokenService.GenerateAccessToken(userId, email, username, roles)
-                ?? throw new BadRequestException("Cannot generate access token");
-
             await _messageBroker.PublishAsync(new UsernameChanged(userId, username), cancellationToken);
 
-            return new UserIdentityDto(new Guid(userId), username, token);
+            return username;
         }
     }
 }

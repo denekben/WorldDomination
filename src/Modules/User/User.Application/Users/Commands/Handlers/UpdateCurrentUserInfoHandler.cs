@@ -3,26 +3,27 @@ using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 using User.Domain.Repositories;
+using Users.Application.Users.Commands;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
 
 namespace User.Application.Users.Commands.Handlers
 {
-    internal class ChangeProfileInfoHandler : IRequestHandler<ChangeProfileInfo>
+    internal class UpdateCurrentUserInfoHandler : IRequestHandler<UpdateCurrentUserInfo>
     {
         private readonly IHttpContextService _httpContextService;
         private readonly IUserRepository _userRepository;
-        private readonly ILogger<ChangeProfileInfoHandler> _logger;
+        private readonly ILogger<UpdateCurrentUserInfoHandler> _logger;
 
-        public ChangeProfileInfoHandler(IHttpContextService httpContextService, 
-            IUserRepository userRepository, ILogger<ChangeProfileInfoHandler> logger)
+        public UpdateCurrentUserInfoHandler(IHttpContextService httpContextService, 
+            IUserRepository userRepository, ILogger<UpdateCurrentUserInfoHandler> logger)
         {
             _httpContextService = httpContextService;
             _userRepository = userRepository;
             _logger = logger;
         }
 
-        public async Task Handle(ChangeProfileInfo command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateCurrentUserInfo command, CancellationToken cancellationToken)
         {
             var userId = _httpContextService.GetCurrentUserId();
 

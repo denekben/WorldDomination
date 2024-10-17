@@ -1,6 +1,7 @@
 ﻿using Identity.Application.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
 
@@ -26,21 +27,22 @@ namespace Identity.Application.Commands.Auth.Handlers
 
         public async Task<string> Handle(RefreshExpiredToken command, CancellationToken cancellationToken)
         {
-            var userId = _httpContextService.GetCurrentUserId().ToString();
-            if(await _authService.RefreshTokenExpired(userId))
+            var username = _tokenService.GetPrincipalFromExpiredToken(command.AccessToken)
+                .Claims.SingleOrDefault(x => x.Type.Equals(ClaimTypes.GivenName))?.Value ??
+                throw new BadRequestException("Cannot refresh token");
+
+            if(!await _authService.IsRefreshTokenValid(username, command.RefreshToken))
             {
-                throw new BadRequestException("Refresh token expired");
+                throw new BadRequestException("Refresh token is invalid");
             }
 
-            await _authService.UpdateRefreshToken(userId, _tokenService.GenerateRefreshToken());
-
-            var (_, username, email, roles) = await _authService.GetUserDetailsAsync(userId);
-            string token = _tokenService.GenerateAccessToken(userId, email, username, roles)
+            var (userId, _, email, roles) = await _authService.GetUserDetailsByUserNameAsync(username);
+            string accessToken = _tokenService.GenerateAccessToken(userId, email, username, roles)
                 ?? throw new BadRequestException("Cannot generate access token");
 
             _logger.LogInformation($"AuthUser {userId} refreshed expired token");
 
-            return token;
+            return accessToken;
         }
     }
 }

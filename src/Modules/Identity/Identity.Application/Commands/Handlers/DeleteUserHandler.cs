@@ -28,7 +28,6 @@ namespace Identity.Application.Commands.Users.Handlers
         {
             var userId = _contextService.GetCurrentUserId().ToString();
 
-            // Identity user
             if (!await _authService.DeleteUserAsync(userId))
             {
                 throw new BadRequestException("Cannot delete user");

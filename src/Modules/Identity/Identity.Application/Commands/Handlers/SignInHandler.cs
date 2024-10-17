@@ -30,14 +30,16 @@ namespace Identity.Application.Commands.Auth.Handlers
 
             var (userId, username, email, roles) = await _authService.GetUserDetailsByEmailAsync(command.Email);
 
-            await _authService.UpdateRefreshToken(userId, _tokenService.GenerateRefreshToken());
+            var refreshToken = _tokenService.GenerateRefreshToken();
 
-            string token = _tokenService.GenerateAccessToken(userId, email, username, roles)
+            await _authService.UpdateRefreshToken(userId, refreshToken);
+
+            string accessToken = _tokenService.GenerateAccessToken(userId, email, username, roles)
                 ?? throw new BadRequestException("Cannot create access token");
 
             _logger.LogInformation($"AuthUser {userId} signed in");
 
-            return new UserIdentityDto(new Guid(userId), username, token);
+            return new UserIdentityDto(new Guid(userId), username, accessToken, refreshToken);
         }
     }
 }
