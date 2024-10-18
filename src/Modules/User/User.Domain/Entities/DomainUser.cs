@@ -12,7 +12,7 @@ namespace User.Domain.Entities
         public string Username { get; private set; }
         public string Email { get; private set; }
         public ProfileImagePath ProfileImagePath { get; private set; }
-        public string DefaultProfileImagePath { get; private set; }
+        public DefaultProfileImagePath DefaultProfileImagePath { get; private set; }
         public UserStatus UserStatus { get; private set; }
         public ICollection<UserAchievment>? UserAchievments { get; private set; }
         public DateTime? CreatedTime { get; private set; }
@@ -32,11 +32,11 @@ namespace User.Domain.Entities
             Bio = Bio.Create();
             Username = username;
             Email = email;
-            DefaultProfileImagePath = GenerateDefaultPath();
+            DefaultProfileImagePath = DefaultProfileImagePath.Create();
             ProfileImagePath = ProfileImagePath.Create(DefaultProfileImagePath);
         }
 
-        public static DomainUser CreateUser(
+        public static DomainUser Create(
             string id,
             string username,
             string email
@@ -62,10 +62,6 @@ namespace User.Domain.Entities
             ProfileImagePath = path ?? DefaultProfileImagePath;
         }
 
-        private static string GenerateDefaultPath()
-        {
-            Random _random = new();
-            return _random.Next(10).ToString();
-        }
+
     }
 }

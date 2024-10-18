@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Administration.Infrastructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{0A0A5296-C607-4F9E-8646-A7F697F457E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Domain", "src\Modules\Game\Game.Domain\Game.Domain.csproj", "{F28572DF-DE85-462C-ACCB-5A23DC8F4595}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Domain", "src\Modules\Game\Game.Domain\Game.Domain.csproj", "{F28572DF-DE85-462C-ACCB-5A23DC8F4595}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

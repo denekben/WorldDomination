@@ -14,8 +14,8 @@ namespace Identity.Infrastructure.Configurations
                     NormalizedName = UserRole.Admin.ToUpper()
                 },
                 new IdentityRole {
-                    Name = UserRole.Member,
-                    NormalizedName = UserRole.Member.ToUpper()
+                    Name = UserRole.User,
+                    NormalizedName = UserRole.User.ToUpper()
                 }
             ];
         }

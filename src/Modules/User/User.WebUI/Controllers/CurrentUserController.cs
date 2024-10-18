@@ -21,16 +21,16 @@ namespace User.WebUI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<Profile?>> GetCurrentUserProfileById([FromRoute] GetCurrentUserProfile query)
+        public async Task<ActionResult<Profile?>> GetCurrentUserProfile()
         {
-            return Ok(await _sender.Send(query));
+            return Ok(await _sender.Send(new GetCurrentUserProfile()));
         }
 
         [HttpGet]
         [Route("achievments")]
-        public async Task<ActionResult<List<UserAchievmentDto>?>> GetCurrentUserAchievment([FromRoute] GetCurrentUserAchievments command)
+        public async Task<ActionResult<List<UserAchievmentDto>?>> GetCurrentUserAchievment()
         {
-            return Ok(await _sender.Send(command));
+            return Ok(await _sender.Send(new GetCurrentUserAchievments()));
         }
 
         [HttpPut]

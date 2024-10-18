@@ -1,14 +1,14 @@
-﻿using User.Domain.Exceptions;
+﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
 namespace User.Domain.ValueObjects
 {
-    public record Name
+    public sealed record Name
     {
-        public string Value { get; private set; } = string.Empty;
+        public string? Value { get; private set; }
 
         private Name(string? value)
         {
-            Value = value ?? string.Empty;
+            Value = value;
         }
 
         public static Name Create(string? value = null)
@@ -21,6 +21,6 @@ namespace User.Domain.ValueObjects
         }
 
         public static implicit operator Name(string? value) => Create(value);
-        public static implicit operator string(Name value) => value.Value;
+        public static implicit operator string?(Name value) => value?.Value;
     }
 }

@@ -36,6 +36,9 @@ namespace User.Infrastructure.Configurations
                 .Property(u => u.ProfileImagePath)
                 .HasConversion(path => path.Value, path => ProfileImagePath.Create(path));
 
+            builder
+                .Property(u => u.DefaultProfileImagePath)
+                .HasConversion(path => path.Value, path => DefaultProfileImagePath.Create(path));
 
             builder
                 .Property(u => u.CreatedTime)

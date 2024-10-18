@@ -1,4 +1,4 @@
-﻿using User.Domain.Exceptions;
+﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
 namespace User.Domain.ValueObjects
 {
@@ -17,18 +17,15 @@ namespace User.Domain.ValueObjects
 
         public static ActivityStatus Create(string value)
         {
-            value = value.ToLower();
-            if (value != "online" && value != "offline" && value != "ingame" && value != "inlobby")
+            if (value != "Online" && value != "Offline" && value != "InGame" && value != "InLobby")
             {
                 throw new InvalidArgumentDomainException($"Cannot create ActivityStatus with {value}");
             }
             return new ActivityStatus(value);
         }
 
-        public static implicit operator ActivityStatus(string value)
-            => Create(value);
+        public static implicit operator ActivityStatus(string value) => Create(value);
 
-        public static implicit operator string(ActivityStatus value)
-            => value.Value;
+        public static implicit operator string(ActivityStatus value) => value.Value;
     }
 }

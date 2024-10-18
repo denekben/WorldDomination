@@ -28,7 +28,7 @@ namespace User.Application.Users.ExternalEvents.Handlers
             var (userId, username, email) = @event;
 
             // DomainUser
-            var user = DomainUser.CreateUser(userId, username, email) 
+            var user = DomainUser.Create(userId, username, email) 
                 ?? throw new BadRequestException("Cannot create user");
 
             await _userRepository.AddAsync(user);
