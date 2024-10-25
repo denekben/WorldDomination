@@ -15,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Administration\Administration.WebUI\Administration.WebUI.csproj" />
+    <ProjectReference Include="..\..\Modules\Game\Game.WebUI\Game.WebUI.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.WebUI\Identity.WebUI.csproj" />
     <ProjectReference Include="..\..\Modules\User\User.WebUI\User.WebUI.csproj" />
     <ProjectReference Include="..\..\Shared\WorldDomination.Shared\WorldDomination.Shared.csproj" />

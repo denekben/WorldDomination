@@ -1,6 +1,7 @@
-using User.WebUI;
 using Identity.WebUI;
 using Shared;
+using User.WebUI;
+using Game.WebUI;
 
 var builder = WebApplication
     .CreateBuilder(args);
@@ -11,15 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 // Modules //
 builder.Services
     .AddIdentityModule(builder.Configuration)
-    .AddUserModule(builder.Configuration)
+    .AddUserModule()
+    .AddGameModule()
     .AddSharedFramework(builder.Configuration);
 /////////////
 
 var app = builder.Build();
 
 // Modules //
-app.UseIdentityModule();
-app.UseUserModule();
 app.UseSharedFramework();
 /////////////
 

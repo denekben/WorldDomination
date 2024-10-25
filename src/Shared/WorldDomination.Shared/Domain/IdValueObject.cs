@@ -5,7 +5,7 @@ namespace WorldDomination.Shared.Domain
 {
     public record IdValueObject
     {
-        public Guid Value { get; }
+        public Guid Value { get; private set; }
 
         public IdValueObject(Guid value)
         {

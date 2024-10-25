@@ -7,8 +7,8 @@ namespace User.Domain.Entities
     public sealed class DomainUser
     {
         public IdValueObject Id {  get; private set; }
-        public Name Name { get; private set; }
-        public Bio Bio {  get; private set; }
+        public string Name { get; private set; }
+        public Bio Bio { get; private set; }
         public string Username { get; private set; }
         public string Email { get; private set; }
         public ProfileImagePath ProfileImagePath { get; private set; }
@@ -28,7 +28,7 @@ namespace User.Domain.Entities
             )
         {
             Id = new Guid(id);
-            Name = Name.Create();
+            Name = username;
             Bio = Bio.Create();
             Username = username;
             Email = email;
@@ -53,13 +53,13 @@ namespace User.Domain.Entities
 
         public void ChangeProfileInfo(string? name, string? bio)
         {
-            Name = name;
+            Name = name ?? Username;
             Bio = bio;
         }
 
         public void ChangeProfileImagePath(string? path = null)
         {
-            ProfileImagePath = path ?? DefaultProfileImagePath;
+            ProfileImagePath = string.IsNullOrEmpty(path) ? (string) DefaultProfileImagePath : path;
         }
 
 

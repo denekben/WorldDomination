@@ -1,5 +1,4 @@
 ﻿using User.Application.Services;
-using User.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -8,18 +7,20 @@ using WorldDomination.Shared.Exceptions.CustomExceptions;
 using System;
 using WorldDomination.Shared.Services;
 using Users.Application.Users.Commands;
+using WorldDomination.Shared.Domain;
+using User.Domain.Entities;
 
 namespace User.Application.Users.Commands.Handlers
 {
     internal class UpdateCurrentUserImageHandler : IRequestHandler<UpdateCurrentUserImage>
     {
         private readonly ILogger<UpdateCurrentUserImageHandler> _logger;
-        private readonly IUserRepository _userRepository;
+        private readonly IRepository<DomainUser> _userRepository;
         private readonly IProfileImageService _profileImageService;
         private readonly IHttpContextService _httpContextService;
 
         public UpdateCurrentUserImageHandler(ILogger<UpdateCurrentUserImageHandler> logger, IProfileImageService profileImageService,
-             IUserRepository userRepository, IHttpContextService httpContextService)
+             IRepository<DomainUser> userRepository, IHttpContextService httpContextService)
         {
             _logger = logger;
             _userRepository = userRepository;

@@ -27,7 +27,7 @@ namespace Identity.Application.Commands.Auth.Handlers
         public async Task<UserIdentityDto> Handle(RegisterNewUser command, CancellationToken cancellationToken)
         {
             // Identity User creating
-            var (username, password, email) = command;
+            var (username, email, password) = command;
 
             var (result, userId) = await _authService.CreateUserAsync(username, password, email);
             if (!result)
@@ -37,12 +37,12 @@ namespace Identity.Application.Commands.Auth.Handlers
             _logger.LogInformation($"AuthUser {userId} registered");
 
             // Identity User roles
-            await _authService.AssignUserToRole(email, "Member");
+            await _authService.AssignUserToRole(email, "User");
             if(!result)
             {
                 throw new BadRequestException("Cannot assign user to role");
             }
-            _logger.LogInformation($"AuthUser {userId} assigned to role Member");
+            _logger.LogInformation($"AuthUser {userId} assigned to role User");
 
             // Identity User tokens
             var refreshToken = _tokenService.GenerateRefreshToken();

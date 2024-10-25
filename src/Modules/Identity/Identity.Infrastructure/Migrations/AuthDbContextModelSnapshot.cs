@@ -79,6 +79,7 @@ namespace Identity.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -122,15 +123,15 @@ namespace Identity.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "671f6a3c-eecd-43a4-bee7-d9bdf7fe294e",
+                            Id = "5b32ed2f-a049-4611-b4cf-0e3534f9edda",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b0c45d2f-f8ce-4130-8d89-5d4cf270eddf",
-                            Name = "Member",
-                            NormalizedName = "MEMBER"
+                            Id = "3ab3d92f-f2f3-4210-bd9e-34600d82d5cd",
+                            Name = "User",
+                            NormalizedName = "USER"
                         });
                 });
 

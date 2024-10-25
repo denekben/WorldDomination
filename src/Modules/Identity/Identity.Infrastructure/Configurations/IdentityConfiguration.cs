@@ -7,9 +7,9 @@ namespace Identity.Infrastructure.Configurations
 {
     internal class IdentityConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
-        public void Configure(EntityTypeBuilder<IdentityRole> modelBuilder)
+        public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
-            modelBuilder.HasData(Seed.Roles);
+            builder.HasData(Seed.Roles);
         }
     }
 }

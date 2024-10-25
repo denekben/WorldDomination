@@ -1,9 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using User.Application.User.Queries;
 using User.Shared.DTOs;
-using Users.Application.Users.Commands;
 
 namespace User.WebUI.Controllers
 {

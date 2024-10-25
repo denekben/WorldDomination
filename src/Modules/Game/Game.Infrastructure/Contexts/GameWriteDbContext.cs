@@ -1,0 +1,39 @@
+﻿using Game.Domain.CountryAggregate.Entities;
+using Game.Domain.RoomAggregate.Entities;
+using Game.Domain.UserAggregate.Entities;
+using DomainGame = Game.Domain.GameAggregate.Entities.Game;
+using Game.Infrastructure.Configurations;
+using Game.Infrastructure.Seed;
+using Microsoft.EntityFrameworkCore;
+using Game.Domain.RoomAggregate.Abstractions;
+
+namespace Game.Infrastructure.Contexts
+{
+    public sealed class GameWriteDbContext : DbContext
+    {
+        public DbSet<GameUser> Users { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+
+        public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("Game");
+
+            var configuration = new WriteConfiguration();
+
+            modelBuilder.ApplyConfiguration<RoomMember>(configuration);
+            modelBuilder.ApplyConfiguration<CountryPattern>(configuration);
+            modelBuilder.ApplyConfiguration<CityPattern>(configuration);
+            modelBuilder.ApplyConfiguration<City>(configuration);
+            modelBuilder.ApplyConfiguration<Country>(configuration);
+            modelBuilder.ApplyConfiguration<DomainGame>(configuration);
+            //modelBuilder.ApplyConfiguration<Organizer>(configuration);
+            modelBuilder.ApplyConfiguration<Player>(configuration);
+            modelBuilder.ApplyConfiguration<Room>(configuration);
+            modelBuilder.ApplyConfiguration<GameUser>(configuration);
+
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}

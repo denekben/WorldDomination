@@ -4,13 +4,14 @@
     {
         public string Value { get; private set; }
 
-        private DefaultProfileImagePath(string value) { 
+        private DefaultProfileImagePath(string value)
+        {
             Value = value;
         }
 
         public static DefaultProfileImagePath Create(string? value = null)
         {
-            if(value == null)
+            if (value == null)
             {
                 return new DefaultProfileImagePath(GenerateDefaultPath());
             }

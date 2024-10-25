@@ -1,22 +1,15 @@
-﻿using User.Infrastructure;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using User.Infrastructure;
 
 namespace User.WebUI
 {
     public static class Extensions
     {
-        public static IServiceCollection AddUserModule(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddUserModule(this IServiceCollection services)
         {
-            services.AddUserInfrastructure(configuration);
-
+            services.AddUserInfrastructure();
+            
             return services;
-        }
-
-        public static IApplicationBuilder UseUserModule(this IApplicationBuilder app)
-        {
-            return app;
         }
     }
 }

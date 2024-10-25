@@ -8,7 +8,7 @@ using Users.Application.Users.Commands;
 namespace User.WebUI.Controllers
 {
     [ApiController]
-   // [Authorize]
+    [Authorize]
     [Route("user")]
     public class CurrentUserController : ControllerBase
     {
@@ -20,7 +20,6 @@ namespace User.WebUI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<Profile?>> GetCurrentUserProfile()
         {
             return Ok(await _sender.Send(new GetCurrentUserProfile()));

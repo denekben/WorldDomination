@@ -1,12 +1,11 @@
-﻿using User.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using User.Domain.Entities;
 using WorldDomination.Shared.Domain;
 using User.Infrastructure.Contexts;
 
 namespace User.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IRepository<DomainUser>
     {
         private readonly DbSet<DomainUser> _users;
         private readonly UserWriteDbContext _context;

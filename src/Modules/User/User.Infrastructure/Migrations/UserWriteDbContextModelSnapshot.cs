@@ -31,7 +31,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 16, 17, 30, 58, 269, DateTimeKind.Utc).AddTicks(4799));
+                        .HasDefaultValue(new DateTime(2024, 10, 20, 22, 12, 33, 281, DateTimeKind.Utc).AddTicks(7076));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -43,7 +43,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedTime")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 16, 17, 30, 58, 269, DateTimeKind.Utc).AddTicks(5053));
+                        .HasDefaultValue(new DateTime(2024, 10, 20, 22, 12, 33, 281, DateTimeKind.Utc).AddTicks(7345));
 
                     b.HasKey("Id");
 
@@ -52,21 +52,27 @@ namespace User.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("14cfe78a-3794-4adf-b773-d70fc1491fdd"),
+                            Id = new Guid("4e83f4db-293c-44c7-b93b-e70056f25fc4"),
                             Description = "Выиграйте игру в роли президента",
                             Name = "Великий вождь"
                         },
                         new
                         {
-                            Id = new Guid("9394332a-f4fe-4121-9909-a3c2a5761253"),
-                            Description = "Произведите 5 ядерный бомб",
-                            Name = "Давай нападай"
+                            Id = new Guid("f2e29677-c93c-47c8-a8b9-1f9207409a88"),
+                            Description = "Произведите 5 ядерных бомб",
+                            Name = "Давай давай нападай"
                         },
                         new
                         {
-                            Id = new Guid("a20b2a5d-a2ac-45d7-a949-e148b3e37cda"),
-                            Description = "Выиграйте, будучи обложенным санкциями всех стран",
+                            Id = new Guid("7d1b7b03-3cdd-40ca-8ef9-7d441a1019da"),
+                            Description = "Выиграйте игру, будучи обложенным санкциями всех стран",
                             Name = "Сильный и независимый"
+                        },
+                        new
+                        {
+                            Id = new Guid("250c0165-bf73-4100-a244-49491ca227c4"),
+                            Description = "Сбросьте ядерную бомбу",
+                            Name = "Радиоактивный пепел"
                         });
                 });
 
@@ -82,7 +88,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 16, 17, 30, 58, 268, DateTimeKind.Utc).AddTicks(8503));
+                        .HasDefaultValue(new DateTime(2024, 10, 20, 22, 12, 33, 281, DateTimeKind.Utc).AddTicks(32));
 
                     b.Property<string>("DefaultProfileImagePath")
                         .IsRequired()
@@ -103,7 +109,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedTime")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 16, 17, 30, 58, 268, DateTimeKind.Utc).AddTicks(8789));
+                        .HasDefaultValue(new DateTime(2024, 10, 20, 22, 12, 33, 281, DateTimeKind.Utc).AddTicks(360));
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -125,7 +131,7 @@ namespace User.Infrastructure.Migrations
                     b.Property<DateTime?>("AchievedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 10, 16, 17, 30, 58, 270, DateTimeKind.Utc).AddTicks(5172));
+                        .HasDefaultValue(new DateTime(2024, 10, 20, 22, 12, 33, 282, DateTimeKind.Utc).AddTicks(8185));
 
                     b.HasKey("UserId", "AchievmentId");
 

@@ -1,12 +1,11 @@
 ﻿using User.Domain.Entities;
-using User.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
 using User.Infrastructure.Contexts;
 
 namespace User.Infrastructure.Repositories
 {
-    public class UserStatusRepository : IUserStatusRepository
+    public class UserStatusRepository : IRepository<UserStatus>
     {
         private readonly DbSet<UserStatus> _userStatuses;
         private readonly UserWriteDbContext _context;

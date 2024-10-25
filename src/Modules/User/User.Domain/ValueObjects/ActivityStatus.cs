@@ -4,6 +4,8 @@ namespace User.Domain.ValueObjects
 {
     public sealed record ActivityStatus
     {
+        private static readonly IReadOnlyCollection<string> _allowedStatuses = ["Online", "Offlie", "InGame", "InLobby"];
+
         public string Value { get; private set; }
         public static ActivityStatus Online => new ActivityStatus("Online");
         public static ActivityStatus Offline => new ActivityStatus("Offline");
@@ -17,7 +19,7 @@ namespace User.Domain.ValueObjects
 
         public static ActivityStatus Create(string value)
         {
-            if (value != "Online" && value != "Offline" && value != "InGame" && value != "InLobby")
+            if (!_allowedStatuses.Contains(value))
             {
                 throw new InvalidArgumentDomainException($"Cannot create ActivityStatus with {value}");
             }

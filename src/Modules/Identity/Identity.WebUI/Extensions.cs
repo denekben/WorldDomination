@@ -1,5 +1,4 @@
 ﻿using Identity.Infrastructure;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,11 +11,6 @@ namespace Identity.WebUI
             services.AddIdentityInfrastructure(configuration);
 
             return services;
-        }
-
-        public static IApplicationBuilder UseIdentityModule(this IApplicationBuilder app)
-        {
-            return app;
         }
     }
 }

@@ -25,10 +25,6 @@ namespace User.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .Property(u=>u.Name)
-                .HasConversion(name => name.Value, name=> Name.Create(name));
-
-            builder
                 .Property(u => u.Bio)
                 .HasConversion(bio => bio.Value, bio => Bio.Create(bio));
 
