@@ -8,6 +8,7 @@ namespace Game.Domain.RoomAggregate.Entities
     public sealed class Player : RoomMember
     {
         public GameRole GameRole { get; private set; }
+
         public IdValueObject CountryId { get; private set; }
         public Country Country { get; private set; }
 

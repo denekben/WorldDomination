@@ -15,8 +15,8 @@ namespace User.Infrastructure.Configurations
             builder.HasKey(u => u.Id);
 
             builder
-                .HasOne(u => u.UserStatusReadModel)
-                .WithOne(a => a.UserReadModel)
+                .HasOne(u => u.UserStatus)
+                .WithOne(a => a.User)
                 .HasForeignKey<UserStatusReadModel>(a => a.UserId);
         }
 
@@ -34,12 +34,12 @@ namespace User.Infrastructure.Configurations
             builder.HasKey(ua => new { ua.UserId, ua.AchievmentId });
 
             builder
-                .HasOne(ua => ua.UserReadModel)
-                .WithMany(u => u.UserAchievmentsReadModel)
+                .HasOne(ua => ua.User)
+                .WithMany(u => u.UserAchievments)
                 .HasForeignKey(ua => ua.UserId);
 
             builder
-                .HasOne(ua => ua.AchievmentReadModel)
+                .HasOne(ua => ua.Achievment)
                 .WithMany(a => a.UserAchievments)
                 .HasForeignKey(ua => ua.AchievmentId);
         }

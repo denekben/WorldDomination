@@ -9,6 +9,7 @@ namespace Game.Domain.RoomAggregate.Abstractions
         public IdValueObject Id { get; private set; }
         public string Name { get; private set; }
         public string ProfileImagePath { get; private set; }
+
         public IdValueObject RoomId { get; private set; }
         public Room Room { get; private set; }
 

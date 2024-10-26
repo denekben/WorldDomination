@@ -12,6 +12,7 @@ namespace Game.Domain.GameAggregate.Entities
         public GameType GameType { get; private set; }
         public CurrentRound CurrentRound { get; private set; }
         public EcologyLevel EcologyLevel { get; private set; }
+
         public List<Country> Countries { get; private set; }
         public IdValueObject RoomId { get; private set; }
         public Room Room { get; private set; }

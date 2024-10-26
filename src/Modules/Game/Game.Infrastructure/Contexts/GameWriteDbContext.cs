@@ -22,16 +22,20 @@ namespace Game.Infrastructure.Contexts
 
             var configuration = new WriteConfiguration();
 
-            modelBuilder.ApplyConfiguration<RoomMember>(configuration);
-            modelBuilder.ApplyConfiguration<CountryPattern>(configuration);
-            modelBuilder.ApplyConfiguration<CityPattern>(configuration);
             modelBuilder.ApplyConfiguration<City>(configuration);
             modelBuilder.ApplyConfiguration<Country>(configuration);
+
             modelBuilder.ApplyConfiguration<DomainGame>(configuration);
+
             //modelBuilder.ApplyConfiguration<Organizer>(configuration);
             modelBuilder.ApplyConfiguration<Player>(configuration);
+            modelBuilder.ApplyConfiguration<RoomMember>(configuration);
             modelBuilder.ApplyConfiguration<Room>(configuration);
+
             modelBuilder.ApplyConfiguration<GameUser>(configuration);
+
+            modelBuilder.ApplyConfiguration<CountryPattern>(configuration);
+            modelBuilder.ApplyConfiguration<CityPattern>(configuration);
 
             base.OnModelCreating(modelBuilder);
         }

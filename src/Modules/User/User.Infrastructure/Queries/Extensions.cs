@@ -38,7 +38,7 @@ namespace User.Infrastructure.Queries
 
         public static UserAchievmentDto AsUserAchievmentDto(this UserAchievmentReadModel userAchievment)
         {
-            var achievment = userAchievment.AchievmentReadModel.AsAchievmentDto();
+            var achievment = userAchievment.Achievment.AsAchievmentDto();
 
             return new UserAchievmentDto(
                 achievment.Id,

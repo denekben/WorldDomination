@@ -16,6 +16,7 @@ namespace Game.Domain.RoomAggregate.Entities
         public bool IsPublic { get; private set; }
         public RoomCode RoomCode { get; private set; }
         public DateTime? CreatedTime { get; private set; }
+
         public DomainGame DomainGame { get; private set; }
         public IdValueObject CreatorId { get; private set; }
         public GameUser Creator { get; private set; }

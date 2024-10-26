@@ -31,10 +31,10 @@ namespace User.Infrastructure.Queries.Handlers
             }
 
             var profile = await users
-                .Include(u => u.UserAchievmentsReadModel).ThenInclude(ua => ua.AchievmentReadModel)
+                .Include(u => u.UserAchievments).ThenInclude(ua => ua.Achievment)
                 .Select(u => new Profile(
                     u.AsUserDto(),
-                    u.UserAchievmentsReadModel.Select(ua => ua.AsUserAchievmentDto()).ToList()
+                    u.UserAchievments.Select(ua => ua.AsUserAchievmentDto()).ToList()
                 )).SingleOrDefaultAsync();
 
             return profile;

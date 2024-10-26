@@ -8,6 +8,7 @@ namespace Game.Domain.UserAggregate.Entities
         public IdValueObject Id { get; private set; }
         public string Name { get; private set; }
         public string ProfileImagePath { get; private set; }
+
         public List<Room> Rooms { get; private set; }
 
         //EF

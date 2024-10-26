@@ -1,11 +1,11 @@
 ﻿namespace User.Infrastructure.ReadModels
 {
-    public class UserAchievmentReadModel
+    public sealed class UserAchievmentReadModel
     {
-        public Guid UserId { get; set; }
-        public Guid AchievmentId { get; set; }
-        public UserReadModel UserReadModel { get; set; }
-        public AchievmentReadModel AchievmentReadModel { get; set; }
-        public DateTime AchievedTime { get; set; }
+        public Guid UserId { get; private set; }
+        public Guid AchievmentId { get; private set; }
+        public UserReadModel User { get; private set; }
+        public AchievmentReadModel Achievment { get; private set; }
+        public DateTime AchievedTime { get; private set; }
     }
 }

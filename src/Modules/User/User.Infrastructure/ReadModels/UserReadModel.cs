@@ -1,17 +1,17 @@
 ﻿namespace User.Infrastructure.ReadModels
 {
-    public class UserReadModel
+    public sealed class UserReadModel
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Bio {  get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string ProfileImagePath { get; set; }
-        public string DefaultProfileImagePath { get; set; }
-        public UserStatusReadModel UserStatusReadModel { get; set; }
-        public ICollection<UserAchievmentReadModel>? UserAchievmentsReadModel { get; set; }
-        public DateTime CreatedTime { get; set; }
-        public DateTime? UpdatedTime { get; set; }
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+        public string Bio {  get; private set; }
+        public string Username { get; private set; }
+        public string Email { get; private set; }
+        public string ProfileImagePath { get; private set; }
+        public string DefaultProfileImagePath { get; private set; }
+        public UserStatusReadModel UserStatus { get; private set; }
+        public ICollection<UserAchievmentReadModel>? UserAchievments { get; private set; }
+        public DateTime CreatedTime { get; private set; }
+        public DateTime? UpdatedTime { get; private set; }
     }
 }

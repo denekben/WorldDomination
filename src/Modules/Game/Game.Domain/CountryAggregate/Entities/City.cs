@@ -14,6 +14,7 @@ namespace Game.Domain.CountryAggregate.Entities
         public DevelopmentLevel DevelopmentLevel { get; private set; }
         public LivingLevel LivingLevel { get; private set; }
         public Income Income { get; private set; }
+
         public IdValueObject CountryId { get; private set; }
         public Country Country { get; private set; }
 

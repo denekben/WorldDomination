@@ -15,6 +15,7 @@ namespace Game.Domain.CountryAggregate.Entities
         public bool HaveNuclearTechnology { get; private set; }
         public NuclearTechnology NuclearTechnology { get; private set; }
         public SanctionCount SanctionCount { get; private set; }
+
         public List<Player> Players { get; private set; }
         public List<City> Cities { get; private set; }
         public IdValueObject GameId { get; private set; }

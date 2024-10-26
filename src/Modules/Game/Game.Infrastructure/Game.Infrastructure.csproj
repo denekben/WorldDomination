@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="ReadModels\" />
     <Folder Include="Queries\" />
     <Folder Include="Services\" />
   </ItemGroup>

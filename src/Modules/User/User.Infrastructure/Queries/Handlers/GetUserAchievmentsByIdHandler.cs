@@ -27,8 +27,8 @@ namespace User.Infrastructure.Queries.Handlers
             }
 
             var userAchievments = await users
-                .Include(u => u.UserAchievmentsReadModel).ThenInclude(ua => ua.AchievmentReadModel)
-                .Select(u => u.UserAchievmentsReadModel.Select(ua => ua.AsUserAchievmentDto()).ToList()).SingleOrDefaultAsync();
+                .Include(u => u.UserAchievments).ThenInclude(ua => ua.Achievment)
+                .Select(u => u.UserAchievments.Select(ua => ua.AsUserAchievmentDto()).ToList()).SingleOrDefaultAsync();
 
             return userAchievments;
         }

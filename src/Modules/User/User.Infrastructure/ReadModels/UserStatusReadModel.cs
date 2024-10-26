@@ -1,16 +1,12 @@
-﻿using User.Domain.ValueObjects;
-using User.Domain.Entities;
-using WorldDomination.Shared.Domain;
-
-namespace User.Infrastructure.ReadModels
+﻿namespace User.Infrastructure.ReadModels
 {
-    public class UserStatusReadModel
+    public sealed class UserStatusReadModel
     {
-        public Guid UserId { get; set; }
-        public string ActivityStatus { get; set; }
-        public string? Country { get; set; }
-        public int? RoundNumber { get; set; }
-        public string? GameRole { get; set; }
-        public UserReadModel UserReadModel { get; set; }
+        public Guid UserId { get; private set; }
+        public string ActivityStatus { get; private set; }
+        public string? Country { get; private set; }
+        public int? RoundNumber { get; private set; }
+        public string? GameRole { get; private set; }
+        public UserReadModel User { get; private set; }
     }
 }
