@@ -1,6 +1,6 @@
-﻿using Game.Infrastructure.ReadModels.RoomAggregate;
+﻿using Game.Domain.ReadModels.RoomAggregate;
 
-namespace Game.Infrastructure.ReadModels.UserAggregate
+namespace Game.Domain.ReadModels.UserAggregate
 {
     public sealed class GameUserReadModel
     {

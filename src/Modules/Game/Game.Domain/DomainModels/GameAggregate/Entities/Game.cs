@@ -20,19 +20,18 @@ namespace Game.Domain.GameAggregate.Entities
         //EF
         private Game() { }
 
-        private Game(GameType gameType, Guid roomId, List<Country> countries)
+        private Game(GameType gameType, Guid roomId)
         {
             Id = Guid.NewGuid();
             GameType = gameType;
             CurrentRound = CurrentRound.Create();
             EcologyLevel = EcologyLevel.Create();
-            Countries = countries;
             RoomId = roomId;
         }
 
-        public static Game Create(GameType gameType, Guid roomId, List<Country> countries)
+        public static Game Create(GameType gameType, Guid roomId)
         {
-            return new Game(gameType, roomId, countries);
+            return new Game(gameType, roomId);
         }
     }
 }

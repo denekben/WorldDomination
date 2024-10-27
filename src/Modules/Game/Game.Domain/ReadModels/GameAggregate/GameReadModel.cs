@@ -1,7 +1,7 @@
-﻿using Game.Infrastructure.ReadModels.CountryAggregate;
-using Game.Infrastructure.ReadModels.RoomAggregate;
+﻿using Game.Domain.ReadModels.CountryAggregate;
+using Game.Domain.ReadModels.RoomAggregate;
 
-namespace Game.Infrastructure.ReadModels.GameAggregate
+namespace Game.Domain.ReadModels.GameAggregate
 {
     public sealed class GameReadModel
     {

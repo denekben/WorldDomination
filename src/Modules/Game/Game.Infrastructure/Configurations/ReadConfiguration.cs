@@ -1,7 +1,7 @@
-﻿using Game.Infrastructure.ReadModels.CountryAggregate;
-using Game.Infrastructure.ReadModels.GameAggregate;
-using Game.Infrastructure.ReadModels.RoomAggregate;
-using Game.Infrastructure.ReadModels.UserAggregate;
+﻿using Game.Domain.ReadModels.CountryAggregate;
+using Game.Domain.ReadModels.GameAggregate;
+using Game.Domain.ReadModels.RoomAggregate;
+using Game.Domain.ReadModels.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

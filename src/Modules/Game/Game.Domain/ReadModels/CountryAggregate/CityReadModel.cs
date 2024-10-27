@@ -1,4 +1,4 @@
-﻿namespace Game.Infrastructure.ReadModels.CountryAggregate
+﻿namespace Game.Domain.ReadModels.CountryAggregate
 {
     public sealed class CityReadModel
     {

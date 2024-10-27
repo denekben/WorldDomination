@@ -1,9 +1,6 @@
 ﻿using Identity.Shared.IntegrationEvents;
 using Microsoft.Extensions.Logging;
 using Shared.Events;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using User.Domain.Entities;
 using WorldDomination.Shared.Domain;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
@@ -26,7 +23,7 @@ namespace User.Application.Users.IntegrationEvents.Handlers
             var userId = @event.UserId;
 
             // Domain user
-            var user = await _userRepository.GetAsync(new Guid(userId)) 
+            var user = await _userRepository.GetAsync(new Guid(userId))
                 ?? throw new BadRequestException("Cannot delete user");
 
             await _userRepository.DeleteAsync(user);

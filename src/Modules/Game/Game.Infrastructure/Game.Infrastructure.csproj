@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Queries\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\WorldDomination.Shared\WorldDomination.Shared.csproj" />
+    <ProjectReference Include="..\Game.Application\Game.Application.csproj" />
     <ProjectReference Include="..\Game.Domain\Game.Domain.csproj" />
+    <ProjectReference Include="..\Game.Shared\Game.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Shared.Messaging;
-using System.Threading;
-using System.Threading.Tasks;
 using User.Domain.Entities;
 using User.Shared.IntegrationEvents;
 using Users.Application.Users.Commands;

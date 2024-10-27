@@ -18,18 +18,12 @@ namespace User.Infrastructure.Queries.Handlers
 
         public async Task<List<SearchUserDto>?> Handle(SearchUsers query, CancellationToken cancellationToken)
         {
-            var users = _users.AsQueryable();
-
-            if(!string.IsNullOrEmpty(query.SearchPhrase))
-            {
-                users = users.Where(u
-                => EF.Functions.ILike(u.Username, $"%{query.SearchPhrase}%"));
-            }
+            var users = _users.Where(u
+            => (EF.Functions.ILike(u.Username, $"%{query.SearchPhrase ?? string.Empty}%") || EF.Functions.ILike(u.Name, $"%{query.SearchPhrase ?? string.Empty}%")));
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
 
             return await users.Skip(skipNumber).Take(query.PageSize).Select(u=>u.AsSearchUserDto()).ToListAsync();
-
         }
     }
 }

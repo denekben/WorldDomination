@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Shared.Events;
 using Shared.Messaging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using User.Domain.Entities;
 using User.Shared.IntegrationEvents;
 using WorldDomination.Shared.Domain;
@@ -33,7 +30,7 @@ namespace User.Application.Users.IntegrationEvents.Handlers
             var (userId, username, email) = @event;
 
             // DomainUser
-            var user = DomainUser.Create(userId, username, email) 
+            var user = DomainUser.Create(userId, username, email)
                 ?? throw new BadRequestException("Cannot create user");
 
             await _userRepository.AddAsync(user);
@@ -43,7 +40,7 @@ namespace User.Application.Users.IntegrationEvents.Handlers
 
 
             // UserStatus
-            var userStatus = UserStatus.Create(new Guid(userId)) 
+            var userStatus = UserStatus.Create(new Guid(userId))
                 ?? throw new BadRequestException("Cannot create user status");
 
             await _userStatusRepository.AddAsync(userStatus);

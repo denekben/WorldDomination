@@ -24,7 +24,7 @@ namespace Game.Domain.CountryAggregate.Entities
         //EF
         private Country() { }
 
-        private Country(string countryName, string flagImagePath, Guid gameId, List<City> cities, List<Player> players)
+        private Country(string countryName, string flagImagePath, Guid gameId)
         {
             Id = Guid.NewGuid();
             CountryName = countryName;
@@ -35,13 +35,11 @@ namespace Game.Domain.CountryAggregate.Entities
             NuclearTechnology = NuclearTechnology.Create();
             SanctionCount = SanctionCount.Create();
             GameId = gameId;
-            Cities = cities;
-            Players = players;
         }
 
-        public static Country Create(string countryName, string flagImagePath,Guid gameId, List<City> cities, List<Player> players)
+        public static Country Create(string countryName, string flagImagePath,Guid gameId)
         {
-            return new Country( countryName, flagImagePath, gameId, cities, players );
+            return new Country( countryName, flagImagePath, gameId);
         }
     }
 }

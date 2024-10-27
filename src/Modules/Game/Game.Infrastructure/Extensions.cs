@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Shared.Postgres;
 using WorldDomination.Shared.Domain;
 using Game.Domain.CountryAggregate.Entities;
+using Microsoft.EntityFrameworkCore;
+using Game.Infrastructure.Realtime;
+using Game.Application.Services;
 
 namespace Game.Infrastructure
 {
@@ -22,7 +25,12 @@ namespace Game.Infrastructure
             services.AddScoped<IRepository<Room>, RoomRepository>();
             services.AddScoped<IRepository<GameUser>, UserRepository>();
 
+
             services.AddPostgres<GameWriteDbContext>();
+            services.AddPostgres<GameReadDbContext>(QueryTrackingBehavior.NoTracking);
+
+            services.AddSignalR();
+            services.AddSingleton<IRoomFeedHub, RoomFeedHub>();
 
             return services;
         }

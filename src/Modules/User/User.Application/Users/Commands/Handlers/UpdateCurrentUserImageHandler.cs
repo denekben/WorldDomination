@@ -1,10 +1,7 @@
 ﻿using User.Application.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Threading.Tasks;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
-using System;
 using WorldDomination.Shared.Services;
 using Users.Application.Users.Commands;
 using WorldDomination.Shared.Domain;
@@ -32,7 +29,7 @@ namespace User.Application.Users.Commands.Handlers
         {
             var userId = _httpContextService.GetCurrentUserId();
 
-            var user = await _userRepository.GetAsync(userId) 
+            var user = await _userRepository.GetAsync(userId)
                 ?? throw new BadRequestException("Cannot find user");
 
             var imagePath = await _profileImageService.UploadFileAsync(command.FormFile);

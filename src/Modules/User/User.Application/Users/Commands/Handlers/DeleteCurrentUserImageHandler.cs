@@ -1,9 +1,6 @@
 ﻿using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using Microsoft.Extensions.Logging;
-using User.Application.Services;
 using WorldDomination.Shared.Services;
 using Users.Application.Users.Commands;
 using WorldDomination.Shared.Domain;
@@ -36,7 +33,7 @@ namespace User.Application.Users.Commands.Handlers
 
             await _userRepository.UpdateAsync(user);
             _logger.LogInformation($"User {userId} removed profile image");
-            
+
         }
     }
 }

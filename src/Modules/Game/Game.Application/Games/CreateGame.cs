@@ -2,7 +2,5 @@
 
 namespace Game.Application.Games
 {
-    public sealed record CreateGame : IRequest
-    {
-    }
+    public sealed record CreateGame(string GameType, Guid RoomId) : IRequest<Guid>;
 }

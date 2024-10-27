@@ -1,6 +1,5 @@
 ﻿using User.Shared.DTOs;
 using MediatR;
-using System;
 
 namespace User.Application.User.Queries
 {

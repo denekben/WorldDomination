@@ -45,5 +45,10 @@ namespace Game.Domain.RoomAggregate.Entities
             return new Room(creatorId, roomName, gameType, 
                 roomLimit, countryQuantity, isPublic, roomCode);
         }
+
+        public void AddMember(RoomMember member)
+        {
+            RoomMembers.Add(member);
+        }
     }
 }
