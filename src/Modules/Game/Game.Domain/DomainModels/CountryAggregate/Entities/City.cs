@@ -1,10 +1,9 @@
 ﻿using Game.Domain.CountryAggregate.ValueObjects;
-using System.Runtime.InteropServices;
 using WorldDomination.Shared.Domain;
 
 namespace Game.Domain.CountryAggregate.Entities
 {
-    public sealed class City
+    public sealed class City : DomainEntity
     {
         public IdValueObject Id {  get; private set; }
         public string CityName { get; private set; }

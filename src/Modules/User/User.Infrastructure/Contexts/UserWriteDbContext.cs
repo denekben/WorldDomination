@@ -2,6 +2,7 @@
 using User.Domain.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
 using User.Infrastructure.Configurations;
+using WorldDomination.Shared.Domain;
 
 namespace User.Infrastructure.Contexts
 {
@@ -25,6 +26,8 @@ namespace User.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration<Achievment>(configuration);
             modelBuilder.ApplyConfiguration<UserAchievment>(configuration);
             modelBuilder.ApplyConfiguration<UserStatus>(configuration);
+
+            modelBuilder.Ignore<DomainEntity>();
         }
     }
 }

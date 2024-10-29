@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Game.Domain.CountryAggregate.ValueObjects;
 using Game.Domain.RoomAggregate.ValueObjects;
 using Game.Domain.GameAggregate.ValueObjects;
-using Game.Domain.RoomAggregate.Abstractions;
+using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Infrastructure.Configurations
 {
@@ -147,9 +147,7 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Player> builder)
         {
-            builder
-                .Property(player => player.GameRole)
-                .HasConversion(role=>role.Value, role=>GameRole.Create(role));
+            throw new NotImplementedException();
         }
 
         public void Configure(EntityTypeBuilder<Room> builder)
@@ -189,10 +187,6 @@ namespace Game.Infrastructure.Configurations
                 .HasConversion(countryQuantity => countryQuantity.Value, countryQudntity => CountryQuantity.Create(countryQudntity));
 
             builder
-                .Property(room=>room.RoomCode)
-                .HasConversion(roomCode=>roomCode.Value, roomCode => RoomCode.Create(roomCode));
-
-            builder
                 .Property(room => room.CreatedTime)
                 .HasDefaultValue(DateTime.UtcNow)
                 .ValueGeneratedOnAdd();
@@ -211,7 +205,13 @@ namespace Game.Infrastructure.Configurations
             builder
                 .HasMany(user=>user.Rooms)
                 .WithOne(room=>room.Creator)
-                .HasForeignKey(creator => creator.CreatorId)
+                .HasForeignKey(room => room.CreatorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(user => user.CreatedMembers)
+                .WithOne(member => member.GameUser)
+                .HasForeignKey(member => member.GameUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("GameUsers");
@@ -219,11 +219,15 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<RoomMember> builder)
         {
-            builder.HasKey(member=>member.Id);
+            builder.HasKey(member=> new { member.GameUserId, member.RoomId});
 
             builder
-                .Property(member => member.Id)
+                .Property(member => member.GameUserId)
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder
+                .Property(member => member.GameRole)
+                .HasConversion(role => role.Value, role => GameRole.Create(role));
 
             builder
                 .HasDiscriminator<string>("RoomMemberRole") 

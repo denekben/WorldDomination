@@ -13,7 +13,7 @@ namespace Game.Domain.ReadModels.CountryAggregate
         public bool HaveNuclearTechnology { get; private set; }
         public int NuclearTecnology { get; private set; }
         public int SanctionCount { get; private set; }
-        public List<PlayerReadModel> Players { get; private set; }
+        public List<RoomMemberReadModel> Players { get; private set; }
         public List<CityReadModel> Cities { get; private set; }
         public Guid GameId { get; private set; }
         public GameReadModel Game { get; private set; }

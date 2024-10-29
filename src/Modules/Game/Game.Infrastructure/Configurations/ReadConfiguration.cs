@@ -58,7 +58,12 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<RoomMemberReadModel> builder)
         {
-            builder.HasKey(member=>member.Id);
+            builder.HasKey(member=>new { member.GameUserId, member.RoomId});
+
+            builder
+                .HasDiscriminator<string>("RoomMemberRole")
+                .HasValue<OrganizerReadModel>("Organizer")
+                .HasValue<PlayerReadModel>("Player");
 
             builder.ToTable("RoomMembers");
         }
@@ -88,6 +93,11 @@ namespace Game.Infrastructure.Configurations
                 .HasMany(user => user.Rooms)
                 .WithOne(room => room.Creator)
                 .HasForeignKey(creator => creator.CreatorId);
+
+            builder
+                .HasMany(user=>user.CreatedMembers)
+                .WithOne(member=>member.GameUser)
+                .HasForeignKey(member => member.GameUserId);
 
             builder.ToTable("GameUsers");
         }

@@ -10,6 +10,8 @@ using Game.Domain.CountryAggregate.Entities;
 using Microsoft.EntityFrameworkCore;
 using Game.Infrastructure.Realtime;
 using Game.Application.Services;
+using Game.Domain.DomainModels.RoomAggregate.Abstractions;
+using Game.Infrastructure.Services;
 
 namespace Game.Infrastructure
 {
@@ -20,8 +22,7 @@ namespace Game.Infrastructure
             services.AddScoped<IRepository<City>, CityRepository>();
             services.AddScoped<IRepository<Country>, CountryRepository>();
             services.AddScoped<IRepository<DomainGame>, GameRepository>();
-            services.AddScoped<IRepository<Organizer>, OrganizerRepository>();
-            services.AddScoped<IRepository<Player>, PlayerRepository>();
+            services.AddScoped<IRepository<RoomMember>, RoomMemberRepository>();
             services.AddScoped<IRepository<Room>, RoomRepository>();
             services.AddScoped<IRepository<GameUser>, UserRepository>();
 
@@ -30,7 +31,8 @@ namespace Game.Infrastructure
             services.AddPostgres<GameReadDbContext>(QueryTrackingBehavior.NoTracking);
 
             services.AddSignalR();
-            services.AddSingleton<IRoomFeedHub, RoomFeedHub>();
+            services.AddScoped<IRoomNotificationService, RoomNotificationService>();
+            services.AddScoped<IGameService, GameService>();
 
             return services;
         }

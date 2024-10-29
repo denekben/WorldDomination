@@ -6,7 +6,7 @@ using WorldDomination.Shared.Domain;
 
 namespace Game.Domain.GameAggregate.Entities
 {
-    public sealed class Game
+    public sealed class Game : DomainEntity
     {
         public IdValueObject Id { get; private set; }
         public GameType GameType { get; private set; }

@@ -2,5 +2,5 @@
 
 namespace Game.Application.Rooms.Commands
 {
-    public sealed record CloseRoom(Guid roomId) : IRequest;
+    public sealed record CloseRoom(Guid RoomId) : IRequest;
 }

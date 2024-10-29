@@ -5,7 +5,8 @@ using DomainGame = Game.Domain.GameAggregate.Entities.Game;
 using Game.Infrastructure.Configurations;
 using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
-using Game.Domain.RoomAggregate.Abstractions;
+using WorldDomination.Shared.Domain;
+using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Infrastructure.Contexts
 {
@@ -13,8 +14,14 @@ namespace Game.Infrastructure.Contexts
     {
         public DbSet<GameUser> Users { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomMember> Members { get; set; }
+        public DbSet<DomainGame> Games { get; set; }
 
-        public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) : base(options) { }
+        public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
+            : base(options) 
+        {
+            
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +35,7 @@ namespace Game.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration<DomainGame>(configuration);
 
             //modelBuilder.ApplyConfiguration<Organizer>(configuration);
-            modelBuilder.ApplyConfiguration<Player>(configuration);
+            //modelBuilder.ApplyConfiguration<Player>(configuration);
             modelBuilder.ApplyConfiguration<RoomMember>(configuration);
             modelBuilder.ApplyConfiguration<Room>(configuration);
 
@@ -36,6 +43,8 @@ namespace Game.Infrastructure.Contexts
 
             modelBuilder.ApplyConfiguration<CountryPattern>(configuration);
             modelBuilder.ApplyConfiguration<CityPattern>(configuration);
+
+            modelBuilder.Ignore<DomainEntity>();
 
             base.OnModelCreating(modelBuilder);
         }

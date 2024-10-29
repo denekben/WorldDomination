@@ -1,7 +1,7 @@
-﻿using Game.Domain.RoomAggregate.Abstractions;
-using Game.Domain.RoomAggregate.Entities;
+﻿using Game.Domain.RoomAggregate.Entities;
 using Game.Domain.ReadModels.RoomAggregate;
 using Game.Shared.DTOs;
+using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Infrastructure.Mappers
 {
@@ -24,7 +24,7 @@ namespace Game.Infrastructure.Mappers
         public static RoomMemberDto AsRoomMemberDto(this RoomMemberReadModel member)
         {
             return new RoomMemberDto(
-                member.Id,
+                member.GameUserId,
                 member.Name,
                 member.ProfileImagePath
             );
@@ -38,7 +38,7 @@ namespace Game.Infrastructure.Mappers
                 room.RoomName,
                 room.GameType,
                 room.CountryQuantity,
-                room.IsPublic,
+                room.IsPrivate,
                 room.CreatedTime ?? DateTime.UtcNow,
                 members
             );
@@ -47,7 +47,7 @@ namespace Game.Infrastructure.Mappers
         public static RoomMemberDto AsRoomMemberDto(this RoomMember member)
         {
             return new RoomMemberDto(
-                member.Id,
+                member.GameUserId,
                 member.Name,
                 member.ProfileImagePath
             );

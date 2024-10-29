@@ -3,7 +3,7 @@ using WorldDomination.Shared.Domain;
 
 namespace User.Domain.Entities
 {
-    public sealed class Achievment
+    public sealed class Achievment : DomainEntity
     {
         public IdValueObject Id { get; private set; }
         public string Name { get; private set; }

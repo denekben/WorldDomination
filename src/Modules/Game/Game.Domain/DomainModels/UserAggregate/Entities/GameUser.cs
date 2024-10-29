@@ -1,15 +1,17 @@
-﻿using Game.Domain.RoomAggregate.Entities;
+﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
+using Game.Domain.RoomAggregate.Entities;
 using WorldDomination.Shared.Domain;
 
 namespace Game.Domain.UserAggregate.Entities
 {
-    public sealed class GameUser
+    public sealed class GameUser : DomainEntity
     {
         public IdValueObject Id { get; private set; }
         public string Name { get; private set; }
         public string ProfileImagePath { get; private set; }
 
         public List<Room> Rooms { get; private set; }
+        public List<RoomMember> CreatedMembers { get; private set; }
 
         //EF
         private GameUser() { }

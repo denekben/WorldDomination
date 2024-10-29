@@ -1,30 +1,18 @@
-﻿using Game.Domain.CountryAggregate.Entities;
-using Game.Domain.RoomAggregate.Abstractions;
-using Game.Domain.RoomAggregate.ValueObjects;
-using WorldDomination.Shared.Domain;
+﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Domain.RoomAggregate.Entities
 {
     public sealed class Player : RoomMember
     {
-        public GameRole GameRole { get; private set; }
-
-        public IdValueObject CountryId { get; private set; }
-        public Country Country { get; private set; }
-
         //EF
         private Player() { }
 
-        private Player(Guid gameRoomId, string name, string path, GameRole gameRole, Guid countryId) 
-            : base(gameRoomId, name, path) 
-        {
-            GameRole = gameRole;
-            CountryId = countryId;
-        }
+        private Player(Guid creatorId, Guid gameRoomId, string name, string path) 
+            : base(creatorId, gameRoomId, name, path) {}
 
-        public static Player Create(Guid gameRoomId, string name, string path, GameRole gameRole, Guid countryId)
+        public static Player Create(Guid creatorId, Guid gameRoomId, string name, string path)
         {
-            return new Player(gameRoomId, name, path, gameRole, countryId);
+            return new Player(creatorId, gameRoomId, name, path);
         }
     }
 }

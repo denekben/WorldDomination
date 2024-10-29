@@ -15,15 +15,16 @@ namespace Game.Application.Rooms.Commands.Handlers
         private readonly IRepository<Room> _roomRepository;
         private readonly IRepository<GameUser> _userRepository;
         private readonly IHttpContextService _contextService;
-        private readonly IRoomFeedHub _roomFeedHub;
+        private readonly IRoomNotificationService _roomNotificationService;
 
         public CreateRoomHandler(ILogger<CreateRoomHandler> logger,
-            IRepository<Room> roomRepository, IHttpContextService contextService, IRoomFeedHub roomFeedHub, IRepository<GameUser> userRepository)
+            IRepository<Room> roomRepository, IHttpContextService contextService, 
+            IRoomNotificationService roomNotificationService, IRepository<GameUser> userRepository)
         {
             _logger = logger;
             _roomRepository = roomRepository;
             _contextService = contextService;
-            _roomFeedHub = roomFeedHub;
+            _roomNotificationService = roomNotificationService;
             _userRepository = userRepository;
         }
 
@@ -31,14 +32,14 @@ namespace Game.Application.Rooms.Commands.Handlers
         {
             var userId = _contextService.GetCurrentUserId();
             var user = await _userRepository.GetAsync(userId)
-                ?? throw new BadRequestException("Cannot create room: invalid GameUser");
+                ?? throw new BadRequestException("Cannot create room: invalid userId");
 
             var(roomName, gameType, roomLimit, countryQuantity, isPublic, roomCode) = command;
 
-            var room = Room.Create(userId, roomName, gameType, roomLimit, countryQuantity, isPublic, roomCode)
+            var room = Room.Create(user.Id, roomName, gameType, roomLimit, countryQuantity, isPublic, roomCode)
                 ?? throw new BadRequestException("Cannot create room");
 
-            var organizer = Organizer.Create(room.Id, user.Name, user.ProfileImagePath)
+            var organizer = Organizer.Create(user.Id, room.Id, user.Name, user.ProfileImagePath)
                 ?? throw new BadRequestException("Cannot create organizer");
 
             room.AddMember(organizer);
@@ -46,7 +47,7 @@ namespace Game.Application.Rooms.Commands.Handlers
             await _roomRepository.AddAsync(room);
             _logger.LogInformation($"Room {room.Id} created");
 
-            await _roomFeedHub.CreateRoom(room);
+            await _roomNotificationService.CreateRoom(room);
 
             return room.Id;
         }

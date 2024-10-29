@@ -2,10 +2,11 @@
 using Game.Domain.RoomAggregate.Entities;
 using DomainGame = Game.Domain.GameAggregate.Entities.Game;
 using WorldDomination.Shared.Domain;
+using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Domain.CountryAggregate.Entities
 {
-    public sealed class Country
+    public sealed class Country : DomainEntity
     {
         public IdValueObject Id { get; private set; }
         public string CountryName { get; private set; }
@@ -16,7 +17,7 @@ namespace Game.Domain.CountryAggregate.Entities
         public NuclearTechnology NuclearTechnology { get; private set; }
         public SanctionCount SanctionCount { get; private set; }
 
-        public List<Player> Players { get; private set; }
+        public List<RoomMember> Players { get; private set; }
         public List<City> Cities { get; private set; }
         public IdValueObject GameId { get; private set; }
         public DomainGame Game { get; private set; }

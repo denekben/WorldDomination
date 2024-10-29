@@ -1,4 +1,4 @@
-﻿using Game.Domain.RoomAggregate.Abstractions;
+﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Domain.RoomAggregate.Entities
 {
@@ -7,15 +7,12 @@ namespace Game.Domain.RoomAggregate.Entities
         //EF
         private Organizer() {}
 
-        private Organizer(Guid gameRoomId, string name, string path)
-        : base(gameRoomId, name, path)
-        {
+        private Organizer(Guid creatorId, Guid gameRoomId, string name, string path)
+            : base(creatorId, gameRoomId, name, path) { }
 
-        }
-
-        public static Organizer Create(Guid gameRoomId, string name, string path)
+        public static Organizer Create(Guid creatorId, Guid gameRoomId, string name, string path)
         {
-            return new Organizer(gameRoomId, name, path);
+            return new Organizer(creatorId, gameRoomId, name, path);
         }
     }
 }

@@ -8,5 +8,6 @@ namespace Game.Domain.ReadModels.UserAggregate
         public string Name { get; private set; }
         public string ProfileImagePath { get; private set; }
         public List<RoomReadModel> Rooms { get; private set; }
+        public List<RoomMemberReadModel> CreatedMembers { get; private set; }
     }
 }

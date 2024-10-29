@@ -4,7 +4,7 @@ using WorldDomination.Shared.Domain;
 
 namespace User.Domain.Entities
 {
-    public sealed class UserStatus
+    public sealed class UserStatus : DomainEntity 
     {
         public IdValueObject UserId { get; private set; }
         public ActivityStatus ActivityStatus { get; private set; }
