@@ -31,8 +31,8 @@ namespace Game.Infrastructure
             services.AddPostgres<GameReadDbContext>(QueryTrackingBehavior.NoTracking);
 
             services.AddSignalR();
-            services.AddScoped<IRoomNotificationService, RoomNotificationService>();
-            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IGameModuleNotificationService, GameModuleNotificationService>();
+            services.AddScoped<IGameModuleService, GameModuleService>();
 
             return services;
         }

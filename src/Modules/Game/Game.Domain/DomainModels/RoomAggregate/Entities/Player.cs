@@ -1,4 +1,10 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
+﻿using Game.Domain.CountryAggregate.Entities;
+using Game.Domain.DomainModels.RoomAggregate.Abstractions;
+using Game.Domain.RoomAggregate.Entities;
+using Game.Domain.RoomAggregate.ValueObjects;
+using Game.Domain.UserAggregate.Entities;
+using System.IO;
+using WorldDomination.Shared.Domain;
 
 namespace Game.Domain.RoomAggregate.Entities
 {
@@ -14,5 +20,7 @@ namespace Game.Domain.RoomAggregate.Entities
         {
             return new Player(creatorId, gameRoomId, name, path);
         }
+
+
     }
 }

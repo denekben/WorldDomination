@@ -16,6 +16,7 @@ namespace Game.Infrastructure.Contexts
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomMember> Members { get; set; }
         public DbSet<DomainGame> Games { get; set; }
+        public DbSet<RoomMember> RoomMembers { get; set; }
 
         public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
             : base(options) 

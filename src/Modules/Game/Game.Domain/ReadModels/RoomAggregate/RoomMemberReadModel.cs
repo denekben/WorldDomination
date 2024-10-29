@@ -14,7 +14,7 @@ namespace Game.Domain.ReadModels.RoomAggregate
 
         public RoomReadModel Room { get; private set; }
         public GameUserReadModel GameUser { get; private set; }
-        public Guid CountryId { get; private set; }
+        public Guid? CountryId { get; private set; }
         public CountryReadModel Country { get; private set; }
     }
 }

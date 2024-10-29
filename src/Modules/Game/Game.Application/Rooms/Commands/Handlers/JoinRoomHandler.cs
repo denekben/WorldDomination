@@ -9,27 +9,27 @@ using WorldDomination.Shared.Services;
 
 namespace Game.Application.Rooms.Commands.Handlers
 {
-    internal sealed class JoinRoomHandler : IRequestHandler<JoinRoom>
+    internal sealed class JoinRoomHandler : IRequestHandler<JoinRoom, Guid>
     {
         private readonly IHttpContextService _contextService;
         private readonly IRepository<GameUser> _userRepository;
         private readonly IRepository<Room> _roomRepository;
         private readonly ILogger<JoinRoomHandler> _logger;
-        private readonly IRoomNotificationService _roomNotificationService;
-        private readonly IGameService _gameService;
+        private readonly IGameModuleNotificationService _notifications;
+        private readonly IGameModuleService _gameService;
 
         public JoinRoomHandler(IHttpContextService contextService, IRepository<GameUser> userRepository,
-            IRepository<Room> roomRepository, ILogger<JoinRoomHandler> logger, IRoomNotificationService roomNotificationService, IGameService gameService)
+            IRepository<Room> roomRepository, ILogger<JoinRoomHandler> logger, IGameModuleNotificationService notifications, IGameModuleService gameService)
         {
             _contextService = contextService;
             _userRepository = userRepository;
             _roomRepository = roomRepository;
             _logger = logger;
-            _roomNotificationService = roomNotificationService;
+            _notifications = notifications;
             _gameService = gameService;
         }
 
-        public async Task Handle(JoinRoom command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(JoinRoom command, CancellationToken cancellationToken)
         {
             var userId = _contextService.GetCurrentUserId();
             var user = await _userRepository.GetAsync(userId)
@@ -38,7 +38,7 @@ namespace Game.Application.Rooms.Commands.Handlers
             var room = await _roomRepository.GetAsync(command.RoomId)
                 ?? throw new BadRequestException("Cannot find room");
 
-            if (await _gameService.GetGameByRoomId(room.Id) != null)
+            if (room.DomainGame != null)
                 throw new BadRequestException("Cannot add user to Room with active Game");
 
             var player = Player.Create(user.Id, command.RoomId, user.Name, user.ProfileImagePath)
@@ -48,9 +48,11 @@ namespace Game.Application.Rooms.Commands.Handlers
 
             await _roomRepository.UpdateAsync(room);
 
-            await _roomNotificationService.UpdateRoom(room);
-            await _roomNotificationService.JoinRoom(player, room.Id);
+            await _notifications.RoomUpdated(room);
+            await _notifications.MemberJoinedRoom(player, room.Id);
             _logger.LogInformation($"Added Player {player.GameUserId} to Room {command.RoomId}");
+
+            return room.Id;
         }
     }
 }

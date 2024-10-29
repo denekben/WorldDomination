@@ -30,7 +30,7 @@ namespace Game.Infrastructure.Repositories
 
         public async Task<Room?> GetAsync(IdValueObject id)
         {
-            var room = await _rooms.FirstOrDefaultAsync(r => r.Id == id);
+            var room = await _rooms.Include(r=>r.RoomMembers).Include(r=>r.Creator).Include(r=>r.DomainGame).FirstOrDefaultAsync(r => r.Id == id);
             return room;
         }
 

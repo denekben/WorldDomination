@@ -19,6 +19,8 @@ namespace Game.Infrastructure.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("Game");
+
             var configuration = new ReadConfiguration();
 
             modelBuilder.ApplyConfiguration<CityReadModel>(configuration);

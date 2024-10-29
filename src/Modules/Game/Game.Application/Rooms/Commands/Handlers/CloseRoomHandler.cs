@@ -15,34 +15,37 @@ namespace Game.Application.Rooms.Commands.Handlers
         private readonly IRepository<Room> _roomRepository;
         private readonly IRepository<RoomMember> _roomMemberRepository;
         private readonly ILogger<CloseRoomHandler> _logger;
-        private readonly IGameService _gameService;
+        private readonly IGameModuleService _gameService;
+        private readonly IGameModuleNotificationService _notifications;
 
         public CloseRoomHandler(IHttpContextService contextService, IRepository<Room> roomRepository,
-            IRepository<RoomMember> roomMemberRepository, ILogger<CloseRoomHandler> logger, IGameService gameService)
+            IRepository<RoomMember> roomMemberRepository, ILogger<CloseRoomHandler> logger, IGameModuleService gameService, IGameModuleNotificationService notifications)
         {
             _contextService = contextService;
             _roomRepository = roomRepository;
             _roomMemberRepository = roomMemberRepository;
             _logger = logger;
             _gameService = gameService;
+            _notifications = notifications;
         }
 
         public async Task Handle(CloseRoom command, CancellationToken cancellationToken)
         {
             var userId = _contextService.GetCurrentUserId();
             var member = await _roomMemberRepository.GetAsync(userId)
-                ?? throw new BadRequestException("Room meber not found");
+                ?? throw new BadRequestException("Room member not found");
 
-            if (member is not Organizer)
-                throw new BadRequestException("Only Organizer can close Room");
-
-            var room = await _roomRepository.GetAsync(command.RoomId)
+            var room = await _roomRepository.GetAsync(command.roomId)
                 ?? throw new BadRequestException("Room not found");
 
-            if (await _gameService.GetGameByRoomId(room.Id) != null)
+            if (member is not Organizer)
+                throw new BadRequestException("Only RoomCreator can close Room");
+
+            if (room.DomainGame != null)
                 throw new BadRequestException($"Cannot delete Room {room.Id} with existing Game");
 
             await _roomRepository.DeleteAsync(room);
+            await _notifications.RoomClosed(room.Id);
             _logger.LogInformation($"Room {room.Id} deleted");
         }
     }

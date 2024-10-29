@@ -25,7 +25,7 @@ namespace Identity.Application.Commands.Auth.Handlers
 
             if(!result)
             {
-                throw new BadRequestException("Cannot sign in");
+                throw new BadRequestException("Invalid login or password");
             }
 
             var (userId, username, email, roles) = await _authService.GetUserDetailsByEmailAsync(command.Email);

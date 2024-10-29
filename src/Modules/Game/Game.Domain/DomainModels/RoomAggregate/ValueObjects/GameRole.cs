@@ -15,14 +15,14 @@ namespace Game.Domain.RoomAggregate.ValueObjects
             Value = value;
         }
 
-        public static GameRole Create(string? value = null)
+        public static GameRole Create(string value)
         {
-            if (value != null && !_allowedRoles.Contains(value))
+            if (!_allowedRoles.Contains(value))
             {
                 throw new InvalidArgumentDomainException($"GameRole value {value} is invalid");
             }
 
-            return new GameRole(value ?? string.Empty);
+            return new GameRole(value);
         }
 
         public static implicit operator GameRole(string value) => Create(value);

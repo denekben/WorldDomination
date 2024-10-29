@@ -14,7 +14,7 @@ namespace Game.Domain.DomainModels.RoomAggregate.Abstractions
         public string ProfileImagePath { get; private set; }
         public GameRole GameRole { get; private set; }
 
-        public IdValueObject CountryId { get; private set; }
+        public IdValueObject? CountryId { get; private set; }
         public Country Country { get; private set; }
         public Room Room { get; private set; }
         public GameUser GameUser { get; private set; }
@@ -27,8 +27,17 @@ namespace Game.Domain.DomainModels.RoomAggregate.Abstractions
             RoomId = roomId;
             Name = name;
             ProfileImagePath = path;
-            CountryId = Guid.Empty;
-            GameRole = GameRole.Create();
+            GameRole = GameRole.Minister;
+        }
+
+        protected RoomMember(Guid gameUserId, Guid roomId, string name, string path, GameRole gameRole, IdValueObject? countryId)
+        {
+            GameUserId = gameUserId;
+            RoomId = roomId;
+            Name = name;
+            ProfileImagePath = path;
+            GameRole = gameRole;
+            CountryId = countryId;
         }
     }
 }

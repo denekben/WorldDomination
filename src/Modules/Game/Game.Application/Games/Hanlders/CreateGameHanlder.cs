@@ -13,14 +13,17 @@ namespace Game.Application.Games.Hanlders
         private readonly ILogger<CreateGameHanlder> _logger;
         private readonly IRepository<DomainGame> _gameRepository;
         private readonly IRepository<Room> _roomRepository;
-        private readonly IGameService _gameService;
+        private readonly IGameModuleService _gameService;
+        private readonly IGameModuleNotificationService _notifications;
 
-        public CreateGameHanlder(ILogger<CreateGameHanlder> logger, IRepository<DomainGame> gameRepository, IRepository<Room> roomRepository, IGameService gameService)
+        public CreateGameHanlder(ILogger<CreateGameHanlder> logger, IRepository<DomainGame> gameRepository, 
+            IRepository<Room> roomRepository, IGameModuleService gameService, IGameModuleNotificationService notifications)
         {
             _logger = logger;
             _gameRepository = gameRepository;
             _roomRepository = roomRepository;
             _gameService = gameService;
+            _notifications = notifications;
         }
 
         public async Task<Guid> Handle(CreateGame command, CancellationToken cancellationToken)
@@ -30,13 +33,14 @@ namespace Game.Application.Games.Hanlders
             var room = await _roomRepository.GetAsync(roomId)
                 ?? throw new BadRequestException($"Cannot find Room {roomId}");
 
-            if (await _gameService.GetGameByRoomId(room.Id) != null)
+            if (room.DomainGame != null)
                 throw new BadRequestException($"Cannot create Game for Room {room.Id} with active game");
 
             var game = DomainGame.Create(gameType, roomId)
                 ?? throw new BadRequestException("Cannot create Game");
 
             await _gameRepository.AddAsync(game);
+            await _notifications.GameCreated(game);
             _logger.LogInformation($"Game {game.Id} created");
 
             return game.Id;

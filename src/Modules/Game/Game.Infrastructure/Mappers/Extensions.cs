@@ -15,7 +15,7 @@ namespace Game.Infrastructure.Mappers
                 room.RoomName,
                 room.GameType,
                 room.CountryQuantity,
-                room.IsPublic,
+                room.IsPrivate,
                 room.CreatedTime,
                 members
             );

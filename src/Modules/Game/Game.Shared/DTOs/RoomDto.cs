@@ -5,7 +5,7 @@
         string RoomName,
         string GameType,
         int CountryQuantity,
-        bool IsPublic,
+        bool IsPrivate,
         DateTime CreatedTime,
         List<RoomMemberDto> RoomMembers
     );

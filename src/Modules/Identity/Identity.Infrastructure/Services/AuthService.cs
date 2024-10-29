@@ -329,7 +329,7 @@ namespace Identity.Infrastructure.Services
             var user = await GetUserById(id);
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpires = DateTime.UtcNow.AddDays(30);
+            user.RefreshTokenExpires = DateTime.UtcNow.AddDays(360);
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {

@@ -2,7 +2,7 @@
 
 namespace Game.Infrastructure.Realtime
 {
-    public sealed class RoomHub : Hub<IRoomHubClient>
+    public sealed class GameModuleHub : Hub<IGameModuleHubClient>
     {
 
     }

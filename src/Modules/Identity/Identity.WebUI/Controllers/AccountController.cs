@@ -26,7 +26,7 @@ namespace Identity.WebUI.Controllers
         }
 
         [HttpPost]
-        [Route("signin")]
+        [Route("sign-in")]
         public async Task<ActionResult<UserIdentityDto>> SignIn(SignIn command)
         {
             return Ok(await _sender.Send(command));
