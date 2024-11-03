@@ -1,19 +1,17 @@
 ﻿using Game.Infrastructure.Configurations;
-using Game.Domain.ReadModels.CountryAggregate;
-using Game.Domain.ReadModels.GameAggregate;
-using Game.Domain.ReadModels.RoomAggregate;
-using Game.Domain.ReadModels.UserAggregate;
+using Game.Domain.DomainModels.ReadModels.GameAggregate;
+using Game.Domain.DomainModels.ReadModels.RoomAggregate;
+using Game.Domain.DomainModels.ReadModels.UserAggregate;
 using Microsoft.EntityFrameworkCore;
+using Game.Infrastructure.Seed;
 
 namespace Game.Infrastructure.Contexts
 {
     public sealed class GameReadDbContext : DbContext
     {
-        public DbSet<CountryReadModel> Country {  get; set; }
-        public DbSet<GameReadModel> Games { get; set; }
         public DbSet<RoomReadModel> Rooms { get; set; }
-        public DbSet<GameUserReadModel> Users { get; set; }
-        public DbSet<RoomMemberReadModel> RoomMembers { get; set; }
+        public DbSet<CountryPatternReadModel> CountryPatterns { get; set; }
+        public DbSet<CityPatternReadModel> CityPatterns { get; set; }
 
         public GameReadDbContext(DbContextOptions<GameReadDbContext> options) : base(options) { }
 
@@ -34,6 +32,9 @@ namespace Game.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration<RoomReadModel>(configuration);
 
             modelBuilder.ApplyConfiguration<GameUserReadModel>(configuration);
+
+            modelBuilder.ApplyConfiguration<CityPatternReadModel>(configuration);
+            modelBuilder.ApplyConfiguration<CountryPatternReadModel>(configuration);
         }
     }
 }

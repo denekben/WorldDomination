@@ -1,7 +1,6 @@
-﻿using Game.Domain.RoomAggregate.Entities;
-using Game.Domain.ReadModels.RoomAggregate;
+﻿using Game.Domain.DomainModels.RoomAggregate.Entities;
+using Game.Domain.DomainModels.ReadModels.RoomAggregate;
 using Game.Shared.DTOs;
-using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Infrastructure.Mappers
 {
@@ -14,7 +13,6 @@ namespace Game.Infrastructure.Mappers
                 room.Id,
                 room.RoomName,
                 room.GameType,
-                room.CountryQuantity,
                 room.IsPrivate,
                 room.CreatedTime,
                 members
@@ -37,7 +35,6 @@ namespace Game.Infrastructure.Mappers
                 room.Id,
                 room.RoomName,
                 room.GameType,
-                room.CountryQuantity,
                 room.IsPrivate,
                 room.CreatedTime ?? DateTime.UtcNow,
                 members

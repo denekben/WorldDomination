@@ -1,15 +1,13 @@
-﻿using Game.Domain.CountryAggregate.Entities;
-using Game.Domain.RoomAggregate.Entities;
+﻿using Game.Domain.DomainModels.GameAggregate.Entities;
+using Game.Domain.DomainModels.RoomAggregate.Entities;
 using Game.Infrastructure.Seed;
-using DomainGame = Game.Domain.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
 using WorldDomination.Shared.Domain;
-using Game.Domain.UserAggregate.Entities;
+using Game.Domain.DomainModels.UserAggregate.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Game.Domain.CountryAggregate.ValueObjects;
-using Game.Domain.RoomAggregate.ValueObjects;
-using Game.Domain.GameAggregate.ValueObjects;
-using Game.Domain.DomainModels.RoomAggregate.Abstractions;
+using Game.Domain.DomainModels.RoomAggregate.ValueObjects;
+using Game.Domain.DomainModels.GameAggregate.ValueObjects;
 
 namespace Game.Infrastructure.Configurations
 {
@@ -84,7 +82,7 @@ namespace Game.Infrastructure.Configurations
                 .HasMany(country => country.Players)
                 .WithOne(player => player.Country)
                 .HasForeignKey(player => player.CountryId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder
                 .HasMany(country => country.Cities)
@@ -113,10 +111,10 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<DomainGame> builder)
         {
-            builder.HasKey(game => game.Id);
+            builder.HasKey(game => game.RoomId);
 
             builder
-                .Property(game => game.Id)
+                .Property(game => game.RoomId)
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder
@@ -171,6 +169,12 @@ namespace Game.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
+                .HasMany(room=>room.Countries)
+                .WithOne(countries => countries.Room)
+                .HasForeignKey(countries => countries.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .Property(room => room.RoomName)
                 .HasConversion(name => name.Value, name => RoomName.Create(name));
 
@@ -183,8 +187,8 @@ namespace Game.Infrastructure.Configurations
                 .HasConversion(memberLimit => memberLimit.Value, memberLimit => RoomMemberLimit.Create(memberLimit));
 
             builder
-                .Property(room => room.CountryQuantity)
-                .HasConversion(countryQuantity => countryQuantity.Value, countryQudntity => CountryQuantity.Create(countryQudntity));
+                .Property(room => room.CountryLimit)
+                .HasConversion(countryLimit => countryLimit.Value, countryLimit => CountryLimit.Create(countryLimit));
 
             builder
                 .Property(room => room.CreatedTime)

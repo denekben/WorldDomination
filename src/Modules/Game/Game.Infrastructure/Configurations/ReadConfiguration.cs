@@ -1,7 +1,7 @@
-﻿using Game.Domain.ReadModels.CountryAggregate;
-using Game.Domain.ReadModels.GameAggregate;
-using Game.Domain.ReadModels.RoomAggregate;
-using Game.Domain.ReadModels.UserAggregate;
+﻿using Game.Domain.DomainModels.ReadModels.GameAggregate;
+using Game.Domain.DomainModels.ReadModels.RoomAggregate;
+using Game.Domain.DomainModels.ReadModels.UserAggregate;
+using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +9,27 @@ namespace Game.Infrastructure.Configurations
 {
     public class ReadConfiguration : IEntityTypeConfiguration<CityReadModel>, IEntityTypeConfiguration<CountryReadModel>,
         IEntityTypeConfiguration<GameReadModel>, IEntityTypeConfiguration<OrganizerReadModel>, IEntityTypeConfiguration<PlayerReadModel>,
-        IEntityTypeConfiguration<RoomMemberReadModel>, IEntityTypeConfiguration<RoomReadModel>, IEntityTypeConfiguration<GameUserReadModel>
+        IEntityTypeConfiguration<RoomMemberReadModel>, IEntityTypeConfiguration<RoomReadModel>, IEntityTypeConfiguration<GameUserReadModel>,
+        IEntityTypeConfiguration<CountryPatternReadModel>, IEntityTypeConfiguration<CityPatternReadModel>
     {
+        public void Configure(EntityTypeBuilder<CountryPatternReadModel> builder)
+        {
+            builder.HasKey(countryPattern => countryPattern.Id);
+
+            builder
+                .HasMany(countryPattern => countryPattern.CityPatterns)
+                .WithOne(cityPattern => cityPattern.CountryPattern)
+                .HasForeignKey(cityPattern => cityPattern.CountryId);
+
+            builder.ToTable("CountryPatterns");
+        }
+
+        public void Configure(EntityTypeBuilder<CityPatternReadModel> builder)
+        {
+            builder.HasKey(cityPattern => cityPattern.Id);
+
+            builder.ToTable("CityPatterns");
+        }
         public void Configure(EntityTypeBuilder<CityReadModel> builder)
         {
             builder.HasKey(city=>city.Id);
@@ -37,7 +56,7 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<GameReadModel> builder)
         {
-            builder.HasKey(game=>game.Id);
+            builder.HasKey(game=>game.RoomId);
 
             builder
                 .HasMany(game => game.Countries)
@@ -81,6 +100,11 @@ namespace Game.Infrastructure.Configurations
                 .HasMany(room => room.RoomMembers)
                 .WithOne(members => members.Room)
                 .HasForeignKey(members => members.RoomId);
+
+            builder
+                .HasMany(room => room.Countries)
+                .WithOne(countries => countries.Room)
+                .HasForeignKey(countries => countries.RoomId);
 
             builder.ToTable("Rooms");
         }

@@ -1,8 +1,8 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
-using Game.Domain.RoomAggregate.Entities;
+﻿using Game.Domain.DomainModels.RoomAggregate;
+using Game.Domain.DomainModels.RoomAggregate.Entities;
 using WorldDomination.Shared.Domain;
 
-namespace Game.Domain.UserAggregate.Entities
+namespace Game.Domain.DomainModels.UserAggregate.Entities
 {
     public sealed class GameUser : DomainEntity
     {

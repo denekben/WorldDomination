@@ -2,10 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
 using User.Infrastructure.Contexts;
+using User.Domain.Repositories;
 
 namespace User.Infrastructure.Repositories
 {
-    public class AchievmentRepository : IRepository<Achievment>
+    public class AchievmentRepository : IAchievmentRepository
     {
         private readonly DbSet<Achievment> _achievments;
         private readonly UserWriteDbContext _context;

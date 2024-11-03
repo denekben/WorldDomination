@@ -1,4 +1,5 @@
-﻿using Game.Domain.UserAggregate.Entities;
+﻿using Game.Domain.DomainModels.UserAggregate.Entities;
+using Game.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Shared.Events;
 using User.Shared.IntegrationEvents;
@@ -9,10 +10,10 @@ namespace Game.Application.Users.IntegrationEvents.Handlers
 {
     internal sealed class NewDomainUserCreatedHandler : IEventHandler<NewDomainUserCreated>
     {
-        private readonly IRepository<GameUser> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ILogger<NewDomainUserCreatedHandler> _logger;
 
-        public NewDomainUserCreatedHandler(IRepository<GameUser> userRepository, ILogger<NewDomainUserCreatedHandler> logger)
+        public NewDomainUserCreatedHandler(IUserRepository userRepository, ILogger<NewDomainUserCreatedHandler> logger)
         {
             _userRepository = userRepository;
             _logger = logger;

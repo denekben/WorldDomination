@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Shared.Messaging;
 using User.Domain.Entities;
+using User.Domain.Repositories;
 using User.Shared.IntegrationEvents;
 using Users.Application.Users.Commands;
 using WorldDomination.Shared.Domain;
@@ -13,12 +14,12 @@ namespace User.Application.Users.Commands.Handlers
     internal class UpdateCurrentUserInfoHandler : IRequestHandler<UpdateCurrentUserInfo>
     {
         private readonly IHttpContextService _httpContextService;
-        private readonly IRepository<DomainUser> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ILogger<UpdateCurrentUserInfoHandler> _logger;
         private readonly IMessageBroker _messageBroker;
 
         public UpdateCurrentUserInfoHandler(IHttpContextService httpContextService,
-            IRepository<DomainUser> userRepository, ILogger<UpdateCurrentUserInfoHandler> logger, IMessageBroker messageBroker)
+            IUserRepository userRepository, ILogger<UpdateCurrentUserInfoHandler> logger, IMessageBroker messageBroker)
         {
             _httpContextService = httpContextService;
             _userRepository = userRepository;

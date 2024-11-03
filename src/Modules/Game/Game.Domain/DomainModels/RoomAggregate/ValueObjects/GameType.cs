@@ -1,10 +1,10 @@
 ﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Game.Domain.RoomAggregate.ValueObjects
+namespace Game.Domain.DomainModels.RoomAggregate.ValueObjects
 {
     public sealed record GameType
     {
-        private static readonly IReadOnlyCollection<string> _gameTypes = [ "Standart", "RolePlay"];
+        private static readonly IReadOnlyCollection<string> _gameTypes = [ "Standart", "RolePlay" ];
 
         public static GameType Standart => new GameType("Standart");
         public static GameType Competitive => new GameType("RolePlay");

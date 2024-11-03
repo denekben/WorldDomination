@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Shared.Events;
 using Shared.Messaging;
 using User.Domain.Entities;
+using User.Domain.Repositories;
 using User.Shared.IntegrationEvents;
 using WorldDomination.Shared.Domain;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
@@ -11,13 +12,13 @@ namespace User.Application.Users.IntegrationEvents.Handlers
 {
     internal class NewUserRegisteredHandler : IEventHandler<NewUserRegistered>
     {
-        private readonly IRepository<DomainUser> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ILogger<NewUserRegisteredHandler> _logger;
-        private readonly IRepository<UserStatus> _userStatusRepository;
+        private readonly IUserStatusRepository _userStatusRepository;
         private readonly IMessageBroker _messageBroker;
 
-        public NewUserRegisteredHandler(IRepository<DomainUser> userRepository, ILogger<NewUserRegisteredHandler> logger,
-            IRepository<UserStatus> userStatusRepository, IMessageBroker messageBroker)
+        public NewUserRegisteredHandler(IUserRepository userRepository, ILogger<NewUserRegisteredHandler> logger,
+            IUserStatusRepository userStatusRepository, IMessageBroker messageBroker)
         {
             _userRepository = userRepository;
             _logger = logger;

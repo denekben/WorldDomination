@@ -1,9 +1,9 @@
 ﻿using Game.Application.Services;
-using Game.Domain.DomainModels.RoomAggregate.Abstractions;
-using Game.Domain.RoomAggregate.Entities;
+using Game.Domain.DomainModels.GameAggregate.Entities;
+using Game.Domain.DomainModels.RoomAggregate.Entities;
 using Game.Infrastructure.Mappers;
 using Microsoft.AspNetCore.SignalR;
-using DomainGame = Game.Domain.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
 
 namespace Game.Infrastructure.Realtime
 {
@@ -19,35 +19,58 @@ namespace Game.Infrastructure.Realtime
         public async Task RoomCreated(Room room)
         {
             var roomDto = room.AsRoomDto();
-            await _hubContext.Clients.All.ReceiveRoomCreatedMessage(roomDto);
+            await _hubContext.Clients.All.RoomCreated(roomDto);
         }
 
         public async Task RoomClosed(Guid roomId)
         {
-            await _hubContext.Clients.All.ReceiveRoomClosedMessage(roomId);
-        }
-
-        public async Task RoomUpdated(Room room)
-        {
-            var roomDto = room.AsRoomDto();
-            await _hubContext.Clients.All.ReceiveRoomUpdatedMessage(roomDto);
+            await _hubContext.Clients.All.RoomClosed(roomId);
         }
 
         public async Task MemberJoinedRoom(RoomMember member, Guid roomId)
         {
             var memberDto = member.AsRoomMemberDto();
-            //await _hubContext.Clients.Group()
+            //await _hubContext.Clients.Group()'
+
+            await Task.CompletedTask;
         }
 
         public async Task MemberLeftRoom(RoomMember member, Guid roomId)
         {
             var memberDto = member.AsRoomMemberDto();
             //await _hubContext.Clients.Group()
+
+            await Task.CompletedTask;
         }
 
-        public Task GameCreated(DomainGame game)
+        public async Task GameCreated(DomainGame game, Guid roomId)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
+        }
+
+        public async Task MemberPromotedToOrganizer(RoomMember member, Guid roomId)
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task CountryCreated(Country country, Guid roomId)
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task MemberJoinedCountry(RoomMember member, Guid roomId, Guid countryId)
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task MinisterPromotedToPresident(RoomMember member, Guid roomId, Guid countryId)
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task MemberLeftCountry(RoomMember member, Guid roomId, Guid countryId)
+        {
+            await Task.CompletedTask;
         }
     }
 }

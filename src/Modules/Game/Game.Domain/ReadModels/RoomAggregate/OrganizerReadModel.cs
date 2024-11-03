@@ -1,4 +1,4 @@
-﻿namespace Game.Domain.ReadModels.RoomAggregate
+﻿namespace Game.Domain.DomainModels.ReadModels.RoomAggregate
 {
     public sealed class OrganizerReadModel : RoomMemberReadModel
     {

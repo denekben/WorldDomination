@@ -6,18 +6,19 @@ using WorldDomination.Shared.Services;
 using Users.Application.Users.Commands;
 using WorldDomination.Shared.Domain;
 using User.Domain.Entities;
+using User.Domain.Repositories;
 
 namespace User.Application.Users.Commands.Handlers
 {
     internal class UpdateCurrentUserImageHandler : IRequestHandler<UpdateCurrentUserImage>
     {
         private readonly ILogger<UpdateCurrentUserImageHandler> _logger;
-        private readonly IRepository<DomainUser> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IProfileImageService _profileImageService;
         private readonly IHttpContextService _httpContextService;
 
         public UpdateCurrentUserImageHandler(ILogger<UpdateCurrentUserImageHandler> logger, IProfileImageService profileImageService,
-             IRepository<DomainUser> userRepository, IHttpContextService httpContextService)
+             IUserRepository userRepository, IHttpContextService httpContextService)
         {
             _logger = logger;
             _userRepository = userRepository;

@@ -3,19 +3,18 @@ using WorldDomination.Shared.Exceptions.CustomExceptions;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Services;
 using Users.Application.Users.Commands;
-using WorldDomination.Shared.Domain;
-using User.Domain.Entities;
+using User.Domain.Repositories;
 
 namespace User.Application.Users.Commands.Handlers
 {
     internal class DeleteProfileImageHandler : IRequestHandler<DeleteCurrentUserImage>
     {
         private readonly ILogger<DeleteProfileImageHandler> _logger;
-        private readonly IRepository<DomainUser> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IHttpContextService _httpContextService;
 
         public DeleteProfileImageHandler(ILogger<DeleteProfileImageHandler> logger,
-             IRepository<DomainUser> userRepository, IHttpContextService httpContextService)
+             IUserRepository userRepository, IHttpContextService httpContextService)
         {
             _logger = logger;
             _userRepository = userRepository;

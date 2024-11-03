@@ -1,6 +1,6 @@
 ﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Game.Domain.RoomAggregate.ValueObjects
+namespace Game.Domain.DomainModels.RoomAggregate.ValueObjects
 {
     public sealed record RoomName
     {

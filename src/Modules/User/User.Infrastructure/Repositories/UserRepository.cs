@@ -2,10 +2,11 @@
 using User.Domain.Entities;
 using WorldDomination.Shared.Domain;
 using User.Infrastructure.Contexts;
+using User.Domain.Repositories;
 
 namespace User.Infrastructure.Repositories
 {
-    public class UserRepository : IRepository<DomainUser>
+    public class UserRepository : IUserRepository
     {
         private readonly DbSet<DomainUser> _users;
         private readonly UserWriteDbContext _context;

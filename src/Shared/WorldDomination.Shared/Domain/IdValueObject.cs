@@ -21,5 +21,9 @@ namespace WorldDomination.Shared.Domain
 
         public static implicit operator Guid(IdValueObject id)
             => id.Value;
+
+        public static bool operator ==(IdValueObject? idVO, Guid id) => idVO?.Value == id;
+
+        public static bool operator !=(IdValueObject? idVO, Guid id) => idVO?.Value != id;
     }
 }

@@ -1,8 +1,7 @@
-﻿
-using Game.Domain.ReadModels.CountryAggregate;
-using Game.Domain.ReadModels.UserAggregate;
+﻿using Game.Domain.DomainModels.ReadModels.GameAggregate;
+using Game.Domain.DomainModels.ReadModels.UserAggregate;
 
-namespace Game.Domain.ReadModels.RoomAggregate
+namespace Game.Domain.DomainModels.ReadModels.RoomAggregate
 {
     public abstract class RoomMemberReadModel
     {
@@ -14,7 +13,7 @@ namespace Game.Domain.ReadModels.RoomAggregate
 
         public RoomReadModel Room { get; private set; }
         public GameUserReadModel GameUser { get; private set; }
-        public Guid? CountryId { get; private set; }
+        public Guid CountryId { get; private set; }
         public CountryReadModel Country { get; private set; }
     }
 }

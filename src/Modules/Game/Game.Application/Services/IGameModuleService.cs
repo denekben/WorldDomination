@@ -1,12 +1,11 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
+﻿using Game.Domain.DomainModels.RoomAggregate.Entities;
 using WorldDomination.Shared.Domain;
-using DomainGame = Game.Domain.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
 
 namespace Game.Application.Services
 {
     public interface IGameModuleService
     {
-        Task<DomainGame?> GetGameByRoomId(IdValueObject roomId);
-        Task<List<RoomMember>?> GetRoomMembersByRoomId(IdValueObject roomId);
+        Task RemoveMemberFromCountry(RoomMember member);
     }
 }

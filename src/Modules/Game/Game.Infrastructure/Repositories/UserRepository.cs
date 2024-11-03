@@ -1,11 +1,12 @@
-﻿using Game.Domain.UserAggregate.Entities;
+﻿using Game.Domain.DomainModels.UserAggregate.Entities;
+using Game.Domain.Repositories;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
 
 namespace Game.Infrastructure.Repositories
 {
-    public class UserRepository : IRepository<GameUser>
+    public class UserRepository : IUserRepository
     {
         private readonly DbSet<GameUser> _users;
         private readonly GameWriteDbContext _context;
@@ -32,6 +33,11 @@ namespace Game.Infrastructure.Repositories
         {
             var user = await _users.FirstOrDefaultAsync(x => x.Id == id);
             return user;
+        }
+
+        public Task<GameUser?> GetAsync(IdValueObject firstId, IdValueObject? secondId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UpdateAsync(GameUser user)

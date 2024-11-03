@@ -7,6 +7,7 @@ using User.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
 using User.Domain.Entities;
+using User.Domain.Repositories;
 
 namespace User.Infrastructure
 {
@@ -14,9 +15,9 @@ namespace User.Infrastructure
     {
         public static IServiceCollection AddUserInfrastructure(this IServiceCollection services)
         {
-            services.AddScoped<IRepository<DomainUser>, UserRepository>();
-            services.AddScoped<IRepository<Achievment>, AchievmentRepository>();
-            services.AddScoped<IRepository<UserStatus>, UserStatusRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAchievmentRepository, AchievmentRepository>();
+            services.AddScoped<IUserStatusRepository, UserStatusRepository>();
 
             services.AddPostgres<UserReadDbContext>(QueryTrackingBehavior.NoTracking);
             services.AddPostgres<UserWriteDbContext>();

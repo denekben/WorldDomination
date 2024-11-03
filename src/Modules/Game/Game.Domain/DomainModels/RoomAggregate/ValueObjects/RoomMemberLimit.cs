@@ -1,10 +1,10 @@
 ﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Game.Domain.RoomAggregate.ValueObjects
+namespace Game.Domain.DomainModels.RoomAggregate.ValueObjects
 {
     public sealed record RoomMemberLimit
     {
-        private const int _maxLimit = 40;
+        private const int _maxLimit = 50;
         private const int _minLimit = 2;
 
         public int Value { get; private set; }

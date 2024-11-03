@@ -1,6 +1,6 @@
 ﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Game.Domain.RoomAggregate.ValueObjects
+namespace Game.Domain.DomainModels.RoomAggregate.ValueObjects
 {
     public sealed record GameRole
     {
@@ -15,7 +15,7 @@ namespace Game.Domain.RoomAggregate.ValueObjects
             Value = value;
         }
 
-        public static GameRole Create(string value)
+        public static GameRole Create(string? value)
         {
             if (!_allowedRoles.Contains(value))
             {

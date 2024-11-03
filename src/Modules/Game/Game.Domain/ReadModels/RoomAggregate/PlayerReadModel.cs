@@ -1,6 +1,4 @@
-﻿using Game.Domain.ReadModels.CountryAggregate;
-
-namespace Game.Domain.ReadModels.RoomAggregate
+﻿namespace Game.Domain.DomainModels.ReadModels.RoomAggregate
 {
     public sealed class PlayerReadModel : RoomMemberReadModel
     {

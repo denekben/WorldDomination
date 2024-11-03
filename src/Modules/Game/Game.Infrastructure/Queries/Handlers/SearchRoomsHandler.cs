@@ -1,7 +1,7 @@
 ﻿using Game.Application.Rooms.Queries;
 using Game.Infrastructure.Contexts;
 using Game.Infrastructure.Mappers;
-using Game.Domain.ReadModels.RoomAggregate;
+using Game.Domain.DomainModels.ReadModels.RoomAggregate;
 using Game.Shared.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +36,7 @@ namespace Game.Infrastructure.Queries.Handlers
                 return await rooms.Skip(skipNumber).Take(query.PageSize).Select(r => r.AsRoomDto()).ToListAsync();
             }
 
-            return await rooms.Skip(skipNumber).Take(query.PageSize).OrderByDescending(r=>r.CreatorId == userId).Select(r => r.AsRoomDto()).ToListAsync();
+            return await rooms.Include(r=>r.RoomMembers).Skip(skipNumber).Take(query.PageSize).OrderByDescending(r=>r.CreatorId == userId).Select(r => r.AsRoomDto()).ToListAsync();
         }
     }
 }

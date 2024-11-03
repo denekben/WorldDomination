@@ -1,9 +1,10 @@
-﻿using WorldDomination.Shared.Domain;
-using DomainGame = Game.Domain.GameAggregate.Entities.Game;
+﻿using Game.Domain.Repositories;
+using WorldDomination.Shared.Domain;
+using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
 
 namespace Game.Infrastructure.Repositories
 {
-    public class GameRepository : IRepository<DomainGame>
+    public class GameRepository : IGameRepository
     {
         public Task AddAsync(DomainGame user)
         {
@@ -16,6 +17,11 @@ namespace Game.Infrastructure.Repositories
         }
 
         public Task<DomainGame?> GetAsync(IdValueObject id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DomainGame?> GetAsync(IdValueObject firstId, IdValueObject? secondId)
         {
             throw new NotImplementedException();
         }

@@ -1,9 +1,8 @@
 ﻿using Game.Application.Services;
-using Game.Domain.DomainModels.RoomAggregate.Abstractions;
-using Game.Domain.RoomAggregate.Entities;
+using Game.Domain.DomainModels.RoomAggregate.Entities;
+using Game.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using WorldDomination.Shared.Domain;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
 
@@ -11,36 +10,41 @@ namespace Game.Application.Rooms.Commands.Handlers
 {
     internal sealed class LeaveRoomHandler : IRequestHandler<LeaveRoom>
     {
-        private readonly IRepository<Room> _roomRepository;
-        private readonly IRepository<RoomMember> _memberRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IRoomMemberRepository _memberRepository;
         private readonly IHttpContextService _contextService;
         private readonly ILogger<LeaveRoomHandler> _logger;
         private readonly IGameModuleNotificationService _notifications;
+        private readonly IGameModuleService _gameModuleService;
 
-        public LeaveRoomHandler(IRepository<Room> roomRepository, IHttpContextService contextService,
-            ILogger<LeaveRoomHandler> logger, IRepository<RoomMember> memberRepository, IGameModuleNotificationService notifications)
+        public LeaveRoomHandler(IRoomRepository roomRepository, IHttpContextService contextService,
+            ILogger<LeaveRoomHandler> logger, IRoomMemberRepository memberRepository, IGameModuleNotificationService notifications,
+            IGameModuleService gameModuleService)
         {
             _roomRepository = roomRepository;
             _contextService = contextService;
             _logger = logger;
             _memberRepository = memberRepository;
             _notifications = notifications;
+            _gameModuleService = gameModuleService;
         }
 
         public async Task Handle(LeaveRoom command, CancellationToken cancellationToken)
         {
             var userId = _contextService.GetCurrentUserId();
-            var member = await _memberRepository.GetAsync(userId)
-                ?? throw new BadRequestException("Cannot leave Room: invalid userId");
+            var member = await _memberRepository.GetAsync(userId, command.roomId)
+                ?? throw new BadRequestException("Cannot find RoomMember");
 
-            var room = await _roomRepository.GetAsync(command.roomId)
-                ?? throw new BadRequestException("Cannot find room");
+            var room = await _roomRepository.GetAsync(command.roomId, RoomIncludes.RoomMembers)
+                ?? throw new BadRequestException("Cannot find Room");
+
+            if (member.CountryId != null)
+                await _gameModuleService.RemoveMemberFromCountry(member);
 
             room.RemoveMember(member);
             await _roomRepository.UpdateAsync(room);
-            await _notifications.RoomUpdated(room);
+            _logger.LogInformation($"Member {member.GameUserId} left Room {member.RoomId}");
             await _notifications.MemberLeftRoom(member, room.Id);
-            _logger.LogInformation($"Member {member.GameUserId} left room {member.RoomId}");
 
             if (room.RoomMembers.Count() == 0)
             {
@@ -54,6 +58,7 @@ namespace Game.Application.Rooms.Commands.Handlers
                 var newOrganizer = room.ElectNewOrganizer(room.RoomCode);
                 await _roomRepository.UpdateAsync(room);
                 _logger.LogInformation($"Player {newOrganizer.GameUserId} promoted to Organizer");
+                await _notifications.MemberPromotedToOrganizer(member, room.Id);
                 return;
             }
         }

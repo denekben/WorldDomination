@@ -1,12 +1,11 @@
-﻿using Game.Domain.CountryAggregate.Entities;
-using Game.Domain.RoomAggregate.Entities;
-using Game.Domain.UserAggregate.Entities;
-using DomainGame = Game.Domain.GameAggregate.Entities.Game;
+﻿using Game.Domain.DomainModels.GameAggregate.Entities;
+using Game.Domain.DomainModels.RoomAggregate.Entities;
+using Game.Domain.DomainModels.UserAggregate.Entities;
+using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
 using Game.Infrastructure.Configurations;
 using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
-using Game.Domain.DomainModels.RoomAggregate.Abstractions;
 
 namespace Game.Infrastructure.Contexts
 {
@@ -15,8 +14,7 @@ namespace Game.Infrastructure.Contexts
         public DbSet<GameUser> Users { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomMember> Members { get; set; }
-        public DbSet<DomainGame> Games { get; set; }
-        public DbSet<RoomMember> RoomMembers { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
         public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
             : base(options) 

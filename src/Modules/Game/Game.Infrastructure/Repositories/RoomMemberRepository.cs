@@ -1,12 +1,12 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Abstractions;
-using Game.Domain.RoomAggregate.Entities;
+﻿using Game.Domain.DomainModels.RoomAggregate.Entities;
+using Game.Domain.Repositories;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
 
 namespace Game.Infrastructure.Repositories
 {
-    public class RoomMemberRepository : IRepository<RoomMember>
+    public class RoomMemberRepository : IRoomMemberRepository
     {
         private readonly GameWriteDbContext _context;
         private readonly DbSet<RoomMember> _members;
@@ -29,9 +29,19 @@ namespace Game.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<RoomMember?> GetAsync(IdValueObject id)
+        public async Task<RoomMember?> GetAsync(IdValueObject gameUserId, IdValueObject roomId)
         {
-            return await _members.FirstOrDefaultAsync(m=>m.GameUserId == id);
+            return await _members.FirstOrDefaultAsync(m => (m.GameUserId == gameUserId && m.RoomId == roomId));
+        }
+
+        public async Task<RoomMember?> GetAsync(IdValueObject gameUserId, IdValueObject roomId, RoomMemberIncludes includes)
+        {
+            IQueryable<RoomMember> query = _members;
+
+            if (includes.HasFlag(RoomMemberIncludes.Country))
+                query = query.Include(m => m.Country);
+
+            return await query.FirstOrDefaultAsync(m => (m.GameUserId == gameUserId && m.RoomId == roomId));
         }
 
         public async Task UpdateAsync(RoomMember member)

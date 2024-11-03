@@ -1,4 +1,5 @@
-﻿using Game.Application.Rooms.Commands;
+﻿using Game.Application.Countries;
+using Game.Application.Rooms.Commands;
 using Game.Application.Rooms.Queries;
 using Game.Shared.DTOs;
 using MediatR;
@@ -33,15 +34,6 @@ namespace Game.WebUI.Controllers
 
         [HttpDelete]
         [Authorize]
-        [Route("{roomId:guid}")]
-        public async Task<IActionResult> CloseRoom([FromRoute] CloseRoom command)
-        {
-            await _sender.Send(command);
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Authorize]
         [Route("{roomId:guid}/member")]
         public async Task<IActionResult> LeaveRoom([FromRoute] LeaveRoom command)
         {
@@ -66,5 +58,22 @@ namespace Game.WebUI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("{roomId:guid}/countries")]
+        public async Task<IActionResult> CreateCountry([FromRoute] Guid roomId, [FromQuery] string normalizedName)
+        {
+            await _sender.Send(new CreateCountry(normalizedName, roomId));
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("{roomId:guid}/countries/{countryId:guid}/member")]
+        public async Task<IActionResult> JoinCountry([FromRoute] Guid roomId, [FromRoute] Guid countryId)
+        {
+            await _sender.Send(new JoinCountry(countryId, roomId));
+            return Ok();
+        }
     }
 }

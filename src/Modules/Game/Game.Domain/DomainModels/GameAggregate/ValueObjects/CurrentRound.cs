@@ -1,6 +1,6 @@
 ﻿using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Game.Domain.GameAggregate.ValueObjects
+namespace Game.Domain.DomainModels.GameAggregate.ValueObjects
 {
     public sealed record CurrentRound
     {
