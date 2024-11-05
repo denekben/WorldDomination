@@ -12,19 +12,19 @@
             var japan = new CountryPattern("Япония", "JAPAN", "");
             var germany = new CountryPattern("Германия", "GERMANY", "");
             var france = new CountryPattern("Франция", "FRANCE", "");
-            var usa = new CountryPattern("США", "UNITED STATES", "");
-            var northKorea = new CountryPattern("Северная Корея", "NORTH KOREA", "");
+            var usa = new CountryPattern("США", "UNITED_STATES", "");
+            var northKorea = new CountryPattern("Северная Корея", "NORTH_KOREA", "");
             var iran = new CountryPattern("Иран", "IRAN", "");
             var cuba = new CountryPattern("Куба", "CUBA", "");
-            var australia = new CountryPattern("Австралия", "AUSTRALIA", "");
-            var southAfrica = new CountryPattern("Южная Африка", "SOUTH AFRICA", "");
+            var switzerland = new CountryPattern("Швейцария", "SWITZERLAND", "");
+            var greatBritain = new CountryPattern("Великобритания", "GREAT_BRITAIN", "");
 
-            Countries.AddRange(new[] { russia, china, japan, germany, france, usa, northKorea, iran, cuba, australia, southAfrica });
+            Countries.AddRange(new[] { russia, china, japan, germany, france, usa, northKorea, iran, cuba, switzerland, greatBritain });
 
             var russiaCities = new List<CityPattern>
             {
                 new CityPattern("Москва", "MOSCOW", "", russia.Id, true),
-                new CityPattern("Санкт-Петербург", "SAINT PETERSBURG", "", russia.Id),
+                new CityPattern("Санкт-Петербург", "SAINT_PETERSBURG", "", russia.Id),
                 new CityPattern("Екатеринбург", "YEKATERINBURG", "", russia.Id),
                 new CityPattern("Новосибирск", "NOVOSIBIRSK", "", russia.Id)
             };
@@ -73,9 +73,9 @@
 
             var usaCities = new List<CityPattern>
             {
-                new CityPattern("Вашингтон", "WASHINGTON D.C.", "", usa.Id, true),
-                new CityPattern("Нью-Йорк", "NEW YORK CITY", "", usa.Id),
-                new CityPattern("Лос-Анджелес", "LOS ANGELES", "", usa.Id),
+                new CityPattern("Вашингтон", "WASHINGTON", "", usa.Id, true),
+                new CityPattern("Нью-Йорк", "NEW_YORK_CITY", "", usa.Id),
+                new CityPattern("Лос-Анджелес", "LOS_ANGELES", "", usa.Id),
                 new CityPattern("Чикаго", "CHICAGO", "", usa.Id)
             };
 
@@ -104,32 +104,32 @@
             var cubaCities = new List<CityPattern>
            {
                new CityPattern("Гавана","HAVANA" , "" , cuba.Id, true),
-               new CityPattern("Санктьяго-де-Куба","SANTIAGO DE CUBA" , "" , cuba.Id),
+               new CityPattern("Санктьяго-де-Куба","SANTIAGO_DE_CUBA" , "" , cuba.Id),
                new CityPattern("Камагуэй","CAMAGUEY" , "" , cuba.Id),
                new CityPattern("Ольгин","OLGUIN" , "" , cuba.Id)
            };
 
             Cities.AddRange(cubaCities);
 
-            var australiaCities = new List<CityPattern>
+            var switzerlandCities = new List<CityPattern>
            {
-               new CityPattern("Канберра","CANBERRA" , "" , australia.Id, true),
-               new CityPattern("Сидней","SYDNEY" , "" , australia.Id),
-               new CityPattern("Мельбурн","MELBOURNE" , "" , australia.Id),
-               new CityPattern("Брисбен","BRISBANE" , "" , australia.Id)
+               new CityPattern("Берн","BERNE" , "" , switzerland.Id, true),
+               new CityPattern("Цюрих","ZURICH" , "" , switzerland.Id),
+               new CityPattern("Женева","GENEVA" , "" , switzerland.Id),
+               new CityPattern("Базель","BASEL" , "" , switzerland.Id)
            };
 
-            Cities.AddRange(australiaCities);
+            Cities.AddRange(switzerlandCities);
 
-            var southAfricaCities = new List<CityPattern>
+            var greatBritainCities = new List<CityPattern>
            {
-               new CityPattern("Кейптаун","CAPE TOWN" , "" , southAfrica.Id, true),
-               new CityPattern("Йоханнесбург","JOHANNESBURG" , "" , southAfrica.Id),
-               new CityPattern("Дурбан","DURBAN" , "" , southAfrica.Id),
-               new CityPattern("Претория","PRETORIA" , "" , southAfrica.Id)
+               new CityPattern("Лондон","LONDON" , "" , greatBritain.Id, true),
+               new CityPattern("Бирмингем","BIRMINGHAM" , "" , greatBritain.Id),
+               new CityPattern("Глазго","GLASGOW" , "" , greatBritain.Id),
+               new CityPattern("Манчестер","MANCHESTER" , "" , greatBritain.Id)
            };
 
-            Cities.AddRange(southAfricaCities);
+            Cities.AddRange(greatBritainCities);
         }
     }
 }

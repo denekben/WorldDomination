@@ -1,11 +1,9 @@
 ﻿using Game.Application.Services;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.Repositories;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using WorldDomination.Shared.Domain;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
-using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
 
 namespace Game.Application.Games.Commands.Hanlders
 {

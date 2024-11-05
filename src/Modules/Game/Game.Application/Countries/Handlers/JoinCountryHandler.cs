@@ -1,5 +1,6 @@
-﻿using Game.Application.Services;
-using Game.Domain.Repositories;
+﻿using Game.Application.Helpers;
+using Game.Application.Services;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
@@ -15,11 +16,11 @@ namespace Game.Application.Countries.Handlers
         private readonly ICountryRepository _countryRepository;
         private readonly ILogger<JoinCountryHandler> _logger;
         private readonly IGameModuleNotificationService _notifications;
-        private readonly IGameModuleService _gameModuleService;
+        private readonly IGameModuleHelper _gameModuleService;
 
         public JoinCountryHandler(IHttpContextService contextService, IRoomMemberRepository roomMemberRepository,
             IRoomRepository roomRepository, ICountryRepository countryRepository, ILogger<JoinCountryHandler> logger,
-            IGameModuleNotificationService notifications, IGameModuleService gameModuleService)
+            IGameModuleNotificationService notifications, IGameModuleHelper gameModuleService)
         {
             _contextService = contextService;
             _roomMemberRepository = roomMemberRepository;

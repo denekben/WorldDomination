@@ -1,6 +1,6 @@
-﻿using Game.Domain.Repositories;
+﻿using Game.Domain.Interfaces.Repositories;
 using WorldDomination.Shared.Domain;
-using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
 
 namespace Game.Infrastructure.Repositories
 {

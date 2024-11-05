@@ -1,6 +1,4 @@
-﻿using WorldDomination.Shared.Domain;
-
-namespace Game.Infrastructure.Seed
+﻿namespace Game.Infrastructure.Seed
 {
     public sealed class CityPatternReadModel
     {

@@ -1,6 +1,7 @@
-﻿using Game.Application.Services;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.Repositories;
+﻿using Game.Application.Helpers;
+using Game.Application.Services;
+using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
@@ -15,18 +16,18 @@ namespace Game.Application.Rooms.Commands.Handlers
         private readonly IHttpContextService _contextService;
         private readonly ILogger<LeaveRoomHandler> _logger;
         private readonly IGameModuleNotificationService _notifications;
-        private readonly IGameModuleService _gameModuleService;
+        private readonly IGameModuleHelper _gameModuleHelper;
 
         public LeaveRoomHandler(IRoomRepository roomRepository, IHttpContextService contextService,
             ILogger<LeaveRoomHandler> logger, IRoomMemberRepository memberRepository, IGameModuleNotificationService notifications,
-            IGameModuleService gameModuleService)
+            IGameModuleHelper gameModuleHelper)
         {
             _roomRepository = roomRepository;
             _contextService = contextService;
             _logger = logger;
             _memberRepository = memberRepository;
             _notifications = notifications;
-            _gameModuleService = gameModuleService;
+            _gameModuleHelper = gameModuleHelper;
         }
 
         public async Task Handle(LeaveRoom command, CancellationToken cancellationToken)
@@ -39,7 +40,7 @@ namespace Game.Application.Rooms.Commands.Handlers
                 ?? throw new BadRequestException("Cannot find Room");
 
             if (member.CountryId != null)
-                await _gameModuleService.RemoveMemberFromCountry(member);
+                await _gameModuleHelper.RemoveMemberFromCountry(member);
 
             room.RemoveMember(member);
             await _roomRepository.UpdateAsync(room);

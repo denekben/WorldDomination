@@ -1,9 +1,11 @@
 ﻿using Game.Infrastructure.Configurations;
-using Game.Domain.DomainModels.ReadModels.GameAggregate;
-using Game.Domain.DomainModels.ReadModels.RoomAggregate;
-using Game.Domain.DomainModels.ReadModels.UserAggregate;
+using Game.Domain.DomainModels.ReadModels.Games;
+using Game.Domain.DomainModels.ReadModels.Rooms;
+using Game.Domain.DomainModels.ReadModels.Users;
 using Microsoft.EntityFrameworkCore;
 using Game.Infrastructure.Seed;
+using Game.Domain.ReadModels.Games;
+using Game.Domain.DomainModels.Games.Entities;
 
 namespace Game.Infrastructure.Contexts
 {
@@ -12,6 +14,9 @@ namespace Game.Infrastructure.Contexts
         public DbSet<RoomReadModel> Rooms { get; set; }
         public DbSet<CountryPatternReadModel> CountryPatterns { get; set; }
         public DbSet<CityPatternReadModel> CityPatterns { get; set; }
+        public DbSet<CountryReadModel> Countries { get; set; }
+        public DbSet<SanctionReadModel> Sanctions { get; set; }
+        public DbSet<GameUserReadModel> Users { get; set; }
 
         public GameReadDbContext(DbContextOptions<GameReadDbContext> options) : base(options) { }
 
@@ -23,6 +28,7 @@ namespace Game.Infrastructure.Contexts
 
             modelBuilder.ApplyConfiguration<CityReadModel>(configuration);
             modelBuilder.ApplyConfiguration<CountryReadModel>(configuration);
+            modelBuilder.ApplyConfiguration<SanctionReadModel>(configuration);
 
             modelBuilder.ApplyConfiguration<GameReadModel>(configuration);
 

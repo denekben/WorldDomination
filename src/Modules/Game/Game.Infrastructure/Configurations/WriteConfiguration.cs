@@ -1,19 +1,20 @@
-﻿using Game.Domain.DomainModels.GameAggregate.Entities;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.DomainModels.Rooms.Entities;
 using Game.Infrastructure.Seed;
-using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
 using WorldDomination.Shared.Domain;
-using Game.Domain.DomainModels.UserAggregate.Entities;
+using Game.Domain.DomainModels.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Game.Domain.DomainModels.RoomAggregate.ValueObjects;
-using Game.Domain.DomainModels.GameAggregate.ValueObjects;
+using Game.Domain.DomainModels.Rooms.ValueObjects;
+using Game.Domain.DomainModels.Games.ValueObjects;
 
 namespace Game.Infrastructure.Configurations
 {
-    internal class WriteConfiguration : IEntityTypeConfiguration<CountryPattern>, IEntityTypeConfiguration<CityPattern>, IEntityTypeConfiguration<City>, 
-        IEntityTypeConfiguration<Country>, IEntityTypeConfiguration<DomainGame>, IEntityTypeConfiguration<Organizer>, 
-        IEntityTypeConfiguration<Player>, IEntityTypeConfiguration<Room>, IEntityTypeConfiguration<GameUser>, IEntityTypeConfiguration<RoomMember>
+    internal class WriteConfiguration : IEntityTypeConfiguration<CountryPattern>, IEntityTypeConfiguration<CityPattern>, IEntityTypeConfiguration<City>,
+        IEntityTypeConfiguration<Country>, IEntityTypeConfiguration<DomainGame>, IEntityTypeConfiguration<Organizer>,
+        IEntityTypeConfiguration<Player>, IEntityTypeConfiguration<Room>, IEntityTypeConfiguration<GameUser>, IEntityTypeConfiguration<RoomMember>,
+        IEntityTypeConfiguration<Sanction>
     {
         public void Configure(EntityTypeBuilder<CountryPattern> builder)
         {
@@ -25,7 +26,7 @@ namespace Game.Infrastructure.Configurations
 
             builder
                 .HasMany(countryPattern => countryPattern.CityPatterns)
-                .WithOne(cityPattern=>cityPattern.CountryPattern)
+                .WithOne(cityPattern => cityPattern.CountryPattern)
                 .HasForeignKey(cityPattern => cityPattern.CountryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -57,11 +58,11 @@ namespace Game.Infrastructure.Configurations
 
             builder
                 .Property(city => city.DevelopmentLevel)
-                .HasConversion(dLevel=>dLevel.Value, dLevel => DevelopmentLevel.Create(dLevel));
+                .HasConversion(dLevel => dLevel.Value, dLevel => DevelopmentLevel.Create(dLevel));
 
             builder
                 .Property(city => city.LivingLevel)
-                .HasConversion(lLevel=>lLevel.Value, lLevel => LivingLevel.Create(lLevel));
+                .HasConversion(lLevel => lLevel.Value, lLevel => LivingLevel.Create(lLevel));
 
             builder
                 .Property(city => city.Income)
@@ -87,24 +88,26 @@ namespace Game.Infrastructure.Configurations
             builder
                 .HasMany(country => country.Cities)
                 .WithOne(city => city.Country)
-                .HasForeignKey(city=>city.CountryId)
+                .HasForeignKey(city => city.CountryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(country => country.Sanctions)
+                .WithOne(sanction => sanction.Issuser)
+                .HasForeignKey(sanction => sanction.IssuserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(country => country.LivingLevel)
-                .HasConversion(lLevel=>lLevel.Value , lLevel=> LivingLevel.Create(lLevel));
+                .HasConversion(lLevel => lLevel.Value, lLevel => LivingLevel.Create(lLevel));
 
             builder
-                .Property(country=>country.Budget)
-                .HasConversion(budget=>budget.Value, budget=>Budget.Create(budget));
+                .Property(country => country.Budget)
+                .HasConversion(budget => budget.Value, budget => Budget.Create(budget));
 
             builder
                 .Property(country => country.NuclearTechnology)
-                .HasConversion(nTechnology=>nTechnology.Value, nTechnology=>NuclearTechnology.Create(nTechnology));
-
-            builder
-                .Property(country => country.SanctionCount)
-                .HasConversion(sanction=>sanction.Value, sanction => SanctionCount.Create(sanction));
+                .HasConversion(nTechnology => nTechnology.Value, nTechnology => NuclearTechnology.Create(nTechnology));
 
             builder.ToTable("Countries");
         }
@@ -118,9 +121,9 @@ namespace Game.Infrastructure.Configurations
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder
-                .HasMany(game=>game.Countries)
-                .WithOne(country=>country.Game)
-                .HasForeignKey(country=>country.GameId)
+                .HasMany(game => game.Countries)
+                .WithOne(country => country.Game)
+                .HasForeignKey(country => country.GameId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
@@ -133,7 +136,7 @@ namespace Game.Infrastructure.Configurations
 
             builder
                 .Property(game => game.EcologyLevel)
-                .HasConversion(eLevel=>eLevel.Value, eLevel=>EcologyLevel.Create(eLevel));
+                .HasConversion(eLevel => eLevel.Value, eLevel => EcologyLevel.Create(eLevel));
 
             builder.ToTable("Games");
         }
@@ -169,7 +172,7 @@ namespace Game.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .HasMany(room=>room.Countries)
+                .HasMany(room => room.Countries)
                 .WithOne(countries => countries.Room)
                 .HasForeignKey(countries => countries.RoomId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -207,8 +210,8 @@ namespace Game.Infrastructure.Configurations
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder
-                .HasMany(user=>user.Rooms)
-                .WithOne(room=>room.Creator)
+                .HasMany(user => user.Rooms)
+                .WithOne(room => room.Creator)
                 .HasForeignKey(room => room.CreatorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -223,7 +226,7 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<RoomMember> builder)
         {
-            builder.HasKey(member=> new { member.GameUserId, member.RoomId});
+            builder.HasKey(member => new { member.GameUserId, member.RoomId });
 
             builder
                 .Property(member => member.GameUserId)
@@ -234,12 +237,24 @@ namespace Game.Infrastructure.Configurations
                 .HasConversion(role => role.Value, role => GameRole.Create(role));
 
             builder
-                .HasDiscriminator<string>("RoomMemberRole") 
+                .HasDiscriminator<string>("RoomMemberRole")
                 .HasValue<Organizer>("Organizer")
                 .HasValue<Player>("Player");
 
             builder
                 .ToTable("RoomMembers");
         }
+
+        public void Configure(EntityTypeBuilder<Sanction> builder)
+        {
+            builder.HasKey(s => new { s.IssuserId, s.AudienceId });
+
+            builder
+                .Property(s => s.SanctionPower)
+                .HasConversion(sp => sp.Value, sp => SanctionPower.Create(sp));
+
+            builder.ToTable("Sanctions");
+        }
+
     }
 }

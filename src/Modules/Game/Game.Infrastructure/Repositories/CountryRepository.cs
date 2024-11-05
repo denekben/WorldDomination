@@ -1,5 +1,5 @@
-﻿using Game.Domain.DomainModels.GameAggregate.Entities;
-using Game.Domain.Repositories;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.Interfaces.Repositories;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
@@ -27,11 +27,6 @@ namespace Game.Infrastructure.Repositories
         {
             _countries.Remove(country);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<bool> ExistsByNormalizedNameAsync(IdValueObject roomId, string normalizedName)
-        {
-            return await _countries.AnyAsync(c=>(c.NormalizedName == normalizedName && c.RoomId == roomId));
         }
 
         public async Task<Country?> GetAsync(IdValueObject id)

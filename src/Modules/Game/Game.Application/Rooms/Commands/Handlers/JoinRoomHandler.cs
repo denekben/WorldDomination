@@ -1,6 +1,6 @@
 ﻿using Game.Application.Services;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.Repositories;
+using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
@@ -11,16 +11,16 @@ namespace Game.Application.Rooms.Commands.Handlers
     internal sealed class JoinRoomHandler : IRequestHandler<JoinRoom, Guid>
     {
         private readonly IHttpContextService _contextService;
-        private readonly IUserRepository _userRepository;
+        private readonly IGameModuleReadService _readService;
         private readonly IRoomRepository _roomRepository;
         private readonly ILogger<JoinRoomHandler> _logger;
         private readonly IGameModuleNotificationService _notifications;
 
-        public JoinRoomHandler(IHttpContextService contextService, IUserRepository userRepository,
+        public JoinRoomHandler(IHttpContextService contextService, IGameModuleReadService readService,
             IRoomRepository roomRepository, ILogger<JoinRoomHandler> logger, IGameModuleNotificationService notifications)
         {
             _contextService = contextService;
-            _userRepository = userRepository;
+            _readService = readService;
             _roomRepository = roomRepository;
             _logger = logger;
             _notifications = notifications;
@@ -29,7 +29,7 @@ namespace Game.Application.Rooms.Commands.Handlers
         public async Task<Guid> Handle(JoinRoom command, CancellationToken cancellationToken)
         {
             var userId = _contextService.GetCurrentUserId();
-            var user = await _userRepository.GetAsync(userId)
+            var user = await _readService.GetUserAsync(userId)
                 ?? throw new BadRequestException("Cannot join Room: invalid userId");
 
             var room = await _roomRepository.GetAsync(command.RoomId, RoomIncludes.DomainGame)

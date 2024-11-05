@@ -1,5 +1,5 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.DomainModels.ReadModels.RoomAggregate;
+﻿using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.DomainModels.ReadModels.Rooms;
 using Game.Shared.DTOs;
 
 namespace Game.Infrastructure.Mappers

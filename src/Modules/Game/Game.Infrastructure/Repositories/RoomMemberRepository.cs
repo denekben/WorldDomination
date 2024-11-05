@@ -1,5 +1,5 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.Repositories;
+﻿using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.Interfaces.Repositories;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;

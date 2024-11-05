@@ -1,9 +1,6 @@
-﻿using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.DomainModels.GameAggregate.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.Diagnostics.Metrics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
+using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.DomainModels.Games.Entities;
 
 namespace Game.Application.Services
 {

@@ -1,7 +1,7 @@
-﻿using Game.Domain.DomainModels.GameAggregate.Entities;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.DomainModels.UserAggregate.Entities;
-using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.DomainModels.Users.Entities;
+using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
 using Game.Infrastructure.Configurations;
 using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +42,7 @@ namespace Game.Infrastructure.Contexts
 
             modelBuilder.ApplyConfiguration<CountryPattern>(configuration);
             modelBuilder.ApplyConfiguration<CityPattern>(configuration);
+            modelBuilder.ApplyConfiguration<Sanction>(configuration);
 
             modelBuilder.Ignore<DomainEntity>();
 

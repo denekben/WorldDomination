@@ -1,9 +1,9 @@
 ﻿using Game.Application.Services;
-using Game.Domain.DomainModels.GameAggregate.Entities;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
+using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.DomainModels.Rooms.Entities;
 using Game.Infrastructure.Mappers;
 using Microsoft.AspNetCore.SignalR;
-using DomainGame = Game.Domain.DomainModels.GameAggregate.Entities.Game;
+using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
 
 namespace Game.Infrastructure.Realtime
 {

@@ -1,7 +1,7 @@
 ﻿using Game.Application.Rooms.Queries;
 using Game.Infrastructure.Contexts;
 using Game.Infrastructure.Mappers;
-using Game.Domain.DomainModels.ReadModels.RoomAggregate;
+using Game.Domain.DomainModels.ReadModels.Rooms;
 using Game.Shared.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

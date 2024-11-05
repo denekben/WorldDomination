@@ -1,9 +1,7 @@
-﻿using Game.Domain.DomainModels.UserAggregate.Entities;
-using Game.Domain.Repositories;
+﻿using Game.Domain.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
 using Shared.Events;
 using User.Shared.IntegrationEvents;
-using WorldDomination.Shared.Domain;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 
 namespace Game.Application.Users.IntegrationEvents.Handlers

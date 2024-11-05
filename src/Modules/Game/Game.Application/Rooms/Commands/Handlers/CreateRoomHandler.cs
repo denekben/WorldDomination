@@ -1,10 +1,8 @@
 ﻿using Game.Application.Services;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.DomainModels.UserAggregate.Entities;
-using Game.Domain.Repositories;
+using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using WorldDomination.Shared.Domain;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
 
@@ -14,25 +12,25 @@ namespace Game.Application.Rooms.Commands.Handlers
     {
         private readonly ILogger<CreateRoomHandler> _logger;
         private readonly IRoomRepository _roomRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IGameModuleReadService _readService;
         private readonly IHttpContextService _contextService;
         private readonly IGameModuleNotificationService _notifications;
 
         public CreateRoomHandler(ILogger<CreateRoomHandler> logger,
             IRoomRepository roomRepository, IHttpContextService contextService, 
-            IGameModuleNotificationService notifications, IUserRepository userRepository)
+            IGameModuleNotificationService notifications, IGameModuleReadService readService)
         {
             _logger = logger;
             _roomRepository = roomRepository;
             _contextService = contextService;
             _notifications = notifications;
-            _userRepository = userRepository;
+            _readService = readService;
         }
 
         public async Task<Guid> Handle(CreateRoom command, CancellationToken cancellationToken)
         {
             var userId = _contextService.GetCurrentUserId();
-            var user = await _userRepository.GetAsync(userId)
+            var user = await _readService.GetUserAsync(userId)
                 ?? throw new BadRequestException("Cannot create room: invalid userId");
 
             var(roomName, gameType, hasTeams, memberLimit, countryLimit, isPrivate, roomCode) = command;

@@ -1,5 +1,4 @@
-﻿using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Shared.DTOs;
+﻿using Game.Shared.DTOs;
 
 namespace Game.Infrastructure.Realtime
 {

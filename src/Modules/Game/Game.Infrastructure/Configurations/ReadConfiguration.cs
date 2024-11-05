@@ -1,6 +1,7 @@
-﻿using Game.Domain.DomainModels.ReadModels.GameAggregate;
-using Game.Domain.DomainModels.ReadModels.RoomAggregate;
-using Game.Domain.DomainModels.ReadModels.UserAggregate;
+﻿using Game.Domain.DomainModels.ReadModels.Games;
+using Game.Domain.DomainModels.ReadModels.Rooms;
+using Game.Domain.DomainModels.ReadModels.Users;
+using Game.Domain.ReadModels.Games;
 using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +11,7 @@ namespace Game.Infrastructure.Configurations
     public class ReadConfiguration : IEntityTypeConfiguration<CityReadModel>, IEntityTypeConfiguration<CountryReadModel>,
         IEntityTypeConfiguration<GameReadModel>, IEntityTypeConfiguration<OrganizerReadModel>, IEntityTypeConfiguration<PlayerReadModel>,
         IEntityTypeConfiguration<RoomMemberReadModel>, IEntityTypeConfiguration<RoomReadModel>, IEntityTypeConfiguration<GameUserReadModel>,
-        IEntityTypeConfiguration<CountryPatternReadModel>, IEntityTypeConfiguration<CityPatternReadModel>
+        IEntityTypeConfiguration<CountryPatternReadModel>, IEntityTypeConfiguration<CityPatternReadModel>, IEntityTypeConfiguration<SanctionReadModel>
     {
         public void Configure(EntityTypeBuilder<CountryPatternReadModel> builder)
         {
@@ -50,6 +51,11 @@ namespace Game.Infrastructure.Configurations
                 .HasMany(country => country.Cities)
                 .WithOne(city => city.Country)
                 .HasForeignKey(city => city.CountryId);
+
+            builder
+                .HasMany(country=>country.Sanctions)
+                .WithOne(sanction=>sanction.Issuser)
+                .HasForeignKey(sanction=>sanction.IssuserId);
 
             builder.ToTable("Countries");
         }
@@ -124,6 +130,13 @@ namespace Game.Infrastructure.Configurations
                 .HasForeignKey(member => member.GameUserId);
 
             builder.ToTable("GameUsers");
+        }
+
+        public void Configure(EntityTypeBuilder<SanctionReadModel> builder)
+        {
+            builder.HasKey(s => new { s.IssuserId, s.AudienceId });
+
+            builder.ToTable("Sanctions");
         }
     }
 }

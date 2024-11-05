@@ -1,5 +1,7 @@
-﻿using Game.Application.Services;
-using Game.Domain.Repositories;
+﻿using Game.Application.Helpers;
+using Game.Application.Services;
+using Game.Domain.Interfaces.Countries;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
@@ -9,34 +11,34 @@ namespace Game.Application.Countries.Handlers
 {
     internal sealed class CreateCountryHandler : IRequestHandler<CreateCountry>
     {
-        private readonly IGameModuleService _gameModuleService;
-        private readonly ICountryFabric _countryFabric;
+        private readonly IGameModuleHelper _helper;
+        private readonly IGameModuleReadService _readService;
+        private readonly ICountryFactory _countryFactory;
         private readonly IRoomRepository _roomRepository;
         private readonly IRoomMemberRepository _roomMemberRepository;
-        private readonly ICountryRepository _countryRepository;
         private readonly IHttpContextService _contextService;
         private readonly IGameModuleNotificationService _notifications;
         private readonly ILogger<CreateCountryHandler> _logger;
 
 
-        public CreateCountryHandler(ICountryFabric countryFabric, IRoomRepository roomRepository,
+        public CreateCountryHandler(ICountryFactory countryFactory, IRoomRepository roomRepository,
             IHttpContextService contextService, IRoomMemberRepository roomMemberRepository,
             IGameModuleNotificationService notifications, ILogger<CreateCountryHandler> logger,
-            IGameModuleService gameModuleService, ICountryRepository countryRepository)
+            IGameModuleHelper helper, IGameModuleReadService readService)
         {
-            _countryFabric = countryFabric;
+            _countryFactory = countryFactory;
             _roomRepository = roomRepository;
             _contextService = contextService;
             _roomMemberRepository = roomMemberRepository;
             _notifications = notifications;
             _logger = logger;
-            _gameModuleService = gameModuleService;
-            _countryRepository = countryRepository;
+            _helper = helper;
+            _readService = readService;
         }
 
         public async Task Handle(CreateCountry command, CancellationToken cancellationToken)
         {
-            if (await _countryRepository.ExistsByNormalizedNameAsync(command.RoomId, command.NormalizedName))
+            if (!await _readService.CountryExistsByNormalizedNameAsync(command.RoomId, command.NormalizedName))
                 throw new BadRequestException($"Country with NormalizedName {command.NormalizedName} already exists");
 
             var userId = _contextService.GetCurrentUserId();
@@ -49,13 +51,11 @@ namespace Game.Application.Countries.Handlers
             if (room.DomainGame != null)
                 throw new BadImageFormatException($"Cannot add RoomMember {member.GameUserId} to Country when Game {room.Id} is active");
 
-            var country = await _countryFabric.CreateCountry(command.NormalizedName, command.RoomId)
+            var country = await _countryFactory.CreateCountry(command.NormalizedName, command.RoomId, room.GameType)
                 ?? throw new BadRequestException($"Cannot create Country {command.NormalizedName} for Room {command.RoomId}");
 
             if (member.CountryId != null)
-            {
-                await _gameModuleService.RemoveMemberFromCountry(member);
-            }
+                await _helper.RemoveMemberFromCountry(member);
 
             room.AddCountry(country);
             country.AddPlayer(member, room.HasTeams);

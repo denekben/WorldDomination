@@ -23,7 +23,7 @@ namespace Game.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.City", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.City", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -65,7 +65,7 @@ namespace Game.Infrastructure.Migrations
                     b.ToTable("Cities", "Game");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.Country", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Country", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -112,7 +112,7 @@ namespace Game.Infrastructure.Migrations
                     b.ToTable("Countries", "Game");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.Game", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Game", b =>
                 {
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uuid");
@@ -135,7 +135,7 @@ namespace Game.Infrastructure.Migrations
                     b.ToTable("Games", "Game");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.Room", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -178,7 +178,7 @@ namespace Game.Infrastructure.Migrations
                     b.ToTable("Rooms", "Game");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.RoomMember", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.RoomMember", b =>
                 {
                     b.Property<Guid>("GameUserId")
                         .HasColumnType("uuid");
@@ -219,7 +219,7 @@ namespace Game.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.UserAggregate.Entities.GameUser", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Users.Entities.GameUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -766,23 +766,23 @@ namespace Game.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.Organizer", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Organizer", b =>
                 {
-                    b.HasBaseType("Game.Domain.DomainModels.RoomAggregate.Entities.RoomMember");
+                    b.HasBaseType("Game.Domain.DomainModels.Rooms.Entities.RoomMember");
 
                     b.HasDiscriminator().HasValue("Organizer");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.Player", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Player", b =>
                 {
-                    b.HasBaseType("Game.Domain.DomainModels.RoomAggregate.Entities.RoomMember");
+                    b.HasBaseType("Game.Domain.DomainModels.Rooms.Entities.RoomMember");
 
                     b.HasDiscriminator().HasValue("Player");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.City", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.City", b =>
                 {
-                    b.HasOne("Game.Domain.DomainModels.GameAggregate.Entities.Country", "Country")
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -791,14 +791,14 @@ namespace Game.Infrastructure.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.Country", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Country", b =>
                 {
-                    b.HasOne("Game.Domain.DomainModels.GameAggregate.Entities.Game", "Game")
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Game", "Game")
                         .WithMany("Countries")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Game.Domain.DomainModels.RoomAggregate.Entities.Room", "Room")
+                    b.HasOne("Game.Domain.DomainModels.Rooms.Entities.Room", "Room")
                         .WithMany("Countries")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -809,20 +809,20 @@ namespace Game.Infrastructure.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.Game", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Game", b =>
                 {
-                    b.HasOne("Game.Domain.DomainModels.RoomAggregate.Entities.Room", "Room")
+                    b.HasOne("Game.Domain.DomainModels.Rooms.Entities.Room", "Room")
                         .WithOne("DomainGame")
-                        .HasForeignKey("Game.Domain.DomainModels.GameAggregate.Entities.Game", "RoomId")
+                        .HasForeignKey("Game.Domain.DomainModels.Games.Entities.Game", "RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.Room", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>
                 {
-                    b.HasOne("Game.Domain.DomainModels.UserAggregate.Entities.GameUser", "Creator")
+                    b.HasOne("Game.Domain.DomainModels.Users.Entities.GameUser", "Creator")
                         .WithMany("Rooms")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -831,20 +831,20 @@ namespace Game.Infrastructure.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.RoomMember", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.RoomMember", b =>
                 {
-                    b.HasOne("Game.Domain.DomainModels.GameAggregate.Entities.Country", "Country")
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Country")
                         .WithMany("Players")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Game.Domain.DomainModels.UserAggregate.Entities.GameUser", "GameUser")
+                    b.HasOne("Game.Domain.DomainModels.Users.Entities.GameUser", "GameUser")
                         .WithMany("CreatedMembers")
                         .HasForeignKey("GameUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Game.Domain.DomainModels.RoomAggregate.Entities.Room", "Room")
+                    b.HasOne("Game.Domain.DomainModels.Rooms.Entities.Room", "Room")
                         .WithMany("RoomMembers")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -868,19 +868,19 @@ namespace Game.Infrastructure.Migrations
                     b.Navigation("CountryPattern");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.Country", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Country", b =>
                 {
                     b.Navigation("Cities");
 
                     b.Navigation("Players");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.GameAggregate.Entities.Game", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Game", b =>
                 {
                     b.Navigation("Countries");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.RoomAggregate.Entities.Room", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>
                 {
                     b.Navigation("Countries");
 
@@ -890,7 +890,7 @@ namespace Game.Infrastructure.Migrations
                     b.Navigation("RoomMembers");
                 });
 
-            modelBuilder.Entity("Game.Domain.DomainModels.UserAggregate.Entities.GameUser", b =>
+            modelBuilder.Entity("Game.Domain.DomainModels.Users.Entities.GameUser", b =>
                 {
                     b.Navigation("CreatedMembers");
 

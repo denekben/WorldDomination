@@ -1,10 +1,11 @@
 ﻿using FakeItEasy;
 using Game.Application.Countries;
 using Game.Application.Countries.Handlers;
+using Game.Application.Helpers;
 using Game.Application.Services;
-using Game.Domain.DomainModels.GameAggregate.Entities;
-using Game.Domain.DomainModels.RoomAggregate.Entities;
-using Game.Domain.Repositories;
+using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.DomainModels.Rooms.Entities;
+using Game.Domain.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Services;
 
@@ -17,7 +18,7 @@ public class JoinCountryHandlerTests
     private readonly ICountryRepository _countryRepository;
     private readonly ILogger<JoinCountryHandler> _logger;
     private readonly IGameModuleNotificationService _notifications;
-    private readonly IGameModuleService _gameModuleService;
+    private readonly IGameModuleHelper _gameModuleService;
 
     public JoinCountryHandlerTests()
     {
@@ -27,7 +28,7 @@ public class JoinCountryHandlerTests
         _countryRepository = A.Fake<ICountryRepository>();
         _logger = A.Fake<ILogger<JoinCountryHandler>>();
         _notifications = A.Fake<IGameModuleNotificationService>();
-        _gameModuleService = A.Fake<IGameModuleService>();
+        _gameModuleService = A.Fake<IGameModuleHelper>();
 
         _handler = new JoinCountryHandler(
             _contextService,
