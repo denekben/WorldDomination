@@ -1,9 +1,10 @@
 ﻿using Game.Domain.DomainModels.Games.ValueObjects;
 using WorldDomination.Shared.Domain;
+using WorldDomination.Shared.Exceptions.CustomExceptions;
 
 namespace Game.Domain.DomainModels.Games.Entities
 {
-    public class Sanction : DomainEntity
+    public sealed class Sanction : DomainEntity
     {
         public IdValueObject IssuserId { get; private set; }
         public IdValueObject AudienceId { get; private set; }
@@ -15,16 +16,18 @@ namespace Game.Domain.DomainModels.Games.Entities
         private Sanction() { }
 
         private Sanction(Guid issuserId, Guid audienceId, 
-            float? sanctionPower = null)
+            float sanctionPower)
         {
             IssuserId = issuserId;
             AudienceId = audienceId;
             SanctionPower = SanctionPower.Create(sanctionPower);
         }
 
-        public static Sanction Create(Guid issuserId, Guid audienceId,
-            float? sanctionPower = null)
+        public static Sanction Create(Guid issuserId, Guid audienceId, float sanctionPower)
         {
+            if (issuserId == audienceId)
+                throw new BusinessRuleValidationException("Sanction Issuser cannot be Sanction Audience");
+
             return new Sanction(issuserId, audienceId, sanctionPower);
         }
     }

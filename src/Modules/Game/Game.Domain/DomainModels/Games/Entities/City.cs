@@ -1,10 +1,13 @@
 ﻿using Game.Domain.DomainModels.Games.ValueObjects;
 using WorldDomination.Shared.Domain;
+using WorldDomination.Shared.Exceptions.CustomExceptions;
 
 namespace Game.Domain.DomainModels.Games.Entities
 {
     public sealed class City : DomainEntity
     {
+        private const int _developmentLevelIncreasing = 20;
+
         public IdValueObject Id {  get; private set; }
         public string CityName { get; private set; }
         public string NormalizedName { get; private set; }
@@ -13,7 +16,6 @@ namespace Game.Domain.DomainModels.Games.Entities
         public bool HaveShield { get; private set; }
         public DevelopmentLevel DevelopmentLevel { get; private set; }
         public LivingLevel LivingLevel { get; private set; }
-        public Income Income { get; private set; }
 
         public IdValueObject CountryId { get; private set; }
         public Country Country { get; private set; }
@@ -31,12 +33,33 @@ namespace Game.Domain.DomainModels.Games.Entities
             HaveShield = false;
             DevelopmentLevel = DevelopmentLevel.Create();
             LivingLevel = LivingLevel.Create();
-            Income = Income.Create();
         }
 
         public static City Create(string cityName, string normalizedName, string cityImagePath)
         {
             return new City(cityName, normalizedName, cityImagePath);
+        }
+
+        public void DevelopCity()
+        {
+            DevelopmentLevel += _developmentLevelIncreasing;
+        }
+
+        internal void SetShield()
+        {
+            if (HaveShield)
+                throw new BusinessRuleValidationException("Cannot set a shield to a City with shield");
+
+            if (!IsAlive)
+                throw new BusinessRuleValidationException("Can set shield only for alive Cities");
+        }
+
+        internal void GetStrike()
+        {
+            if (HaveShield)
+                HaveShield = false;
+            else
+                IsAlive = false;
         }
     }
 }

@@ -40,13 +40,13 @@ namespace Game.Application.Countries.Handlers
             if (member.CountryId == command.CountryId)
                 throw new BadRequestException($"Cannot join to the same Country");
 
-            var room = await _roomRepository.GetAsync(command.RoomId, RoomIncludes.DomainGame)
+            var room = await _roomRepository.GetAsync(command.RoomId)
                 ?? throw new BadRequestException($"Cannot find Room {command.RoomId}");
 
             if (!room.HasTeams)
                 throw new BadRequestException($"Cannot add second Member in Country when Room {room.Id} created without teams");
 
-            if (room.DomainGame != null)
+            if (room.IsGameActive)
                 throw new BadImageFormatException($"Cannot add RoomMember {member.GameUserId} to Country when Game in Room {room.Id} is active");
 
             var country = await _countryRepository.GetAsync(command.CountryId, CountryIncludes.Players)

@@ -7,9 +7,9 @@ using Game.Infrastructure.Realtime;
 using Game.Application.Services;
 using Game.Domain.Interfaces.Repositories;
 using Game.Domain.Interfaces.Countries;
-using Game.Infrastructure.Strategies;
 using Game.Application.Helpers;
 using Game.Infrastructure.Services;
+using Game.Domain.DomainModels.Games.Strategies;
 
 namespace Game.Infrastructure
 {

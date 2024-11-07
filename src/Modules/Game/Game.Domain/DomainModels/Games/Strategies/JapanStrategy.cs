@@ -1,9 +1,9 @@
-﻿using Game.Infrastructure.Strategies.DefaultStrategy;
+﻿using Game.Domain.DomainModels.Games.Strategies.DefaultStrategy;
 
-namespace Game.Infrastructure.Strategies
+namespace Game.Domain.DomainModels.Games.Strategies
 {
     public class JapanStrategy : DefaultCountryStrategy
     {
-        public override double DestroyedCityIncomeCoefficient => 0.5f;
+        public override float DestroyedCityIncomeCoefficient => 0.5f;
     }
 }

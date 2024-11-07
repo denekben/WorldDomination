@@ -15,12 +15,10 @@ namespace Game.Infrastructure.Contexts
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomMember> Members { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<DomainGame> Games { get; set; }
 
         public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
-            : base(options) 
-        {
-            
-        }
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

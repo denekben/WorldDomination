@@ -1,9 +1,9 @@
-﻿using Game.Infrastructure.Strategies.DefaultStrategy;
+﻿using Game.Domain.DomainModels.Games.Strategies.DefaultStrategy;
 
-namespace Game.Infrastructure.Strategies
+namespace Game.Domain.DomainModels.Games.Strategies
 {
     public class NorthKoreaStrategy : DefaultCountryStrategy
     {
-        public override double SanctionPowerImpactCoefficient => 0.0f;
+        public override float SanctionPowerImpactCoefficient => 0.0f;
     }
 }

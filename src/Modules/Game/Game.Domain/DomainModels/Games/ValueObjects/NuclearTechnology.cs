@@ -5,6 +5,7 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
     public sealed record NuclearTechnology
     {
         private const int _minNBQuantity = 0;
+        private const int _defaultNBQuantity = 0;
 
         public int Value { get; private set; }
 
@@ -13,13 +14,12 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             Value = value;
         }
 
-        public static NuclearTechnology Create(int? nuclearBombQuantity = null)
+        public static NuclearTechnology Create(int nuclearBombQuantity = _defaultNBQuantity)
         {
-            if (nuclearBombQuantity != null && nuclearBombQuantity < _minNBQuantity)
-            {
+            if (nuclearBombQuantity < _minNBQuantity)
                 throw new InvalidArgumentDomainException($"NuclearTechnology value {nuclearBombQuantity} is invalid");
-            }
-            return new NuclearTechnology(nuclearBombQuantity ?? _minNBQuantity);
+            
+            return new NuclearTechnology(nuclearBombQuantity);
         }
 
         public static implicit operator NuclearTechnology(int value) => Create(value);

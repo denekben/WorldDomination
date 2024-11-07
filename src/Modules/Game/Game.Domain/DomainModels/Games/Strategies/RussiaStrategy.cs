@@ -1,9 +1,9 @@
-﻿using Game.Infrastructure.Strategies.DefaultStrategy;
+﻿using Game.Domain.DomainModels.Games.Strategies.DefaultStrategy;
 
-namespace Game.Infrastructure.Strategies
+namespace Game.Domain.DomainModels.Games.Strategies
 {
     public class RussiaStrategy : DefaultCountryStrategy
     {
-        public override double NuclearDefenseChance => 0.3f;
+        public override float NuclearDefenseChance => 0.3f;
     }
 }

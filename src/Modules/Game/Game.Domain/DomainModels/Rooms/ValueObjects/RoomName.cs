@@ -17,9 +17,8 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
         public static RoomName Create(string value)
         {
             if(value.Length > _maxLength || value.Length < _minLength)
-            {
                 throw new InvalidArgumentDomainException($"RoomName value {value} is invalid");
-            }
+            
             return new RoomName(value);
         }
 

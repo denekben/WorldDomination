@@ -5,7 +5,6 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
     public sealed record CurrentRound
     {
         private const int _minRound = 1;
-        private const int _maxRound = 7;
         private const int _defaultRound = 1;
 
         public int Value { get; private set; }
@@ -15,13 +14,12 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             Value = value;
         }
 
-        public static CurrentRound Create(int? value = null)
+        public static CurrentRound Create(int value = _defaultRound)
         {
-            if (value < _minRound || value > _maxRound)
-            {
+            if (value < _minRound)
                 throw new InvalidArgumentDomainException($"CurrentRound value {value} is invalid");
-            }
-            return new CurrentRound(value ?? _defaultRound);
+            
+            return new CurrentRound(value);
         }
 
         public static implicit operator CurrentRound(int value) => Create(value);

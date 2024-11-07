@@ -17,6 +17,7 @@ namespace Game.Infrastructure.Contexts
         public DbSet<CountryReadModel> Countries { get; set; }
         public DbSet<SanctionReadModel> Sanctions { get; set; }
         public DbSet<GameUserReadModel> Users { get; set; }
+        public DbSet<GameReadModel> Games { get; set; }
 
         public GameReadDbContext(DbContextOptions<GameReadDbContext> options) : base(options) { }
 

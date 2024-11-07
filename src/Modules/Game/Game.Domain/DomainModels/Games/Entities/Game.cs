@@ -8,9 +8,12 @@ namespace Game.Domain.DomainModels.Games.Entities
 {
     public sealed class Game : DomainEntity
     {
+        private const int _defaultEcologyDevelopmentIncreasement = 10;
+
         public IdValueObject RoomId { get; private set; }
         public GameType GameType { get; private set; }
         public bool HasTeams { get; private set; }
+        public RoundQuantity RoundQuantity { get; private set; }
         public CurrentRound CurrentRound { get; private set; }
         public EcologyLevel EcologyLevel { get; private set; }
 
@@ -20,16 +23,17 @@ namespace Game.Domain.DomainModels.Games.Entities
         //EF
         private Game() { }
 
-        private Game(GameType gameType, bool hasTeams, Guid roomId)
+        private Game(GameType gameType, bool hasTeams, RoundQuantity roundQuantity, Guid roomId)
         {
-            RoomId = roomId;
             GameType = gameType;
             HasTeams = hasTeams;
+            RoundQuantity = roundQuantity;
             CurrentRound = CurrentRound.Create();
             EcologyLevel = EcologyLevel.Create();
+            RoomId = roomId;
         }
 
-        public static Game Create(GameType gameType, bool hasTeams, Guid roomId, List<RoomMember> members)
+        public static Game Create(GameType gameType, bool hasTeams, RoundQuantity roundQuantity, Guid roomId, List<RoomMember> members)
         {
             if (members == null || members.Count == 0)
                 throw new BusinessRuleValidationException("Cannot create Game without members");
@@ -37,12 +41,34 @@ namespace Game.Domain.DomainModels.Games.Entities
             if (!CheckMembersDistribution(members))
                 throw new BusinessRuleValidationException("Members should be evenly distributed across Countries");
 
-            return new Game(gameType, hasTeams, roomId);
+            return new Game(gameType, hasTeams, roundQuantity, roomId);
         }
 
-        private bool CheckMembersDistribution(List<RoomMember> members)
+        private static bool CheckMembersDistribution(List<RoomMember> members)
         {
-            var distribution = members.GroupBy(m => m.CountryId).ToDictionary(g => g.Key, g => g.Count());
+            var validMembers = members.Where(m => (m.CountryId is not null));
+
+            if (validMembers.Count() != members.Count)
+                throw new BusinessRuleValidationException("Members should belong to Country to create a Game");
+
+            var distribution = validMembers.GroupBy(m => m.CountryId.Value).ToDictionary(g => g.Key, g => g.Count());
+
+            int latestQuantity = distribution.First().Value;
+            foreach(var memberQuantity in distribution)
+            {
+                if((memberQuantity.Value - latestQuantity) > 1)
+                {
+                    return false;
+                }
+                latestQuantity = memberQuantity.Value;
+            }
+
+            return true;
+        }
+
+        internal void DevelopEcologyProgram()
+        {
+            EcologyLevel += _defaultEcologyDevelopmentIncreasement;
         }
     }
 }

@@ -2,7 +2,6 @@
 using Game.Domain.DomainModels.ReadModels.Users;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
-using WorldDomination.Shared.Domain;
 
 namespace Game.Infrastructure.Services
 {
@@ -18,6 +17,11 @@ namespace Game.Infrastructure.Services
         public async Task<bool> CountryExistsByNormalizedNameAsync(Guid roomId, string normalizedName)
         {
             return await _context.Countries.AnyAsync(c=>c.NormalizedName == normalizedName && c.RoomId == roomId);
+        }
+
+        public async Task<bool> GameExistsByRoomId(Guid roomId)
+        {
+            return await _context.Games.AnyAsync(g=>g.RoomId == roomId);
         }
 
         public async Task<GameUserReadModel?> GetUserAsync(Guid userId)

@@ -7,5 +7,6 @@ namespace Game.Application.Services
     {
         Task<bool> CountryExistsByNormalizedNameAsync(Guid roomId, string normalizedName);
         Task<GameUserReadModel?> GetUserAsync(Guid userId);
+        Task<bool> GameExistsByRoomId(Guid roomId);
     }
 }

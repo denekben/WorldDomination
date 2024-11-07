@@ -3,6 +3,7 @@ using System;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Game.Infrastructure.Migrations
 {
     [DbContext(typeof(GameWriteDbContext))]
-    partial class GameWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107160320_V4_GameWrite")]
+    partial class V4_GameWrite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -20,7 +20,6 @@ namespace Game.Application.Countries.Handlers
         private readonly IGameModuleNotificationService _notifications;
         private readonly ILogger<CreateCountryHandler> _logger;
 
-
         public CreateCountryHandler(ICountryFactory countryFactory, IRoomRepository roomRepository,
             IHttpContextService contextService, IRoomMemberRepository roomMemberRepository,
             IGameModuleNotificationService notifications, ILogger<CreateCountryHandler> logger,
@@ -45,10 +44,10 @@ namespace Game.Application.Countries.Handlers
             var member = await _roomMemberRepository.GetAsync(userId, command.RoomId)
                 ?? throw new BadRequestException($"Cannot find RoomMember {userId}");
 
-            var room = await _roomRepository.GetAsync(command.RoomId, RoomIncludes.Countries | RoomIncludes.DomainGame)
+            var room = await _roomRepository.GetAsync(command.RoomId, RoomIncludes.Countries)
                 ?? throw new BadRequestException($"Cannot find Room {command.RoomId}");
 
-            if (room.DomainGame != null)
+            if (room.IsGameActive)
                 throw new BadImageFormatException($"Cannot add RoomMember {member.GameUserId} to Country when Game {room.Id} is active");
 
             var country = await _countryFactory.CreateCountry(command.NormalizedName, command.RoomId, room.GameType)

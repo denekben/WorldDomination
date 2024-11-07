@@ -14,13 +14,12 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             Value = value;
         }
 
-        public static Budget Create(int? value = null)
+        public static Budget Create(int value = _defaultBudget)
         {
             if (value < _minBudget)
-            {
                 throw new InvalidArgumentDomainException($"Budget value {value} is invalid");
-            }
-            return new Budget(value ?? _defaultBudget);
+            
+            return new Budget(value);
         }
 
         public static implicit operator Budget(int value) => Create(value);

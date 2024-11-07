@@ -33,11 +33,11 @@ namespace Game.Application.Rooms.Commands.Handlers
             var user = await _readService.GetUserAsync(userId)
                 ?? throw new BadRequestException("Cannot create room: invalid userId");
 
-            var(roomName, gameType, hasTeams, memberLimit, countryLimit, isPrivate, roomCode) = command;
+            var(roomName, gameType, hasTeams, memberLimit, roundQuantity, countryLimit, isPrivate, roomCode) = command;
 
             roomName = string.IsNullOrWhiteSpace(roomName) ? user.Name + "'s room" : roomName;
 
-            var room = Room.Create(user.Id, roomName, gameType, hasTeams, memberLimit, countryLimit, isPrivate, roomCode)
+            var room = Room.Create(user.Id, roomName, gameType, hasTeams, memberLimit, roundQuantity, countryLimit, isPrivate, roomCode)
                 ?? throw new BadRequestException("Cannot create Room");
 
             var organizer = Organizer.Create(user.Id, room.Id, user.Name, user.ProfileImagePath)

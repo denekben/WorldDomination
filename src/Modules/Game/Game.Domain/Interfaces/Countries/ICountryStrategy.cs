@@ -9,17 +9,20 @@ namespace Game.Domain.Interfaces.Countries
         int BombCost {  get; }
         int ShieldCost { get; }
         int CityDevelopmentCost { get; }
+        int EcologyDevelopmentCost { get; }
+        int SanctionQuantityInRoundLimit { get; }
+        float SanctionPower { get; }
 
-        double NuclearDefenseChance { get; } 
-        double SanctionPowerCoefficient { get; } 
-        double DestroyedCityIncomeCoefficient { get; } 
-        double EcologyImpactCoefficient { get; }
-        double CityDevelopmentCostCoefficient { get; } 
-        double NuclearTechnologyCostCoefficient { get; } 
-        double SanctionPowerImpactCoefficient { get; } 
-        double NuclearBombCostCoefficient { get; }
-        double NuclearShieldCostCoefficient { get; }
-        double CityIncomeCoefficient { get; }
+        float NuclearDefenseChance { get; } 
+        float SanctionPowerCoefficient { get; } 
+        float DestroyedCityIncomeCoefficient { get; } 
+        float EcologyImpactCoefficient { get; }
+        float CityDevelopmentCostCoefficient { get; } 
+        float NuclearTechnologyCostCoefficient { get; } 
+        float SanctionPowerImpactCoefficient { get; } 
+        float NuclearBombCostCoefficient { get; }
+        float NuclearShieldCostCoefficient { get; }
+        float CityIncomeCoefficient { get; }
 
         int CalculateCityIncome(Country country, City city, EcologyLevel ecologyLevel, List<Sanction> sanctions);
     }

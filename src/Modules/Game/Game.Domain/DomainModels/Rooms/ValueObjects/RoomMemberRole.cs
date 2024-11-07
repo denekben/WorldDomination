@@ -4,6 +4,7 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
 {
     public sealed record RoomMemberRole
     {
+        private const string _defaultRole = "Player";
         private static readonly IReadOnlyCollection<string> _allowedRoles = ["Player", "Organizer"];
 
         public static RoomMemberRole Player => new RoomMemberRole("Player");
@@ -15,12 +16,11 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
             Value = value;
         }
 
-        public static RoomMemberRole Create(string value)
+        public static RoomMemberRole Create(string value = _defaultRole)
         {
             if (!_allowedRoles.Contains(value))
-            {
                 throw new InvalidArgumentDomainException($"RoomMemberRole value {value} is invalid");
-            }
+
             return new RoomMemberRole(value);
         }
 

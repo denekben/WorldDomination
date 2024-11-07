@@ -1,9 +1,9 @@
-﻿using Game.Infrastructure.Strategies.DefaultStrategy;
+﻿using Game.Domain.DomainModels.Games.Strategies.DefaultStrategy;
 
-namespace Game.Infrastructure.Strategies
+namespace Game.Domain.DomainModels.Games.Strategies
 {
     public class SwitzerlandStrategy : DefaultCountryStrategy
     {
-        public override double CityIncomeCoefficient => 1.2f;
+        public override float CityIncomeCoefficient => 1.2f;
     }
 }

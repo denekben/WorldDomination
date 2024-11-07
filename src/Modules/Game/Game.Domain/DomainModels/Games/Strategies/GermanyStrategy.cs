@@ -1,9 +1,9 @@
-﻿using Game.Infrastructure.Strategies.DefaultStrategy;
+﻿using Game.Domain.DomainModels.Games.Strategies.DefaultStrategy;
 
-namespace Game.Infrastructure.Strategies
+namespace Game.Domain.DomainModels.Games.Strategies
 {
     public class GermanyStrategy : DefaultCountryStrategy
     {
-        public override double EcologyImpactCoefficient => 0.5f;
+        public override float EcologyImpactCoefficient => 0.5f;
     }
 }

@@ -2,5 +2,5 @@
 
 namespace Game.Application.Games.Commands
 {
-    public sealed record CreateGame(string GameType, bool hasTeams, Guid RoomId) : IRequest<Guid>;
+    public sealed record CreateGame(string GameType, bool HasTeams, int RoundQuantity, Guid RoomId) : IRequest<Guid>;
 }

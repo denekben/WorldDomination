@@ -8,8 +8,15 @@ namespace Game.Domain.Interfaces.Repositories
     {
         Task AddAsync(DomainGame user);
         Task DeleteAsync(DomainGame user);
-        Task<DomainGame?> GetAsync(IdValueObject id);
-        Task<DomainGame?> GetAsync(IdValueObject firstId, IdValueObject? secondId);
+        Task<DomainGame?> GetAsync(IdValueObject roomId);
+        Task<DomainGame?> GetAsync(IdValueObject roomId, GameIncludes includes);
         Task UpdateAsync(DomainGame user);
+    }
+
+    [Flags]
+    public enum GameIncludes
+    {
+        Countries = 0,
+        CountriesWithCities = 1
     }
 }

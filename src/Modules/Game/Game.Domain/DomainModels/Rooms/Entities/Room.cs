@@ -14,9 +14,11 @@ namespace Game.Domain.DomainModels.Rooms.Entities
         public GameType GameType { get; private set; }
         public bool HasTeams { get; private set; }
         public RoomMemberLimit RoomMemberLimit { get; private set; }
+        public RoundQuantity RoundQuantity { get; private set; }
         public CountryLimit CountryLimit { get; private set; }
         public bool IsPrivate { get; private set; }
         public string? RoomCode { get; private set; }
+        public bool IsGameActive { get; private set; }
         public DateTime? CreatedTime { get; private set; }
 
         public DomainGame DomainGame { get; private set; }
@@ -30,7 +32,7 @@ namespace Game.Domain.DomainModels.Rooms.Entities
         private Room() { }
 
         private Room(Guid creatorId, string roomName, string gameType, bool hasTeams,
-            int roomLimit, int countryLimit, bool isPrivate, string? roomCode)
+            int roomLimit, int roundQuantity, int countryLimit, bool isPrivate, string? roomCode)
         {
             Id = Guid.NewGuid();
             CreatorId = creatorId;
@@ -38,25 +40,26 @@ namespace Game.Domain.DomainModels.Rooms.Entities
             GameType = gameType;
             HasTeams = hasTeams;
             RoomMemberLimit = roomLimit;
+            RoundQuantity = roundQuantity;
             CountryLimit = countryLimit;
             IsPrivate = isPrivate;
             RoomCode = roomCode;
         }
 
         public static Room Create(Guid creatorId, string roomName, string gameType, bool hasTeams,
-            int memberLimit, int countryLimit, bool isPrivate, string? roomCode)
+            int memberLimit, int roundQuantity, int countryLimit, bool isPrivate, string? roomCode)
         {
             if (!hasTeams && memberLimit != countryLimit)
                 throw new BusinessRuleValidationException("In Room without teams RoomMemberLimit must be equal to CountryLimit");
 
-            if (memberLimit < countryLimit)
-                throw new BusinessRuleValidationException("CountryLimit cannot exceed MemberLimit");
-
-            return new Room(creatorId, roomName, gameType, hasTeams, countryLimit, memberLimit, isPrivate, roomCode);
+            return new Room(creatorId, roomName, gameType, hasTeams, memberLimit, roundQuantity, countryLimit, isPrivate, roomCode);
         }
 
         public void AddMember(RoomMember member, string? roomCode = null)
         {
+            if (IsGameActive)
+                throw new BusinessRuleValidationException($"Cannot add Member to Room with active Game");
+
             if (RoomMembers.Any(m => m.GameUserId == member.GameUserId))
                 throw new BusinessRuleValidationException("Cannot add same user in room");
 
@@ -103,14 +106,17 @@ namespace Game.Domain.DomainModels.Rooms.Entities
 
         public void AddGame(DomainGame game)
         {
-            if (DomainGame != null)
-                throw new BusinessRuleValidationException($"Cannot create Game for Room with active Game");
+            if (IsGameActive)
+                throw new BusinessRuleValidationException($"Cannot create Game to Room with active Game");
 
             DomainGame = game;
         }
 
         public void AddCountry(Country country)
         {
+            if (IsGameActive)
+                throw new BusinessRuleValidationException($"Cannot create Country to Room with active Game");
+
             if (Countries.Any(c => (c.Id == country.Id || c.NormalizedName == country.NormalizedName)))
                 throw new BusinessRuleValidationException($"Countries in Room must be unique");
 
@@ -119,5 +125,7 @@ namespace Game.Domain.DomainModels.Rooms.Entities
 
             Countries.Add(country);
         }
+
+
     }
 }

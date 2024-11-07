@@ -14,13 +14,12 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             Value = value;
         }
 
-        public static Income Create(int? value = null)
+        public static Income Create(int value = _defaultIncome)
         {
             if (value < _minIncome)
-            {
                 throw new InvalidArgumentDomainException($"Income value {value} is invalid");
-            }
-            return new Income(value ?? _defaultIncome);
+            
+            return new Income(value);
         }
 
         public static implicit operator Income(int value) => Create(value);

@@ -15,13 +15,12 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             Value = value;
         }
 
-        public static LivingLevel Create(int? value = null)
+        public static LivingLevel Create(int value = _defaultLivingLevel)
         {
             if (value < _minLivingLevel || value > _maxLivingLevel)
-            {
                 throw new InvalidArgumentDomainException($"LivingLevel value {value} is invalid");
-            }
-            return new LivingLevel(value ?? _defaultLivingLevel);
+            
+            return new LivingLevel(value);
         }
 
         public static implicit operator LivingLevel(int value) => Create(value);

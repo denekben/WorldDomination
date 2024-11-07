@@ -6,6 +6,7 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
     {
         private const int _maxLimit = 50;
         private const int _minLimit = 2;
+        private const int _defaultLimit = 50;
 
         public int Value { get; private set; }
 
@@ -14,12 +15,10 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
             Value = value;
         }
 
-        public static RoomMemberLimit Create(int value)
+        public static RoomMemberLimit Create(int value = _defaultLimit)
         {
             if (value < _minLimit || value > _maxLimit)
-            {
                 throw new InvalidArgumentDomainException($"MemberLimit {value} is invalid");
-            }
 
             return new RoomMemberLimit(value);
         }

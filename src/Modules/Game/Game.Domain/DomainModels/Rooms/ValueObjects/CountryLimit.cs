@@ -6,6 +6,7 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
     {
         private const int _maxQuantity = 11;
         private const int _minQuantity = 2;
+        private const int _defaultQuantity = 11;
 
         public int Value { get; private set; }
 
@@ -14,12 +15,10 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
             Value = value;
         }
 
-        public static CountryLimit Create(int value)
+        public static CountryLimit Create(int value = _defaultQuantity)
         {
             if (value < _minQuantity || value > _maxQuantity)
-            {
                 throw new InvalidArgumentDomainException($"CountryQuantity value {value} is invalid");
-            }
 
             return new CountryLimit(value);
         }

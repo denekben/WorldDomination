@@ -1,7 +1,7 @@
 ﻿using Game.Domain.Interfaces.Countries;
-using Game.Infrastructure.Strategies.DefaultStrategy;
-using Game.Infrastructure.Strategies;
 using Microsoft.Extensions.DependencyInjection;
+using Game.Domain.DomainModels.Games.Strategies;
+using Game.Domain.DomainModels.Games.Strategies.DefaultStrategy;
 
 public class CountryStrategyFactory : ICountryStrategyFactory
 {
@@ -30,9 +30,7 @@ public class CountryStrategyFactory : ICountryStrategyFactory
     public ICountryStrategy CreateStrategy(string? normalizedName = null)
     {
         if (string.IsNullOrEmpty(normalizedName))
-        {
             return GetStrategy<DefaultCountryStrategy>();
-        }
 
         return _strategyMap.TryGetValue(normalizedName, out var strategyType)
             ? GetStrategy(strategyType)

@@ -14,13 +14,12 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             Value = value;
         }
 
-        public static SanctionPower Create(float? value = null)
+        public static SanctionPower Create(float value = _defaultValue)
         {
             if (value < _minValue)
-            {
                 throw new InvalidArgumentDomainException($"SanctionPower value {value} is invalid");
-            }
-            return new SanctionPower(value ?? _defaultValue);
+            
+            return new SanctionPower(value);
         }
 
         public static implicit operator float(SanctionPower value) => Create(value);

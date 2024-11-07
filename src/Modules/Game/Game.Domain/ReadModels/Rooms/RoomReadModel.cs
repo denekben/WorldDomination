@@ -11,9 +11,11 @@ namespace Game.Domain.DomainModels.ReadModels.Rooms
         public string GameType { get; private set; }
         public bool HasTeams { get; private set; }
         public int RoomMemberLimit { get; private set; }
+        public int RoundQuantity { get; private set; }
         public int CountryLimit { get; private set; }
         public bool IsPrivate { get; private set; }
         public string RoomCode { get; private set; }
+        public bool IsGameActive { get; private set; }
         public DateTime CreatedTime { get; private set; }
         public GameReadModel Game { get; private set; }
         public Guid CreatorId { get; private set; }

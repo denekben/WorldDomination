@@ -64,10 +64,6 @@ namespace Game.Infrastructure.Configurations
                 .Property(city => city.LivingLevel)
                 .HasConversion(lLevel => lLevel.Value, lLevel => LivingLevel.Create(lLevel));
 
-            builder
-                .Property(city => city.Income)
-                .HasConversion(income => income.Value, income => Income.Create(income));
-
             builder.ToTable("Cities");
         }
 
@@ -92,7 +88,7 @@ namespace Game.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .HasMany(country => country.Sanctions)
+                .HasMany(country => country.OutgoingSanctions)
                 .WithOne(sanction => sanction.Issuser)
                 .HasForeignKey(sanction => sanction.IssuserId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -108,6 +104,10 @@ namespace Game.Infrastructure.Configurations
             builder
                 .Property(country => country.NuclearTechnology)
                 .HasConversion(nTechnology => nTechnology.Value, nTechnology => NuclearTechnology.Create(nTechnology));
+
+            builder
+                .Property(country=>country.Income)
+                .HasConversion(income=>income.Value, income => Income.Create(income));
 
             builder.ToTable("Countries");
         }
@@ -133,6 +133,10 @@ namespace Game.Infrastructure.Configurations
             builder
                 .Property(game => game.CurrentRound)
                 .HasConversion(currentRound => currentRound.Value, currentRound => CurrentRound.Create(currentRound));
+
+            builder
+                .Property(game=>game.RoundQuantity)
+                .HasConversion(roundQuantity=>roundQuantity.Value, roundQuantity=>RoundQuantity.Create(roundQuantity));
 
             builder
                 .Property(game => game.EcologyLevel)
@@ -188,6 +192,10 @@ namespace Game.Infrastructure.Configurations
             builder
                 .Property(room => room.RoomMemberLimit)
                 .HasConversion(memberLimit => memberLimit.Value, memberLimit => RoomMemberLimit.Create(memberLimit));
+
+            builder
+                .Property(room => room.RoundQuantity)
+                .HasConversion(roundQuantity => roundQuantity.Value, roundQuantity => RoundQuantity.Create(roundQuantity));
 
             builder
                 .Property(room => room.CountryLimit)

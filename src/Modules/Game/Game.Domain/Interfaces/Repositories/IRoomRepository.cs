@@ -7,6 +7,7 @@ namespace Game.Domain.Interfaces.Repositories
     {
         Task AddAsync(Room room);
         Task DeleteAsync(Room room);
+        Task<Room?> GetAsync(IdValueObject id);
         Task<Room?> GetAsync(IdValueObject id, RoomIncludes includes);
         Task UpdateAsync(Room room);
     }

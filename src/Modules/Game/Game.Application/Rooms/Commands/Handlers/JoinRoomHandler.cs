@@ -32,10 +32,10 @@ namespace Game.Application.Rooms.Commands.Handlers
             var user = await _readService.GetUserAsync(userId)
                 ?? throw new BadRequestException("Cannot join Room: invalid userId");
 
-            var room = await _roomRepository.GetAsync(command.RoomId, RoomIncludes.DomainGame)
+            var room = await _roomRepository.GetAsync(command.RoomId)
                 ?? throw new BadRequestException("Cannot find room");
 
-            if (room.DomainGame != null)
+            if (room.IsGameActive)
                 throw new BadRequestException("Cannot add user to Room with active Game");
 
             var player = Player.Create(user.Id, command.RoomId, user.Name, user.ProfileImagePath)

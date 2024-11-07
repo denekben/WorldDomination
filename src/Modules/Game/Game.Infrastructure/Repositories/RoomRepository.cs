@@ -46,6 +46,11 @@ namespace Game.Infrastructure.Repositories
             return room;
         }
 
+        public async Task<Room?> GetAsync(IdValueObject id)
+        {
+            return await _rooms.FirstOrDefaultAsync(r=>r.Id == id);
+        }
+
         public async Task UpdateAsync(Room room)
         {
             _rooms.Update(room);

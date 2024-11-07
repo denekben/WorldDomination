@@ -24,11 +24,13 @@ namespace Game.Infrastructure.Services
                 .FirstOrDefaultAsync(country => country.NormalizedName == normalizedName)
                 ?? throw new BadRequestException($"Cannot find CountryPattern with NormalizedName {normalizedName}");
 
+            var strategy = gameType == GameType.RolePlay ? _countryStrategyFactory.CreateStrategy(countryPattern.NormalizedName) : _countryStrategyFactory.CreateStrategy();
+
             var country = Country.Create(
                 countryPattern.CountryName, 
                 countryPattern.NormalizedName, 
-                countryPattern.FlagImagePath, roomId, 
-                gameType == GameType.RolePlay ? _countryStrategyFactory.CreateStrategy(countryPattern.NormalizedName) : null)
+                countryPattern.FlagImagePath, roomId,
+                strategy)
                 ?? throw new BadRequestException($"Cannot create Country with NormalizedName {normalizedName}");
 
             foreach(var cityPattern in countryPattern.CityPatterns.OrderByDescending(country=>country.IsCapital))

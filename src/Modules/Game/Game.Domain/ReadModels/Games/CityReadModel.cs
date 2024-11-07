@@ -10,7 +10,6 @@
         public bool HaveShield { get; private set; }
         public int DevelopmentLevel { get; private set; }
         public int LivingLevel { get; private set; }
-        public int Income { get; private set; }
 
         public Guid CountryId { get; private set; }
         public CountryReadModel Country { get; private set; }

@@ -4,6 +4,7 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
 {
     public sealed record GameType
     {
+        private const string _defaultGameType = "Standart";
         private static readonly IReadOnlyCollection<string> _gameTypes = [ "Standart", "RolePlay" ];
 
         public static GameType Standart => new GameType("Standart");
@@ -15,12 +16,10 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
             Value = value;
         }
 
-        public static GameType Create(string value)
+        public static GameType Create(string value = _defaultGameType)
         {
             if (!_gameTypes.Contains(value))
-            {
                 throw new InvalidArgumentDomainException($"GameType value {value} is invalid");
-            }
 
             return new GameType(value);
         }

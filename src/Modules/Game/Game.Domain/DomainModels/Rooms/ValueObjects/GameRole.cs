@@ -15,12 +15,10 @@ namespace Game.Domain.DomainModels.Rooms.ValueObjects
             Value = value;
         }
 
-        public static GameRole Create(string? value)
+        public static GameRole Create(string value)
         {
             if (!_allowedRoles.Contains(value))
-            {
                 throw new InvalidArgumentDomainException($"GameRole value {value} is invalid");
-            }
 
             return new GameRole(value);
         }
