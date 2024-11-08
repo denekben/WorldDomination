@@ -1,20 +1,17 @@
-name: Notify Telegram on Commit
-
-on:
-  push:
-    branches:
-      - main
-
+name: telegram message
+on: [push]
 jobs:
-  notify:
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Send commit notification to Telegram
+      - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
-          telegram_token: ${{ secrets.TELEGRAM_TOKEN }}
-          chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
-          text:  |
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
             ``` 
             Commit SHA: ${{ github.sha }}
             Author: ${{ github.actor }}
