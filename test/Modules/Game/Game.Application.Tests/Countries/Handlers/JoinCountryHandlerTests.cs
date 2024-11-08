@@ -41,30 +41,30 @@ public class JoinCountryHandlerTests
         );
     }
 
-    //[Fact]
-    //public async Task Handle_ValidRequest_SuccessfullyJoinsCountry()
-    //{
-    //    Arrange
-    //   var userId = Guid.NewGuid();
-    //    var roomId = Guid.NewGuid();
-    //    var countryId = Guid.NewGuid();
-    //    var command = new JoinCountry(countryId, roomId);
+    [Fact]
+    public async Task Handle_ValidRequest_SuccessfullyJoinsCountry()
+    {
+        Arrange
+       var userId = Guid.NewGuid();
+        var roomId = Guid.NewGuid();
+        var countryId = Guid.NewGuid();
+        var command = new JoinCountry(countryId, roomId);
 
-    //    var member = new RoomMember { GameUserId = userId };
-    //    var room = new Room { Id = roomId, HasTeams = true };
-    //    var country = new Country { Id = countryId };
+        var member = new RoomMember { GameUserId = userId };
+        var room = new Room { Id = roomId, HasTeams = true };
+        var country = new Country { Id = countryId };
 
-    //    A.CallTo(() => _contextService.GetCurrentUserId()).Returns(userId);
-    //    A.CallTo(() => _roomMemberRepository.GetAsync(userId, roomId)).Returns(member);
-    //    A.CallTo(() => _roomRepository.GetAsync(roomId, RoomIncludes.DomainGame)).Returns(room);
-    //    A.CallTo(() => _countryRepository.GetAsync(countryId, CountryIncludes.Players)).Returns(country);
+        A.CallTo(() => _contextService.GetCurrentUserId()).Returns(userId);
+        A.CallTo(() => _roomMemberRepository.GetAsync(userId, roomId)).Returns(member);
+        A.CallTo(() => _roomRepository.GetAsync(roomId, RoomIncludes.DomainGame)).Returns(room);
+        A.CallTo(() => _countryRepository.GetAsync(countryId, CountryIncludes.Players)).Returns(country);
 
-    //    // Act
-    //    await _handler.Handle(command, CancellationToken.None);
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
 
-    //    // Assert
-    //    A.CallTo(() => _countryRepository.UpdateAsync(country)).MustHaveHappenedOnceExactly();
-    //    A.CallTo(() => _notifications.MemberJoinedCountry(member, roomId, countryId)).MustHaveHappenedOnceExactly();
-    //}
+        // Assert
+        A.CallTo(() => _countryRepository.UpdateAsync(country)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _notifications.MemberJoinedCountry(member, roomId, countryId)).MustHaveHappenedOnceExactly();
+    }
 
 }
