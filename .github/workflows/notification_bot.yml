@@ -13,7 +13,10 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
+            ```
             Commit SHA: ${{ github.sha }}
             Author: ${{ github.actor }}
+            Message: ${{ github.event.head\_commit.message }}
+            ```
 
           
