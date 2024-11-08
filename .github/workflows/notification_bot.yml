@@ -11,8 +11,9 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
             Commit SHA: ${{ github.sha }}
             Author: ${{ github.actor }}
-            Message: ${{ github.event.head_commit.message }}
-          format: markdown
+
+          
