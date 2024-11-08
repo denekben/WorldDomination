@@ -16,7 +16,7 @@ jobs:
             ```
             Commit SHA: ${{ github.sha }}
             Author: ${{ github.actor }}
-            Message: ${{ github.event.head\_commit.message }}
+            Message: ${{ github.event.head_commit.message }}
             ```
 
           
