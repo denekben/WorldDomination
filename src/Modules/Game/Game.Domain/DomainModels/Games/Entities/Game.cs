@@ -14,6 +14,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public GameType GameType { get; private set; }
         public bool HasTeams { get; private set; }
         public RoundQuantity RoundQuantity { get; private set; }
+        public GameState GameState { get; private set; }
         public CurrentRound CurrentRound { get; private set; }
         public EcologyLevel EcologyLevel { get; private set; }
 
@@ -28,6 +29,7 @@ namespace Game.Domain.DomainModels.Games.Entities
             GameType = gameType;
             HasTeams = hasTeams;
             RoundQuantity = roundQuantity;
+            GameState = GameState.Debates;
             CurrentRound = CurrentRound.Create();
             EcologyLevel = EcologyLevel.Create();
             RoomId = roomId;
@@ -69,6 +71,24 @@ namespace Game.Domain.DomainModels.Games.Entities
         internal void DevelopEcologyProgram()
         {
             EcologyLevel += _defaultEcologyDevelopmentIncreasement;
+        }
+
+        public void ChangeState(RoomMember member)
+        {
+            if(member is not Organizer)
+                throw new BusinessRuleValidationException("Only Organizer can change GameState");
+            
+            if (GameState == GameState.Debates)
+                GameState = GameState.Negotiations;
+
+            else if (GameState == GameState.Negotiations)
+                GameState = GameState.OrderMaking;
+
+            else if (GameState == GameState.OrderMaking)
+            {
+                GameState = GameState.Debates;
+                CurrentRound++;
+            }
         }
     }
 }

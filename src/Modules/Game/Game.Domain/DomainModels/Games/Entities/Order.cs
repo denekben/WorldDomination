@@ -5,6 +5,7 @@ namespace Game.Domain.DomainModels.Games.Entities
 {
     public sealed class Order : DomainEntity
     {
+        public IdValueObject CountryId { get; private set; }
         public List<IdValueObject> CitiesToDevelop { get; private set; }
         public List<IdValueObject> CitiesToSetShield { get; private set; }
         public bool DevelopEcologyProgram {  get; private set; }
@@ -13,7 +14,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public List<IdValueObject> CitiesToStrike { get; private set; }
         public List<IdValueObject> CountriesToSetSanctions { get; private set; }
 
-        public IdValueObject CountryId { get; private set; }
+        public Country Country { get; private set; }
         public IdValueObject RoomId { get; private set; }
 
         //EF

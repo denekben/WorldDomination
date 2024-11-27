@@ -1,26 +1,27 @@
-﻿using Game.Domain.DomainModels.Rooms.ValueObjects;
-using Game.Domain.Interfaces.Repositories;
+﻿using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
 
 namespace Game.Application.Orders.Commands.Handlers
 {
-    internal sealed class ApplyOrderHandler : IRequestHandler<ApplyOrder>
+    internal sealed class SendOrderHandler : IRequestHandler<SendOrder>
     {
         private readonly IHttpContextService _contextService;
         private readonly IRoomMemberRepository _roomMemberRepository;
         private readonly IGameRepository _gameRepository;
+        private readonly IOrderRepository _orderRepository;
 
-        public ApplyOrderHandler(IHttpContextService contextService, IRoomMemberRepository roomMemberRepository, 
-            IGameRepository gameRepository)
+        public SendOrderHandler(IHttpContextService contextService, IRoomMemberRepository roomMemberRepository,
+            IGameRepository gameRepository, IOrderRepository orderRepository)
         {
             _contextService = contextService;
             _roomMemberRepository = roomMemberRepository;
             _gameRepository = gameRepository;
+            _orderRepository = orderRepository;
         }
 
-        public async Task Handle(ApplyOrder command, CancellationToken cancellationToken)
+        public async Task Handle(SendOrder command, CancellationToken cancellationToken)
         {
             var order = command.Order;
 
@@ -35,6 +36,11 @@ namespace Game.Application.Orders.Commands.Handlers
                 ?? throw new BadRequestException($"Cannot find Country {roomMember.CountryId}");
 
             country.ValidateOrder(roomMember, order, game);
+
+            if (game.CurrentRound == 1)
+                await _orderRepository.AddAsync(order);
+            else
+                await _orderRepository.UpdateAsync(order);
         }
     }
 }

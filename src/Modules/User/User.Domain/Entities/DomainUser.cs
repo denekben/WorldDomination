@@ -61,7 +61,5 @@ namespace User.Domain.Entities
         {
             ProfileImagePath = string.IsNullOrEmpty(path) ? (string) DefaultProfileImagePath : path;
         }
-
-
     }
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace WorldDomination.Shared.Domain
 {
@@ -14,6 +17,25 @@ namespace WorldDomination.Shared.Domain
             }
 
             Value = value;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        public static string ListToString(List<IdValueObject> list)
+        {
+            if(list == null || !list.Any())
+                return string.Empty;
+
+            return string.Join(',', list.Select(id=>id.ToString()));
+        }
+
+        public static List<IdValueObject> StringToList(string listString)
+        {
+            var ids = listString.Trim().Split(',');
+            return ids.Select(id=>new IdValueObject(new Guid(id))).ToList();
         }
 
         public static implicit operator IdValueObject(Guid id)

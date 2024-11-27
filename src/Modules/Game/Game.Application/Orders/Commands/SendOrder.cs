@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Game.Application.Orders.Commands
 {
-    public sealed record ApplyOrder(Order Order) : IRequest;
+    public sealed record SendOrder(Order Order) : IRequest;
 }

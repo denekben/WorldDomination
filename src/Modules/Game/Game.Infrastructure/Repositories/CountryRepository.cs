@@ -10,11 +10,13 @@ namespace Game.Infrastructure.Repositories
     {
         private readonly DbSet<Country> _countries;
         private readonly GameWriteDbContext _context;
+        private readonly IServiceProvider _provider;
 
-        public CountryRepository(GameWriteDbContext context)
+        public CountryRepository(GameWriteDbContext context, IServiceProvider provider)
         {
             _countries = context.Countries;
             _context = context;
+            _provider = provider;
         }
 
         public async Task AddAsync(Country country)
@@ -31,7 +33,9 @@ namespace Game.Infrastructure.Repositories
 
         public async Task<Country?> GetAsync(IdValueObject id)
         {
-            return await _countries.FirstOrDefaultAsync(c=>c.Id == id);
+            var country = await _countries.FirstOrDefaultAsync(c=>c.Id == id);
+            country?.InitializeStrategy(_provider);
+            return country;
         }
 
         public async Task<Country?> GetAsync(IdValueObject id, CountryIncludes includes)
@@ -41,7 +45,10 @@ namespace Game.Infrastructure.Repositories
             if (includes.HasFlag(CountryIncludes.Players))
                 query = query.Include(c=>c.Players);
 
-            return await query.FirstOrDefaultAsync(c=>c.Id == id);
+            var country = await query.FirstOrDefaultAsync(c => c.Id == id);
+            country?.InitializeStrategy(_provider);
+
+            return country;
         }
 
         public async Task UpdateAsync(Country country)

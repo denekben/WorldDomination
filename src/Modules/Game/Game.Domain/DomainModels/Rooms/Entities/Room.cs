@@ -125,7 +125,5 @@ namespace Game.Domain.DomainModels.Rooms.Entities
 
             Countries.Add(country);
         }
-
-
     }
 }

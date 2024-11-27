@@ -16,6 +16,7 @@ namespace Game.Infrastructure.Contexts
         public DbSet<RoomMember> Members { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<DomainGame> Games { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
             : base(options) { }
@@ -40,7 +41,10 @@ namespace Game.Infrastructure.Contexts
 
             modelBuilder.ApplyConfiguration<CountryPattern>(configuration);
             modelBuilder.ApplyConfiguration<CityPattern>(configuration);
+
             modelBuilder.ApplyConfiguration<Sanction>(configuration);
+
+            modelBuilder.ApplyConfiguration<Order>(configuration);
 
             modelBuilder.Ignore<DomainEntity>();
 

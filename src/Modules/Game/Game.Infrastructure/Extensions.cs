@@ -22,6 +22,7 @@ namespace Game.Infrastructure
             services.AddScoped<IRoomMemberRepository, RoomMemberRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();    
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             
 

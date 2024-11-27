@@ -14,7 +14,7 @@ namespace Game.Infrastructure.Configurations
     internal class WriteConfiguration : IEntityTypeConfiguration<CountryPattern>, IEntityTypeConfiguration<CityPattern>, IEntityTypeConfiguration<City>,
         IEntityTypeConfiguration<Country>, IEntityTypeConfiguration<DomainGame>, IEntityTypeConfiguration<Organizer>,
         IEntityTypeConfiguration<Player>, IEntityTypeConfiguration<Room>, IEntityTypeConfiguration<GameUser>, IEntityTypeConfiguration<RoomMember>,
-        IEntityTypeConfiguration<Sanction>
+        IEntityTypeConfiguration<Sanction>, IEntityTypeConfiguration<Order>
     {
         public void Configure(EntityTypeBuilder<CountryPattern> builder)
         {
@@ -94,6 +94,12 @@ namespace Game.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
+                .HasOne(country=>country.Order)
+                .WithOne(order=>order.Country)
+                .HasForeignKey<Order>(order => order.CountryId) 
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .Property(country => country.LivingLevel)
                 .HasConversion(lLevel => lLevel.Value, lLevel => LivingLevel.Create(lLevel));
 
@@ -141,6 +147,10 @@ namespace Game.Infrastructure.Configurations
             builder
                 .Property(game => game.EcologyLevel)
                 .HasConversion(eLevel => eLevel.Value, eLevel => EcologyLevel.Create(eLevel));
+
+            builder
+                .Property(game => game.GameState)
+                .HasConversion(state => state.Value, state => GameState.Create(state));
 
             builder.ToTable("Games");
         }
@@ -258,11 +268,59 @@ namespace Game.Infrastructure.Configurations
             builder.HasKey(s => new { s.IssuserId, s.AudienceId });
 
             builder
+                .Property(s => s.AudienceId)
+                .HasConversion(id=>id.Value, id=>new IdValueObject(id));
+
+            builder
+                .Property(s => s.IssuserId)
+                .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder
                 .Property(s => s.SanctionPower)
                 .HasConversion(sp => sp.Value, sp => SanctionPower.Create(sp));
+
+            builder
+                .HasOne(s => s.Issuser)
+                .WithMany(c => c.OutgoingSanctions)
+                .HasForeignKey(s => s.IssuserId);
+
+            builder
+                .HasOne(s => s.Audience)
+                .WithMany(c => c.IncomingSanctions)
+                .HasForeignKey(s=>s.AudienceId);
 
             builder.ToTable("Sanctions");
         }
 
+        public void Configure(EntityTypeBuilder<Order> builder)
+        {
+            builder.HasKey(o=>o.CountryId);
+
+            builder
+                .Property(o => o.CountryId)
+                .HasConversion(id=>id.Value,id=>new IdValueObject(id));
+
+            builder
+                .Property(o => o.CitiesToDevelop)
+                .HasConversion(ctd => IdValueObject.ListToString(ctd), ctd => IdValueObject.StringToList(ctd));
+
+            builder
+                .Property(o => o.CitiesToSetShield)
+                .HasConversion(ctss=> IdValueObject.ListToString(ctss), ctss => IdValueObject.StringToList(ctss));
+
+            builder
+                .Property(o => o.CitiesToStrike)
+                .HasConversion(cts=> IdValueObject.ListToString(cts), cts => IdValueObject.StringToList(cts));
+
+            builder
+                .Property(o=>o.CountriesToSetSanctions)
+                .HasConversion(ctss => IdValueObject.ListToString(ctss), ctss => IdValueObject.StringToList(ctss));
+
+            builder
+                .Property(o => o.RoomId)
+                .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder.ToTable("Orders");
+        }
     }
 }

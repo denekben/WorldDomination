@@ -9,6 +9,7 @@ namespace Game.Infrastructure.Repositories
     public class GameRepository : IGameRepository
     {
         private readonly DbSet<DomainGame> _games;
+        private readonly IServiceProvider _provider;
 
         public GameRepository(GameWriteDbContext context)
         {
@@ -34,13 +35,25 @@ namespace Game.Infrastructure.Repositories
         {
             IQueryable<DomainGame> query = _games;
 
-            if(includes.HasFlag(GameIncludes.Countries))
-                query.Include(q=>q.Countries);
+            if (includes.HasFlag(GameIncludes.Countries))
+                query.Include(q => q.Countries);
 
             if (includes.HasFlag(GameIncludes.CountriesWithCities))
                 query.Include(q => q.Countries).ThenInclude(c => c.Cities);
 
-            return await query.FirstOrDefaultAsync(q=>q.RoomId == roomId);
+            var game =  await query.FirstOrDefaultAsync(q=>q.RoomId == roomId);
+
+            if(game!=null && (includes.HasFlag(GameIncludes.Countries) 
+                || includes.HasFlag(GameIncludes.CountriesWithCities)))
+            {
+                foreach(var country in game.Countries)
+                {
+                    country.InitializeStrategy(_provider);
+                }
+            }
+
+            return game;
+
         }
 
         public Task UpdateAsync(DomainGame user)

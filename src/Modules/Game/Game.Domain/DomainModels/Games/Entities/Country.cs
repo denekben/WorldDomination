@@ -28,10 +28,12 @@ namespace Game.Domain.DomainModels.Games.Entities
         public List<RoomMember> Players { get; private set; } = [];
         public List<City> Cities { get; private set; } = [];
         public List<Sanction> OutgoingSanctions { get; private set; } = [];
+        public List<Sanction> IncomingSanctions { get; private set; } = [];
         public IdValueObject RoomId { get; private set; }
         public Room Room { get; private set; }
         public IdValueObject? GameId { get; private set; }
         public DomainGame Game { get; private set; }
+        public Order Order { get; private set; }
 
         //EF
         private Country() {}
@@ -142,12 +144,12 @@ namespace Game.Domain.DomainModels.Games.Entities
             ];
         }
 
-        public void UpdateIncome(int ecologyLevel, List<Sanction> incomeSanctions)
+        public void UpdateIncome(int ecologyLevel)
         {
             Income = 0;
             foreach(var city in Cities)
             {
-                Income += _strategy.CalculateCityIncome(this, city, ecologyLevel, incomeSanctions);
+                Income += _strategy.CalculateCityIncome(this, city, ecologyLevel, IncomingSanctions);
             }
         }
 
@@ -211,6 +213,9 @@ namespace Game.Domain.DomainModels.Games.Entities
                 throw new BusinessRuleValidationException("Cannot buy bombs without nuclear technology");
 
             //Strike city
+            if (order.CitiesToStrike.Count > 0 && !HaveNuclearTechnology)
+                throw new BusinessRuleValidationException("Cannot strike Cities without nuclear technology");
+
             if (order.CitiesToStrike.Intersect(Cities.Select(c => c.Id)).Any() ||
                 order.CitiesToStrike.Except(countries.SelectMany(c => c.Cities).Select(c => c.Id)).Any())
                 throw new BusinessRuleValidationException("Can strike only Cities of other Countries");
@@ -222,13 +227,16 @@ namespace Game.Domain.DomainModels.Games.Entities
                 throw new BusinessRuleValidationException("Can strike only alive cities");
 
             //Sanctions
+
+            // TODO:
+            //
+            // a country cannot impose sanctions on itself
+
             if (order.CountriesToSetSanctions.Count > _strategy.SanctionQuantityInRoundLimit)
                 throw new BusinessRuleValidationException($"Cannot exceed Sanctions limit");
 
             if (order.CountriesToSetSanctions.Except(countries.Select(c => c.Id)).Any() || order.CountriesToSetSanctions.Contains(Id))
                 throw new BusinessRuleValidationException("Can send sanctions for only other Countries in Room");
-
-            ApplyOrder(order, countries, currentGame);
         }
 
         private void ApplyOrder(Order order, List<Country> countries, DomainGame currentGame)
@@ -267,7 +275,6 @@ namespace Game.Domain.DomainModels.Games.Entities
             {
                 OutgoingSanctions.Add(Sanction.Create(Id, countryId, _strategy.SanctionPower));
             }
-
             OrderApplied = false;
         }
     }
