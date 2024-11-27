@@ -9,7 +9,7 @@ namespace User.WebUI.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("user")]
+    [Route("api/user")]
     public class CurrentUserController : ControllerBase
     {
         private readonly ISender _sender;

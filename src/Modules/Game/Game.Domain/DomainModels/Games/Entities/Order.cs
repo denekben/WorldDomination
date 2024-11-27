@@ -20,26 +20,26 @@ namespace Game.Domain.DomainModels.Games.Entities
         //EF
         private Order() { }
 
-        private Order(List<IdValueObject> citiesToDevelop, List<IdValueObject> citiesToSetShield,
+        private Order(List<Guid> citiesToDevelop, List<Guid> citiesToSetShield,
             bool developEcologyProgram, bool developNuclearTechology,
-            int bombsToBuyQuantity, List<IdValueObject> citiesToStrike, 
-            List<IdValueObject> countriesToSetSanctions, IdValueObject countryId, IdValueObject roomId)
+            int bombsToBuyQuantity, List<Guid> citiesToStrike, 
+            List<Guid> countriesToSetSanctions, Guid countryId, Guid roomId)
         {
-            CitiesToDevelop = citiesToDevelop;
-            CitiesToSetShield = citiesToSetShield;
+            CitiesToDevelop = citiesToDevelop.ToIdValueObjects();
+            CitiesToSetShield = citiesToSetShield.ToIdValueObjects();
             DevelopEcologyProgram = developEcologyProgram;
             DevelopNuclearTechology = developNuclearTechology;
             BombsToBuyQuantity = bombsToBuyQuantity;
-            CitiesToStrike = citiesToStrike;
-            CountriesToSetSanctions = countriesToSetSanctions;
+            CitiesToStrike = citiesToStrike.ToIdValueObjects();
+            CountriesToSetSanctions = countriesToSetSanctions.ToIdValueObjects();
             CountryId = countryId;
             RoomId = roomId;
         }
 
-        public static Order Create(List<IdValueObject> citiesToDevelop, List<IdValueObject> citiesToSetShield, 
+        public static Order Create(Guid countryId, List<Guid> citiesToDevelop, List<Guid> citiesToSetShield, 
             bool developEcologyProgram, bool developNuclearTechology, 
-            int bombsToBuyQuantity, List<IdValueObject> citiesToStrike, 
-            List<IdValueObject> countriesToSetSanctions, IdValueObject countryId, IdValueObject roomId)
+            int bombsToBuyQuantity, List<Guid> citiesToStrike, 
+            List<Guid> countriesToSetSanctions, Guid roomId)
         {
             return new(
                 citiesToDevelop,

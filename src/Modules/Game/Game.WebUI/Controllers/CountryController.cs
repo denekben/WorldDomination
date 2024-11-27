@@ -7,7 +7,7 @@ namespace Game.WebUI.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("countries")]
+    [Route("api/countries")]
     public class CountryController : ControllerBase
     {
         private readonly ISender _sender;
@@ -19,8 +19,9 @@ namespace Game.WebUI.Controllers
 
         [HttpPost]
         [Route("orders")]
-        public IActionResult ApplyOrder()
+        public async Task<IActionResult> SendOrder(SendOrder command)
         {
+            await _sender.Send(command);
             return Ok();
         }
     }

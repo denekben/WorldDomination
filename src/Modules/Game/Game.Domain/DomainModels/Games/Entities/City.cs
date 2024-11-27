@@ -47,11 +47,7 @@ namespace Game.Domain.DomainModels.Games.Entities
 
         internal void SetShield()
         {
-            if (HaveShield)
-                throw new BusinessRuleValidationException("Cannot set a shield to a City with shield");
-
-            if (!IsAlive)
-                throw new BusinessRuleValidationException("Can set shield only for alive Cities");
+            HaveShield = true;
         }
 
         internal void GetStrike()

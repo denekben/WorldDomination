@@ -23,7 +23,8 @@ namespace Game.Domain.DomainModels.Games.Entities
         public bool HaveNuclearTechnology { get; private set; }
         public NuclearTechnology NuclearTechnology { get; private set; }
         public Income Income { get; private set; }
-        public bool OrderApplied { get; private set; }
+        public bool HasAppliedOrder { get; private set; }
+        public bool HasValidatedOrder { get; private set; }
 
         public List<RoomMember> Players { get; private set; } = [];
         public List<City> Cities { get; private set; } = [];
@@ -49,7 +50,8 @@ namespace Game.Domain.DomainModels.Games.Entities
             HaveNuclearTechnology = false;
             NuclearTechnology = NuclearTechnology.Create();
             Income = Income.Create();
-            OrderApplied = false;
+            HasAppliedOrder = false;
+            HasValidatedOrder = false;
             RoomId = roomId;
         }
 
@@ -64,7 +66,8 @@ namespace Game.Domain.DomainModels.Games.Entities
             HaveNuclearTechnology = false;
             NuclearTechnology = NuclearTechnology.Create();
             Income = Income.Create();
-            OrderApplied = false;
+            HasAppliedOrder = false;
+            HasValidatedOrder = false;
             RoomId = roomId;
             _strategy = strategy;
         }
@@ -155,16 +158,7 @@ namespace Game.Domain.DomainModels.Games.Entities
 
         public void DevelopCity(City city)
         {
-            var cityToDevelop = Cities.FirstOrDefault(c => c.Id == city.Id)
-                ?? throw new BusinessRuleValidationException("To develop City, it must belong to Country");
-
-            if (!cityToDevelop.IsAlive)
-                throw new BusinessRuleValidationException("Cannot develop destroyed City");
-
-            if (Budget < _strategy.CityDevelopmentCost)
-                throw new BusinessRuleValidationException("Country budget must be higher or equal to development cost to develop City");
-
-            cityToDevelop.DevelopCity();
+            city.DevelopCity();
 
             Budget -= _strategy.CityDevelopmentCost;
         }
@@ -174,13 +168,22 @@ namespace Game.Domain.DomainModels.Games.Entities
             var countries = currentGame.Countries;
 
             //Common
+            if (currentGame.GameState != GameState.OrderMaking)
+                throw new BusinessRuleValidationException("Cannot validate orders not in OrderMaking game state");
+
+            if (HasAppliedOrder)
+                throw new BusinessRuleValidationException("Cannot validate orders with already applied order");
+
+            if (HasValidatedOrder)
+                throw new BusinessRuleValidationException("Cannot validate orders with already validated order");
+
             if (member.CountryId != Id)
                 throw new BusinessRuleValidationException("Member must belong to Country to apply Order");
 
             if (member.GameRole != GameRole.President)
                 throw new BusinessRuleValidationException("Only President can apply Orders");
 
-            if (OrderApplied)
+            if (HasAppliedOrder)
                 throw new BusinessRuleValidationException("Cannot apply Order when Order already applied for this round");
 
             if (order.CalculateTotalCost(_strategy) > Budget)
@@ -189,6 +192,9 @@ namespace Game.Domain.DomainModels.Games.Entities
             //Develop City
             if (order.CitiesToDevelop.Except(Cities.Select(c => c.Id)).Any())
                 throw new BusinessRuleValidationException("Can develop only Country's Cities");
+
+            if(order.CitiesToDevelop.Any(oc => !Cities.First(c=> c.Id == oc).IsAlive))
+                throw new BusinessRuleValidationException("Cannot develop destroyed City");
 
             //Set shield
             if (order.CitiesToSetShield.Except(Cities.Select(c => c.Id)).Any())
@@ -223,20 +229,17 @@ namespace Game.Domain.DomainModels.Games.Entities
             if (order.CitiesToStrike.Count > NuclearTechnology)
                 throw new BusinessRuleValidationException("Strike quantity must be less or equal to Country's bomb quantity");
 
-            if (order.CitiesToStrike.Any(oc => !Cities.First(c => c.Id == oc).IsAlive))
+            if (order.CitiesToStrike.Any(oc => !countries.SelectMany(c => c.Cities).First(c => c.Id == oc).IsAlive))
                 throw new BusinessRuleValidationException("Can strike only alive cities");
 
             //Sanctions
-
-            // TODO:
-            //
-            // a country cannot impose sanctions on itself
-
             if (order.CountriesToSetSanctions.Count > _strategy.SanctionQuantityInRoundLimit)
                 throw new BusinessRuleValidationException($"Cannot exceed Sanctions limit");
 
             if (order.CountriesToSetSanctions.Except(countries.Select(c => c.Id)).Any() || order.CountriesToSetSanctions.Contains(Id))
                 throw new BusinessRuleValidationException("Can send sanctions for only other Countries in Room");
+
+            HasValidatedOrder = true;
         }
 
         private void ApplyOrder(Order order, List<Country> countries, DomainGame currentGame)
@@ -275,7 +278,7 @@ namespace Game.Domain.DomainModels.Games.Entities
             {
                 OutgoingSanctions.Add(Sanction.Create(Id, countryId, _strategy.SanctionPower));
             }
-            OrderApplied = false;
+            HasAppliedOrder = true;
         }
     }
 }

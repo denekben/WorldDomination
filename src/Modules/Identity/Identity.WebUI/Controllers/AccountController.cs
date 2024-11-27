@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Identity.WebUI.Controllers
 {
     [ApiController]
-    [Route("account")]
+    [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly ISender _sender;

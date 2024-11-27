@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Game.WebUI.Controllers
 {
     [ApiController]
-    [Route("rooms")]
+    [Route("api/rooms")]
     public class RoomController : ControllerBase
     {
         private readonly ISender _sender;

@@ -1,4 +1,5 @@
-﻿using Game.Domain.Interfaces.Repositories;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.Interfaces.Repositories;
 using MediatR;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
@@ -23,7 +24,17 @@ namespace Game.Application.Orders.Commands.Handlers
 
         public async Task Handle(SendOrder command, CancellationToken cancellationToken)
         {
-            var order = command.Order;
+            var cOrder = command.Order;
+            var order = Order.Create(
+                cOrder.CountryId, 
+                cOrder.CitiesIdToDevelop, 
+                cOrder.CitiesToSetShield,
+                cOrder.DevelopEcologyProgram, 
+                cOrder.DiscoverNuclearTechology, 
+                cOrder.BombsToBuyQuantity,
+                cOrder.CitiesToStrike,
+                cOrder.CountriesToSetSanctions, 
+                cOrder.RoomId);
 
             var userId = _contextService.GetCurrentUserId();
             var roomMember = await _roomMemberRepository.GetAsync(userId, order.RoomId)

@@ -48,4 +48,12 @@ namespace WorldDomination.Shared.Domain
 
         public static bool operator !=(IdValueObject? idVO, Guid id) => idVO?.Value != id;
     }
+
+    public static class ListExtensions
+    {
+        public static List<IdValueObject> ToIdValueObjects(this List<Guid> guids)
+        {
+            return guids.Select(g => new IdValueObject(g)).ToList();
+        }
+    }
 }

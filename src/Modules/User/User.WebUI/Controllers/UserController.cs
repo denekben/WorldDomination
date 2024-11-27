@@ -6,7 +6,7 @@ using User.Shared.DTOs;
 namespace User.WebUI.Controllers
 {
     [ApiController]
-    [Route("users")]
+    [Route("api/users")]
     public class UserController : ControllerBase
     {
         private readonly ISender _sender;
