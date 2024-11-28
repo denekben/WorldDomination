@@ -2,7 +2,7 @@
 {
     public sealed record OrderDto(
         Guid CountryId,
-        List<Guid> CitiesIdToDevelop,
+        List<Guid> CitiesToDevelop,
         List<Guid> CitiesToSetShield,
         bool DevelopEcologyProgram,
         bool DiscoverNuclearTechology,

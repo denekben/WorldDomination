@@ -72,5 +72,10 @@ namespace Game.Infrastructure.Realtime
         {
             await Task.CompletedTask;
         }
+
+        public async Task OrderSent(Guid countryId, Guid roomId)
+        {
+            await Task.CompletedTask;
+        }
     }
 }

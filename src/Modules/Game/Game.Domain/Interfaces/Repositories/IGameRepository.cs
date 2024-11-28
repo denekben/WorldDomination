@@ -17,6 +17,7 @@ namespace Game.Domain.Interfaces.Repositories
     public enum GameIncludes
     {
         Countries = 0,
-        CountriesWithCities = 1
+        CountriesWithCities = 1,
+        CountriesWithCitiesWithOrders=2,
     }
 }

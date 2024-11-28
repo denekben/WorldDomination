@@ -13,6 +13,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public IdValueObject RoomId { get; private set; }
         public GameType GameType { get; private set; }
         public bool HasTeams { get; private set; }
+        public bool HasGameStateTimer { get; private set; }
         public RoundQuantity RoundQuantity { get; private set; }
         public GameState GameState { get; private set; }
         public CurrentRound CurrentRound { get; private set; }
@@ -24,10 +25,11 @@ namespace Game.Domain.DomainModels.Games.Entities
         //EF
         private Game() { }
 
-        private Game(GameType gameType, bool hasTeams, RoundQuantity roundQuantity, Guid roomId)
+        private Game(GameType gameType, bool hasTeams, bool hasGameStateTimer, RoundQuantity roundQuantity, Guid roomId)
         {
             GameType = gameType;
             HasTeams = hasTeams;
+            HasGameStateTimer = hasGameStateTimer;
             RoundQuantity = roundQuantity;
             GameState = GameState.Debates;
             CurrentRound = CurrentRound.Create();
@@ -35,7 +37,7 @@ namespace Game.Domain.DomainModels.Games.Entities
             RoomId = roomId;
         }
 
-        public static Game Create(GameType gameType, bool hasTeams, RoundQuantity roundQuantity, Guid roomId, List<RoomMember> members)
+        public static Game Create(GameType gameType, bool hasTeams, bool hasGameStateTimer, RoundQuantity roundQuantity, Guid roomId, List<RoomMember> members)
         {
             if (members == null || members.Count == 0)
                 throw new BusinessRuleValidationException("Cannot create Game without members");
@@ -43,7 +45,7 @@ namespace Game.Domain.DomainModels.Games.Entities
             if (!CheckMembersDistribution(members))
                 throw new BusinessRuleValidationException("Members should be evenly distributed across Countries");
 
-            return new Game(gameType, hasTeams, roundQuantity, roomId);
+            return new Game(gameType, hasTeams, hasGameStateTimer,roundQuantity, roomId);
         }
 
         private static bool CheckMembersDistribution(List<RoomMember> members)
@@ -73,10 +75,9 @@ namespace Game.Domain.DomainModels.Games.Entities
             EcologyLevel += _defaultEcologyDevelopmentIncreasement;
         }
 
-        public void ChangeState(RoomMember member)
+        public void ChangeState()
         {
-            if(member is not Organizer)
-                throw new BusinessRuleValidationException("Only Organizer can change GameState");
+
             
             if (GameState == GameState.Debates)
                 GameState = GameState.Negotiations;

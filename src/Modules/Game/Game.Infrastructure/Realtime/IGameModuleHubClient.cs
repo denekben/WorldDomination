@@ -22,6 +22,6 @@ namespace Game.Infrastructure.Realtime
 
         //Order
         Task OrderChanged(OrderDto orderDto);
-        Task OrderApplied();
+        Task OrderSent();
     }
 }
