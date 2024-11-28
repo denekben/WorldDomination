@@ -77,8 +77,6 @@ namespace Game.Domain.DomainModels.Games.Entities
 
         public void ChangeState()
         {
-
-            
             if (GameState == GameState.Debates)
                 GameState = GameState.Negotiations;
 

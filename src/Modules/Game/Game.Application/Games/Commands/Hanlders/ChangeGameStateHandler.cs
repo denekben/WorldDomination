@@ -14,17 +14,15 @@ namespace Game.Application.Games.Commands.Hanlders
         private readonly IGameRepository _gameRepository;
         private readonly IGameModuleNotificationService _notifications;
         private readonly ILogger<ChangeGameStateHandler> _logger;
-        private readonly IOrderRepository _orderRepository;
 
         public ChangeGameStateHandler(IRoomMemberRepository roomMemberRepository,
             IGameRepository gameRepository, IGameModuleNotificationService notifications,
-            ILogger<ChangeGameStateHandler> logger, IOrderRepository orderRepository)
+            ILogger<ChangeGameStateHandler> logger)
         {
             _roomMemberRepository = roomMemberRepository;
             _gameRepository = gameRepository;
             _notifications = notifications;
             _logger = logger;
-            _orderRepository = orderRepository;
         }
 
         public async Task Handle(ChangeGameState command, CancellationToken cancellationToken)
@@ -42,7 +40,6 @@ namespace Game.Application.Games.Commands.Hanlders
                 throw new BusinessRuleValidationException($"Game with GameStateTimer changes states automatically");
 
             game.ChangeState();
-            _logger.LogInformation($"Game {game.RoomId} changed state to {game.GameState}");
 
             if (game.GameState == GameState.Debates)
             {
@@ -52,7 +49,16 @@ namespace Game.Application.Games.Commands.Hanlders
                     country.UpdateIncome(game.EcologyLevel);
                 }
             }
+            await _gameRepository.UpdateAsync(game);
 
+            if (game.CurrentRound > game.RoundQuantity)
+            {
+                await _notifications.GameEnded(game.RoomId);
+                _logger.LogInformation($"Game {game.RoomId} ended");
+                return;
+            }
+
+            _logger.LogInformation($"Game {game.RoomId} changed state to {game.GameState}");
             await _notifications.GameStateChanged(game.GameState, game.RoomId);
         }
     }

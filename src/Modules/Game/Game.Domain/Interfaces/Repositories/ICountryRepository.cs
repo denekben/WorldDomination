@@ -15,6 +15,6 @@ namespace Game.Domain.Interfaces.Repositories
     [Flags]
     public enum CountryIncludes
     {
-        Players = 0
+        Players = 0,
     }
 }

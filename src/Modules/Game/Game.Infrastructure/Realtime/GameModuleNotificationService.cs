@@ -77,5 +77,15 @@ namespace Game.Infrastructure.Realtime
         {
             await Task.CompletedTask;
         }
+
+        public Task GameStateChanged(string gameState, Guid roomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task GameEnded(Guid roomId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

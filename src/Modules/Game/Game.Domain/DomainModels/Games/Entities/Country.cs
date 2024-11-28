@@ -242,7 +242,7 @@ namespace Game.Domain.DomainModels.Games.Entities
             HasValidatedOrder = true;
         }
 
-        private void ApplyOrder(Order order, List<Country> countries, DomainGame currentGame)
+        public void ApplyOrder(Order order, List<Country> countries, DomainGame currentGame)
         {
             foreach (var city in Cities)
             {

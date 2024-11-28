@@ -24,8 +24,6 @@ namespace Game.Infrastructure
             services.AddScoped<ICountryRepository, CountryRepository>();    
             services.AddScoped<IOrderRepository, OrderRepository>();
 
-            
-
             services.AddPostgres<GameWriteDbContext>();
             services.AddPostgres<GameReadDbContext>(QueryTrackingBehavior.NoTracking);
 
@@ -49,6 +47,9 @@ namespace Game.Infrastructure
             services.AddScoped<ICountryStrategy, SwitzerlandStrategy>();
             services.AddScoped<ICountryStrategy, UnitedStatesStrategy>();
             services.AddScoped<ICountryStrategyFactory, CountryStrategyFactory>();
+
+            services.AddHostedService<GameTimerService>();
+            services.AddSingleton<IGameTimerService>(provider => provider.GetRequiredService<GameTimerService>());
 
             return services;
         }

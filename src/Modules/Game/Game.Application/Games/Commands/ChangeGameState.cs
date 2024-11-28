@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace Game.Application.Games.Commands
 {
-    internal class ChangeState
-    {
-    }
+    public sealed record ChangeGameState(Guid MemberId, Guid RoomId, Guid GameId) : IRequest;
 }

@@ -13,6 +13,8 @@ namespace Game.Application.Services
         Task MemberPromotedToOrganizer(RoomMember member, Guid roomId);
 
         Task GameCreated(DomainGame game, Guid roomId);
+        Task GameStateChanged(string gameState, Guid roomId);
+        Task GameEnded(Guid roomId);
 
         Task CountryCreated(Country country, Guid roomId);
         Task MemberJoinedCountry(RoomMember member, Guid roomId, Guid countryId);

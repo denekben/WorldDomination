@@ -16,16 +16,18 @@ namespace Game.Application.Games.Commands.Hanlders
         private readonly IGameModuleNotificationService _notifications;
         private readonly IHttpContextService _contextService;
         private readonly IRoomMemberRepository _memberRepository;
+        private readonly IGameTimerService _timerService;
 
         public CreateGameHanlder(ILogger<CreateGameHanlder> logger,
             IRoomRepository roomRepository, IGameModuleNotificationService notifications,
-            IHttpContextService contextService, IRoomMemberRepository memberRepository)
+            IHttpContextService contextService, IRoomMemberRepository memberRepository, IGameTimerService timerService)
         {
             _logger = logger;
             _roomRepository = roomRepository;
             _notifications = notifications;
             _contextService = contextService;
             _memberRepository = memberRepository;
+            _timerService = timerService;
         }
 
         public async Task<Guid> Handle(CreateGame command, CancellationToken cancellationToken)
@@ -37,7 +39,7 @@ namespace Game.Application.Games.Commands.Hanlders
             if (member is not Organizer)
                 throw new BadRequestException($"Only Organizer can create a Game");
 
-            var (gameType, hasTeams, roundQuantity, roomId) = command;
+            var (gameType, hasTeams, hasGameStateTimer, roundQuantity, roomId) = command;
 
             var room = await _roomRepository.GetAsync(roomId, RoomIncludes.RoomMembers)
                 ?? throw new BadRequestException($"Cannot find Room {roomId}");
@@ -45,7 +47,7 @@ namespace Game.Application.Games.Commands.Hanlders
             if (room.IsGameActive)
                 throw new BadImageFormatException($"Cannot create a Game for Room {room.Id} when Game is active");
 
-            var game = DomainGame.Create(gameType, hasTeams, roundQuantity, roomId, room.RoomMembers)
+            var game = DomainGame.Create(gameType, hasTeams, hasGameStateTimer, roundQuantity, roomId, room.RoomMembers)
                 ?? throw new BadRequestException("Cannot create Game");
 
             room.AddGame(game);
@@ -53,6 +55,9 @@ namespace Game.Application.Games.Commands.Hanlders
             await _roomRepository.UpdateAsync(room);
             _logger.LogInformation($"Game {game.RoomId} created");
             await _notifications.GameCreated(game, room.Id);
+
+            if (hasGameStateTimer)
+                _timerService.AddGame(roomId);
 
             return game.RoomId;
         }

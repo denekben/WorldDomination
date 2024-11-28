@@ -1,4 +1,5 @@
-﻿using Game.Domain.Interfaces.Repositories;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.Interfaces.Repositories;
 using Game.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
@@ -9,11 +10,13 @@ namespace Game.Infrastructure.Repositories
     public class GameRepository : IGameRepository
     {
         private readonly DbSet<DomainGame> _games;
+        private readonly GameWriteDbContext _context;
         private readonly IServiceProvider _provider;
 
         public GameRepository(GameWriteDbContext context)
         {
-            _games = context.Games ;
+            _games = context.Games;
+            _context = context;
         }
 
         public Task AddAsync(DomainGame user)
@@ -41,10 +44,20 @@ namespace Game.Infrastructure.Repositories
             if (includes.HasFlag(GameIncludes.CountriesWithCities))
                 query.Include(q => q.Countries).ThenInclude(c => c.Cities);
 
+            if (includes.HasFlag(GameIncludes.CountriesWithCitiesWithOrders))
+            {
+                query
+                    .Include(q => q.Countries)
+                    .ThenInclude(c => c.Cities)
+                    .Include(q => q.Countries)
+                    .ThenInclude(c => c.Order);
+            }
+
             var game =  await query.FirstOrDefaultAsync(q=>q.RoomId == roomId);
 
             if(game!=null && (includes.HasFlag(GameIncludes.Countries) 
-                || includes.HasFlag(GameIncludes.CountriesWithCities)))
+                || includes.HasFlag(GameIncludes.CountriesWithCities))
+                || includes.HasFlag(GameIncludes.CountriesWithCitiesWithOrders))
             {
                 foreach(var country in game.Countries)
                 {
@@ -53,12 +66,12 @@ namespace Game.Infrastructure.Repositories
             }
 
             return game;
-
         }
 
-        public Task UpdateAsync(DomainGame user)
+        public async Task UpdateAsync(DomainGame game)
         {
-            throw new NotImplementedException();
+            _games.Update(game);
+            await _context.SaveChangesAsync();
         }
     }
 }
