@@ -37,10 +37,10 @@ namespace Game.Application.Helpers
 
                 if (member.GameRole == GameRole.President)
                 {
-                    await _notifications.MinisterPromotedToPresident(member, latestCountry.RoomId, latestCountry.Id);
+                    await _notifications.MinisterPromotedToPresident(member.GameUserId, latestCountry.RoomId, latestCountry.Id);
                 }
 
-                await _notifications.MemberLeftCountry(member, latestCountry.RoomId, latestCountry.Id);
+                await _notifications.MemberLeftCountry(member.GameUserId, latestCountry.RoomId, latestCountry.Id);
             }
             else
             {

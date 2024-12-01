@@ -1,12 +1,12 @@
 ﻿using Identity.Application.Services;
-using Identity.Shared.DTOs;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Shared.Messaging;
 using Identity.Shared.IntegrationEvents;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
+using Identity.Application.DTOs;
 
-namespace Identity.Application.Commands.Auth.Handlers
+namespace Identity.Application.Commands.Handlers
 {
     internal class RegisterNewUserHandler : IRequestHandler<RegisterNewUser, UserIdentityDto>
     {

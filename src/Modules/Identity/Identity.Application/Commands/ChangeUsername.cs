@@ -1,6 +1,4 @@
-﻿using Identity.Shared.DTOs;
-using MediatR;
-using System;
+﻿using MediatR;
 
 namespace Identity.Application.Commands.Users
 {

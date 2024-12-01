@@ -17,9 +17,15 @@ namespace Game.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Order order)
+        public async Task AddOrUpdateIfExistsAsync(Order order)
         {
-            await _orders.AddAsync(order);
+            var foundedOrder = await _orders.FirstOrDefaultAsync(o=>o.CountryId == order.CountryId);
+
+            if (foundedOrder == null)
+                await _orders.AddAsync(order);
+            else
+                _orders.Update(order);
+
             await _context.SaveChangesAsync();
         }
 
@@ -32,12 +38,6 @@ namespace Game.Infrastructure.Repositories
         public async Task<Order?> GetAsync(IdValueObject countryId)
         {
             return await _orders.FirstOrDefaultAsync(o => o.CountryId == countryId);
-        }
-
-        public async Task UpdateAsync(Order order)
-        {
-            _orders.Update(order);
-            await _context.SaveChangesAsync();
         }
     }
 }

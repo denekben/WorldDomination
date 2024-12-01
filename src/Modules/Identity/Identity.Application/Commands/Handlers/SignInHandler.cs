@@ -1,10 +1,10 @@
-﻿using Identity.Application.Services;
-using Identity.Shared.DTOs;
+﻿using Identity.Application.DTOs;
+using Identity.Application.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 
-namespace Identity.Application.Commands.Auth.Handlers
+namespace Identity.Application.Commands.Handlers
 {
     internal class SignInHandler : IRequestHandler<SignIn, UserIdentityDto>
     {

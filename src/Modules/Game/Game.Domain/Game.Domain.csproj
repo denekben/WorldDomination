@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\WorldDomination.Shared\WorldDomination.Shared.csproj" />
-    <ProjectReference Include="..\Game.Shared\Game.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Game.Domain.DomainModels.Rooms.Entities;
 using Game.Domain.DomainModels.ReadModels.Rooms;
-using Game.Shared.DTOs;
+using Game.Application.DTOs;
 
 namespace Game.Infrastructure.Mappers
 {
@@ -24,7 +24,8 @@ namespace Game.Infrastructure.Mappers
             return new RoomMemberDto(
                 member.GameUserId,
                 member.Name,
-                member.ProfileImagePath
+                member.ProfileImagePath,
+                member.RoomId
             );
         }
 
@@ -46,7 +47,8 @@ namespace Game.Infrastructure.Mappers
             return new RoomMemberDto(
                 member.GameUserId,
                 member.Name,
-                member.ProfileImagePath
+                member.ProfileImagePath,
+                member.RoomId
             );
         }
     }

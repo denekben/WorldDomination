@@ -55,7 +55,7 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
         if (_gameTimers.ContainsKey(gameId))
             return; 
 
-        intervalInMilliseconds = intervalInMilliseconds ?? _debatesInterval;
+        intervalInMilliseconds ??= _debatesInterval;
 
         var timer = new Timer(OnTimerElapsed, gameId, (int)intervalInMilliseconds, Timeout.Infinite);
         _gameTimers[gameId] = timer;
@@ -87,7 +87,7 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
     {
         var gameId = (Guid)state;
 
-        using (var scope = _serviceScopeFactory.CreateScope()) // Создаем новый scope
+        using (var scope = _serviceScopeFactory.CreateScope()) 
         {
             var gameRepository = scope.ServiceProvider.GetRequiredService<IGameRepository>(); 
             var notifications = scope.ServiceProvider.GetRequiredService<IGameModuleNotificationService>();
@@ -101,10 +101,15 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
             {
                 foreach (var country in game.Countries)
                 {
-                    country.ApplyOrder(country.Order, game.Countries, game);
-                    country.UpdateIncome(game.EcologyLevel);
+                    if (country.HasValidatedOrder)
+                        country.ApplyOrder(country.Order, game.Countries, game);
+                }
+                foreach (var country in game.Countries)
+                {
+                    country.UpdateState(game.EcologyLevel);
                 }
             }
+
             await gameRepository.UpdateAsync(game);
 
             if (game.CurrentRound > game.RoundQuantity)

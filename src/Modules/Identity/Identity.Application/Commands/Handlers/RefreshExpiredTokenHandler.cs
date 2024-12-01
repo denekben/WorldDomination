@@ -5,7 +5,7 @@ using System.Security.Claims;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
 using WorldDomination.Shared.Services;
 
-namespace Identity.Application.Commands.Auth.Handlers
+namespace Identity.Application.Commands.Handlers
 {
     internal class RefreshExpiredTokenHandler : IRequestHandler<RefreshExpiredToken, string>
     {

@@ -1,8 +1,8 @@
 ﻿using FakeItEasy;
 using Game.Application.Countries;
-using Game.Application.Countries.Handlers;
 using Game.Application.Helpers;
 using Game.Application.Services;
+using Game.Application.UseCases.Countries.Handlers;
 using Game.Domain.DomainModels.Games.Entities;
 using Game.Domain.DomainModels.Rooms.Entities;
 using Game.Domain.Interfaces.Repositories;

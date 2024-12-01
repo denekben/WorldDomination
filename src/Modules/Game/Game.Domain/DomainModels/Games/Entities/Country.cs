@@ -147,20 +147,21 @@ namespace Game.Domain.DomainModels.Games.Entities
             ];
         }
 
-        public void UpdateIncome(int ecologyLevel)
+        public void UpdateState(int ecologyLevel)
         {
+            // Updating Budget
+            Budget += Income;
+
+            // Updating Income
             Income = 0;
             foreach(var city in Cities)
             {
                 Income += _strategy.CalculateCityIncome(this, city, ecologyLevel, IncomingSanctions);
             }
-        }
 
-        public void DevelopCity(City city)
-        {
-            city.DevelopCity();
-
-            Budget -= _strategy.CityDevelopmentCost;
+            // Updating flags
+            HasAppliedOrder = false;
+            HasValidatedOrder = false;
         }
 
         public void ValidateOrder(RoomMember member, Order order, DomainGame currentGame)
@@ -244,6 +245,11 @@ namespace Game.Domain.DomainModels.Games.Entities
 
         public void ApplyOrder(Order order, List<Country> countries, DomainGame currentGame)
         {
+            if(!HasValidatedOrder)
+                throw new BusinessRuleValidationException("Can apply only validated order");
+
+            Budget -= order.CalculateTotalCost(_strategy);
+
             foreach (var city in Cities)
             {
                 //Develop city
@@ -274,6 +280,7 @@ namespace Game.Domain.DomainModels.Games.Entities
             }
 
             //Sanctions
+            OutgoingSanctions = [];
             foreach (var countryId in order.CountriesToSetSanctions)
             {
                 OutgoingSanctions.Add(Sanction.Create(Id, countryId, _strategy.SanctionPower));

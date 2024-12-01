@@ -1,11 +1,11 @@
-﻿using Game.Application.Rooms.Queries;
-using Game.Infrastructure.Contexts;
+﻿using Game.Infrastructure.Contexts;
 using Game.Infrastructure.Mappers;
 using Game.Domain.DomainModels.ReadModels.Rooms;
-using Game.Shared.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Services;
+using Game.Application.UseCases.Rooms.Queries;
+using Game.Application.DTOs;
 
 namespace Game.Infrastructure.Queries.Handlers
 {
