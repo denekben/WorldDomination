@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="DomainModels\Users\ValueObjects\" />
+    <Folder Include="Interfaces\Services\" />
   </ItemGroup>
 
 </Project>

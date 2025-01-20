@@ -19,14 +19,16 @@ namespace Game.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(DomainGame user)
+        public async Task AddAsync(DomainGame game)
         {
-            throw new NotImplementedException();
+            await _games.AddAsync(game);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(DomainGame user)
+        public async Task DeleteAsync(DomainGame game)
         {
-            throw new NotImplementedException();
+            _games.Remove(game);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<DomainGame?> GetAsync(IdValueObject roomId)

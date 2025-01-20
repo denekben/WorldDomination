@@ -395,13 +395,13 @@ namespace Game.Infrastructure.Migrations
                 schema: "Game",
                 columns: table => new
                 {
-                    IssuserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IssuerId = table.Column<Guid>(type: "uuid", nullable: false),
                     AudienceId = table.Column<Guid>(type: "uuid", nullable: false),
                     SanctionPower = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sanctions", x => new { x.IssuserId, x.AudienceId });
+                    table.PrimaryKey("PK_Sanctions", x => new { x.IssuerId, x.AudienceId });
                     table.ForeignKey(
                         name: "FK_Sanctions_Countries_AudienceId",
                         column: x => x.AudienceId,
@@ -410,8 +410,8 @@ namespace Game.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Sanctions_Countries_IssuserId",
-                        column: x => x.IssuserId,
+                        name: "FK_Sanctions_Countries_IssuerId",
+                        column: x => x.IssuerId,
                         principalSchema: "Game",
                         principalTable: "Countries",
                         principalColumn: "Id",

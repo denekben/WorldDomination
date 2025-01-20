@@ -6,29 +6,29 @@ namespace Game.Domain.DomainModels.Games.Entities
 {
     public sealed class Sanction : DomainEntity
     {
-        public IdValueObject IssuserId { get; private set; }
+        public IdValueObject IssuerId { get; private set; }
         public IdValueObject AudienceId { get; private set; }
         public SanctionPower SanctionPower { get; private set; }
-        public Country Issuser {  get; private set; }
+        public Country Issuer {  get; private set; }
         public Country Audience { get; private set; }
 
         //EF
         private Sanction() { }
 
-        private Sanction(Guid issuserId, Guid audienceId, 
+        private Sanction(Guid issuerId, Guid audienceId, 
             float sanctionPower)
         {
-            IssuserId = issuserId;
+            IssuerId = issuerId;
             AudienceId = audienceId;
             SanctionPower = SanctionPower.Create(sanctionPower);
         }
 
-        public static Sanction Create(Guid issuserId, Guid audienceId, float sanctionPower)
+        public static Sanction Create(Guid issuerId, Guid audienceId, float sanctionPower)
         {
-            if (issuserId == audienceId)
-                throw new BusinessRuleValidationException("Sanction Issuser cannot be Sanction Audience");
+            if (issuerId == audienceId)
+                throw new BusinessRuleValidationException("Sanction Issuer cannot be Sanction Audience");
 
-            return new Sanction(issuserId, audienceId, sanctionPower);
+            return new Sanction(issuerId, audienceId, sanctionPower);
         }
     }
 }

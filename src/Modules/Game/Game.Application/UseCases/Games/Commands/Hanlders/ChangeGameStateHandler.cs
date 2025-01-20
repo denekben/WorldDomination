@@ -1,5 +1,5 @@
-﻿using Game.Application.Services;
-using Game.Application.UseCases.Games.Commands;
+﻿using Game.Application.DTOs.Mappers;
+using Game.Application.Services;
 using Game.Domain.DomainModels.Games.ValueObjects;
 using Game.Domain.DomainModels.Rooms.Entities;
 using Game.Domain.Interfaces.Repositories;
@@ -53,6 +53,10 @@ namespace Game.Application.UseCases.Games.Commands.Hanlders
                 foreach (var country in game.Countries)
                 {
                     country.UpdateState(game.EcologyLevel);
+                    foreach(var countryToDonate in country.Order.CountriesToDonate)
+                    {
+                        await _notifications.DonationSent(country.AsCountryDto(), countryToDonate.Key, countryToDonate.Value);
+                    }
                 }
             }
             await _gameRepository.UpdateAsync(game);

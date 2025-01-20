@@ -1,4 +1,6 @@
 ﻿using Game.Domain.Interfaces.Countries;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using WorldDomination.Shared.Domain;
 
 namespace Game.Domain.DomainModels.Games.Entities
@@ -13,6 +15,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public int BombsToBuyQuantity { get; private set; }
         public List<IdValueObject> CitiesToStrike { get; private set; }
         public List<IdValueObject> CountriesToSetSanctions { get; private set; }
+        public Dictionary<IdValueObject, int> CountriesToDonate { get; private set; }
 
         public Country Country { get; private set; }
         public IdValueObject RoomId { get; private set; }
@@ -23,15 +26,16 @@ namespace Game.Domain.DomainModels.Games.Entities
         private Order(List<Guid> citiesToDevelop, List<Guid> citiesToSetShield,
             bool developEcologyProgram, bool developNuclearTechology,
             int bombsToBuyQuantity, List<Guid> citiesToStrike, 
-            List<Guid> countriesToSetSanctions, Guid countryId, Guid roomId)
+            List<Guid> countriesToSetSanctions, Dictionary<Guid, int> countriesToDonate, Guid countryId, Guid roomId)
         {
-            CitiesToDevelop = citiesToDevelop.ToIdValueObjects();
-            CitiesToSetShield = citiesToSetShield.ToIdValueObjects();
+            CitiesToDevelop = citiesToDevelop.GuidsToVO();
+            CitiesToSetShield = citiesToSetShield.GuidsToVO();
             DevelopEcologyProgram = developEcologyProgram;
             DevelopNuclearTechology = developNuclearTechology;
             BombsToBuyQuantity = bombsToBuyQuantity;
-            CitiesToStrike = citiesToStrike.ToIdValueObjects();
-            CountriesToSetSanctions = countriesToSetSanctions.ToIdValueObjects();
+            CitiesToStrike = citiesToStrike.GuidsToVO();
+            CountriesToSetSanctions = countriesToSetSanctions.GuidsToVO();
+            CountriesToDonate = countriesToDonate.GuidsToVO();
             CountryId = countryId;
             RoomId = roomId;
         }
@@ -39,7 +43,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public static Order Create(Guid countryId, List<Guid> citiesToDevelop, List<Guid> citiesToSetShield, 
             bool developEcologyProgram, bool developNuclearTechology, 
             int bombsToBuyQuantity, List<Guid> citiesToStrike, 
-            List<Guid> countriesToSetSanctions, Guid roomId)
+            List<Guid> countriesToSetSanctions, Dictionary<Guid, int> countriesToDonate, Guid roomId)
         {
             return new(
                 citiesToDevelop,
@@ -49,6 +53,7 @@ namespace Game.Domain.DomainModels.Games.Entities
                 bombsToBuyQuantity,
                 citiesToStrike,
                 countriesToSetSanctions,
+                countriesToDonate,
                 countryId,
                 roomId
             );
@@ -57,6 +62,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public int CalculateTotalCost(ICountryStrategy strategy)
         {
             return (int) CitiesToDevelop.Count * strategy.CityDevelopmentCost
+                + CountriesToDonate.Select(ctd=>ctd.Value).Sum()
                 + CitiesToSetShield.Count * strategy.ShieldCost
                 + (DevelopEcologyProgram ? strategy.EcologyDevelopmentCost : 0)
                 + (DevelopNuclearTechology ? strategy.NuclearTechnologyCost : 0)

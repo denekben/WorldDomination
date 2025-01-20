@@ -5,7 +5,7 @@ using Game.Domain.DomainModels.ReadModels.Users;
 using Microsoft.EntityFrameworkCore;
 using Game.Infrastructure.Seed;
 using Game.Domain.ReadModels.Games;
-using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.ReadModels.Messaging;
 
 namespace Game.Infrastructure.Contexts
 {
@@ -19,6 +19,7 @@ namespace Game.Infrastructure.Contexts
         public DbSet<GameUserReadModel> Users { get; set; }
         public DbSet<RoomMemberReadModel> RoomMembers { get; set; }
         public DbSet<GameReadModel> Games { get; set; }
+        public DbSet<NegotiationRequestReadModel> NegotiationRequests { get; set; }
 
         public GameReadDbContext(DbContextOptions<GameReadDbContext> options) : base(options) { }
 
@@ -43,6 +44,14 @@ namespace Game.Infrastructure.Contexts
 
             modelBuilder.ApplyConfiguration<CityPatternReadModel>(configuration);
             modelBuilder.ApplyConfiguration<CountryPatternReadModel>(configuration);
+
+            modelBuilder.ApplyConfiguration<SanctionReadModel>(configuration);
+
+            modelBuilder.ApplyConfiguration<OrderReadModel>(configuration);
+
+            modelBuilder.ApplyConfiguration<MessageReadModel>(configuration);
+            modelBuilder.ApplyConfiguration<NegotiationChatReadModel>(configuration);
+            modelBuilder.ApplyConfiguration<NegotiationRequestReadModel>(configuration);
         }
     }
 }

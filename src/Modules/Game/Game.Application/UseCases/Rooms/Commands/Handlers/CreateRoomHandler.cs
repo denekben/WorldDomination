@@ -1,4 +1,6 @@
-﻿using Game.Application.Services;
+﻿using Game.Application.DTOs;
+using Game.Application.DTOs.Mappers;
+using Game.Application.Services;
 using Game.Application.UseCases.Rooms.Commands;
 using Game.Domain.DomainModels.Rooms.Entities;
 using Game.Domain.Interfaces.Repositories;
@@ -9,28 +11,33 @@ using WorldDomination.Shared.Services;
 
 namespace Game.Application.UseCases.Rooms.Commands.Handlers
 {
-    internal sealed class CreateRoomHandler : IRequestHandler<CreateRoom, Guid>
+    internal sealed class CreateRoomHandler : IRequestHandler<CreateRoom, RoomDto>
     {
         private readonly ILogger<CreateRoomHandler> _logger;
         private readonly IRoomRepository _roomRepository;
         private readonly IGameModuleReadService _readService;
         private readonly IGameModuleNotificationService _notifications;
+        private readonly IChatRepository _chatRepository;
 
         public CreateRoomHandler(ILogger<CreateRoomHandler> logger,
             IRoomRepository roomRepository, IGameModuleNotificationService notifications,
-            IGameModuleReadService readService)
+            IGameModuleReadService readService, IChatRepository chatRepository)
         {
             _logger = logger;
             _roomRepository = roomRepository;
             _notifications = notifications;
             _readService = readService;
+            _chatRepository = chatRepository;
         }
 
-        public async Task<Guid> Handle(CreateRoom command, CancellationToken cancellationToken)
+        public async Task<RoomDto> Handle(CreateRoom command, CancellationToken cancellationToken)
         {
             var userId = command.CallerId;
             var user = await _readService.GetUserAsync(userId)
                 ?? throw new BadRequestException("Cannot create room: invalid userId");
+
+            if (await _readService.RoomMemberExistsByUserIdAsync(userId))
+                throw new BusinessRuleValidationException("User can belong only one Room");
 
             var (_,roomName, gameType, hasTeams, memberLimit, roundQuantity, countryLimit, isPrivate, roomCode) = command;
 
@@ -46,9 +53,9 @@ namespace Game.Application.UseCases.Rooms.Commands.Handlers
 
             await _roomRepository.AddAsync(room);
             _logger.LogInformation($"Room {room.Id} created");
-            await _notifications.RoomCreated(room);
+            await _notifications.RoomCreated(room.AsRoomDto());
 
-            return room.Id;
+            return room.AsRoomDto();
         }
     }
 }

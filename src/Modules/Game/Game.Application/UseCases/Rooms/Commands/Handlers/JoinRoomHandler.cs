@@ -33,6 +33,9 @@ namespace Game.Application.UseCases.Rooms.Commands.Handlers
             var user = await _readService.GetUserAsync(userId)
                 ?? throw new BadRequestException("Cannot join Room: invalid userId");
 
+            if (await _readService.RoomMemberExistsByUserIdAsync(userId))
+                throw new BusinessRuleValidationException("User can belong only one Room");
+
             var room = await _roomRepository.GetAsync(command.RoomId)
                 ?? throw new BadRequestException("Cannot find room");
 
@@ -47,8 +50,8 @@ namespace Game.Application.UseCases.Rooms.Commands.Handlers
             await _roomRepository.UpdateAsync(room);
 
             _logger.LogInformation($"Added Player {player.GameUserId} to Room {command.RoomId}");
-            await _notifications.MemberJoinedRoomForAll(player);
-            await _notifications.MemberJoinedRoomForRoom(player);
+            await _notifications.MemberJoinedRoomForAll(player.AsRoomMemberDto());
+            await _notifications.MemberJoinedRoomForRoom(player.AsRoomMemberDto());
 
             return room.AsRoomDto();
         }

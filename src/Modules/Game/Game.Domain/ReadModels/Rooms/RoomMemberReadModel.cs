@@ -1,5 +1,6 @@
 ﻿using Game.Domain.DomainModels.ReadModels.Games;
 using Game.Domain.DomainModels.ReadModels.Users;
+using Game.Domain.ReadModels.Messaging;
 
 namespace Game.Domain.DomainModels.ReadModels.Rooms
 {
@@ -13,7 +14,8 @@ namespace Game.Domain.DomainModels.ReadModels.Rooms
 
         public RoomReadModel Room { get; private set; }
         public GameUserReadModel GameUser { get; private set; }
-        public Guid CountryId { get; private set; }
+        public Guid? CountryId { get; private set; }
         public CountryReadModel Country { get; private set; }
+        public List<MessageReadModel> Messages { get; private set; }
     }
 }

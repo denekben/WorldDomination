@@ -8,13 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Game.Domain.DomainModels.Rooms.ValueObjects;
 using Game.Domain.DomainModels.Games.ValueObjects;
+using Game.Domain.DomainModels.Messaging.Entities;
+using Game.Domain.DomainModels.Messaging.ValueObjects;
 
 namespace Game.Infrastructure.Configurations
 {
     internal class WriteConfiguration : IEntityTypeConfiguration<CountryPattern>, IEntityTypeConfiguration<CityPattern>, IEntityTypeConfiguration<City>,
         IEntityTypeConfiguration<Country>, IEntityTypeConfiguration<DomainGame>, IEntityTypeConfiguration<Organizer>,
         IEntityTypeConfiguration<Player>, IEntityTypeConfiguration<Room>, IEntityTypeConfiguration<GameUser>, IEntityTypeConfiguration<RoomMember>,
-        IEntityTypeConfiguration<Sanction>, IEntityTypeConfiguration<Order>
+        IEntityTypeConfiguration<Sanction>, IEntityTypeConfiguration<Order>, IEntityTypeConfiguration<Message>, IEntityTypeConfiguration<NegotiationChat>,
+        IEntityTypeConfiguration<NegotiationRequest>
     {
         public void Configure(EntityTypeBuilder<CountryPattern> builder)
         {
@@ -89,8 +92,14 @@ namespace Game.Infrastructure.Configurations
 
             builder
                 .HasMany(country => country.OutgoingSanctions)
-                .WithOne(sanction => sanction.Issuser)
-                .HasForeignKey(sanction => sanction.IssuserId)
+                .WithOne(sanction => sanction.Issuer)
+                .HasForeignKey(sanction => sanction.IssuerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(country => country.IncomingSanctions)
+                .WithOne(sanction => sanction.Audience)
+                .HasForeignKey(sanction => sanction.AudienceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
@@ -265,14 +274,14 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Sanction> builder)
         {
-            builder.HasKey(s => new { s.IssuserId, s.AudienceId });
+            builder.HasKey(s => new { s.IssuerId, s.AudienceId });
 
             builder
                 .Property(s => s.AudienceId)
                 .HasConversion(id=>id.Value, id=>new IdValueObject(id));
 
             builder
-                .Property(s => s.IssuserId)
+                .Property(s => s.IssuerId)
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder
@@ -280,14 +289,16 @@ namespace Game.Infrastructure.Configurations
                 .HasConversion(sp => sp.Value, sp => SanctionPower.Create(sp));
 
             builder
-                .HasOne(s => s.Issuser)
+                .HasOne(s => s.Issuer)
                 .WithMany(c => c.OutgoingSanctions)
-                .HasForeignKey(s => s.IssuserId);
+                .HasForeignKey(s => s.IssuerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(s => s.Audience)
                 .WithMany(c => c.IncomingSanctions)
-                .HasForeignKey(s=>s.AudienceId);
+                .HasForeignKey(s=>s.AudienceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Sanctions");
         }
@@ -302,25 +313,108 @@ namespace Game.Infrastructure.Configurations
 
             builder
                 .Property(o => o.CitiesToDevelop)
-                .HasConversion(ctd => IdValueObject.ListToString(ctd), ctd => IdValueObject.StringToList(ctd));
+                .HasConversion(ctd => ctd.SerializeList(), ctd => ctd.DeserializeList());
 
             builder
                 .Property(o => o.CitiesToSetShield)
-                .HasConversion(ctss=> IdValueObject.ListToString(ctss), ctss => IdValueObject.StringToList(ctss));
+                .HasConversion(ctss=> ctss.SerializeList(), ctss => ctss.DeserializeList());
 
             builder
                 .Property(o => o.CitiesToStrike)
-                .HasConversion(cts=> IdValueObject.ListToString(cts), cts => IdValueObject.StringToList(cts));
+                .HasConversion(cts=> cts.SerializeList(), cts => cts.DeserializeList());
 
             builder
                 .Property(o=>o.CountriesToSetSanctions)
-                .HasConversion(ctss => IdValueObject.ListToString(ctss), ctss => IdValueObject.StringToList(ctss));
+                .HasConversion(ctss => ctss.SerializeList(), ctss => ctss.DeserializeList());
+
+            builder
+                .Property(o => o.CountriesToDonate)
+                .HasConversion(ctd => ctd.SerializeDictionary(), ctd => ctd.DeserializeDictionary());
 
             builder
                 .Property(o => o.RoomId)
                 .HasConversion(id => id.Value, id => new IdValueObject(id));
 
             builder.ToTable("Orders");
+        }
+
+        public void Configure(EntityTypeBuilder<Message> builder)
+        {
+            builder.HasKey(m=>m.Id);
+
+            builder
+                .Property(m => m.Id)
+                .HasConversion(id=>id.Value, id=>new IdValueObject(id));
+
+            builder
+                .Property(m => m.MessageText)
+                .HasConversion(mt=>mt.Value, mt=>MessageText.Create(mt));
+
+            builder
+                .Property(m=>m.IssuerId)
+                .HasConversion(iid=>iid.Value, iid=>new IdValueObject(iid));
+
+            builder
+                .Property(m => m.ChatId)
+                .HasConversion(chatId=>chatId.Value, chatId => new IdValueObject(chatId));
+
+            //builder
+            //    .HasOne(m=>m.Issuer)
+            //    .WithMany(i=>i.Messages)
+            //    .HasForeignKey(m=>m.IssuerId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.ToTable("Messages");
+        }
+
+        public void Configure(EntityTypeBuilder<NegotiationChat> builder)
+        {
+            builder.HasKey(nc => nc.Id);
+            
+            builder
+                .Property(nc => nc.Id)
+                .HasConversion(id=>id.Value, id => new IdValueObject(id));
+
+            builder
+                .Property(nc => nc.FirstCountryId)
+                .HasConversion(fcId=>fcId.Value, fcId => new IdValueObject(fcId));
+
+            builder
+                .Property(nc => nc.SecondCountryId)
+                .HasConversion(scId => scId.Value, scId => new IdValueObject(scId));
+
+            builder.ToTable("NegotiationChats");
+        }
+
+        public void Configure(EntityTypeBuilder<NegotiationRequest> builder)
+        {
+            builder.HasKey(nr=>new { nr.IssuerCountryId, nr.AudienceCountryId, nr.IssuerMemberId });
+
+            builder
+                .Property(nr => nr.IssuerCountryId)
+                .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder
+                .Property(nr => nr.AudienceCountryId)
+                .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder
+                .Property(nr => nr.IssuerMemberId)
+                .HasConversion(id => id.Value, id => new IdValueObject(id));
+
+            builder
+                .HasOne(nr=>nr.Issuer)
+                .WithMany(c=>c.OutgoingRequests)
+                .HasForeignKey(c=>c.IssuerCountryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(nr => nr.Audience)
+                .WithMany(c => c.IncomingRequests)
+                .HasForeignKey(c => c.AudienceCountryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.ToTable("NegotiationRequests");
         }
     }
 }

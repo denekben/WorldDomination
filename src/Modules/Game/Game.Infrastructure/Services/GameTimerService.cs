@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using Game.Application.DTOs.Mappers;
 using Game.Application.Services;
-using Game.Domain.DomainModels.Games.Entities;
 using Game.Domain.DomainModels.Games.ValueObjects;
 using Game.Domain.Interfaces.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +11,11 @@ using WorldDomination.Shared.Exceptions.CustomExceptions;
 public class GameTimerService : IHostedService, IDisposable, IGameTimerService
 {
     private const int _debatesInterval = 120_000;
-    private const int _negotiationsInterval = 300_000;
+    private const int _negotiationsInterval = 360_000;
     private const int _orderMakingInterval = 60_000;
 
     private readonly ILogger<GameTimerService> _logger;
+    private readonly IGameModuleNotificationService _notifications;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ConcurrentDictionary<Guid, Timer> _gameTimers = new ConcurrentDictionary<Guid, Timer>();
     private bool _isRunning;
@@ -107,6 +108,10 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
                 foreach (var country in game.Countries)
                 {
                     country.UpdateState(game.EcologyLevel);
+                    foreach (var countryToDonate in country.Order.CountriesToDonate)
+                    {
+                        await _notifications.DonationSent(country.AsCountryDto(), countryToDonate.Key, countryToDonate.Value);
+                    }
                 }
             }
 

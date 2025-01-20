@@ -3,7 +3,7 @@ using Game.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Postgres;
 using Microsoft.EntityFrameworkCore;
-using Game.Infrastructure.Realtime;
+using Game.Infrastructure.Hubs;
 using Game.Application.Services;
 using Game.Domain.Interfaces.Repositories;
 using Game.Domain.Interfaces.Countries;
@@ -23,6 +23,9 @@ namespace Game.Infrastructure
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();    
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<INegotiationChatRepository, NegotiationChatRepository>();
+            services.AddScoped<INegotiationRequestRepository, NegotiationRequestRepository>();
 
             services.AddPostgres<GameWriteDbContext>();
             services.AddPostgres<GameReadDbContext>(QueryTrackingBehavior.NoTracking);

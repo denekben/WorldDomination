@@ -18,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Messages\Teams\" />
-    <Folder Include="UseCases\Messages\Negotiations\" />
-    <Folder Include="UseCases\Messages\Debates\" />
     <Folder Include="UseCases\Members\" />
   </ItemGroup>
 

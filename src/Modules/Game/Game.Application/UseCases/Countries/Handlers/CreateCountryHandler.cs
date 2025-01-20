@@ -1,4 +1,5 @@
-﻿using Game.Application.Helpers;
+﻿using Game.Application.DTOs.Mappers;
+using Game.Application.Helpers;
 using Game.Application.Services;
 using Game.Application.UseCases.Countries;
 using Game.Domain.Interfaces.Countries;
@@ -61,7 +62,7 @@ namespace Game.Application.UseCases.Countries.Handlers
             await _roomRepository.UpdateAsync(room);
 
             _logger.LogInformation($"Country {country.Id} created for Room {room.Id}");
-            await _notifications.CountryCreated(country, command.RoomId);
+            await _notifications.CountryCreated(country.AsCountryDto(), command.RoomId);
 
             return country.Id;
         }

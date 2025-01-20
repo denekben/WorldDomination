@@ -6,6 +6,7 @@ using Game.Infrastructure.Configurations;
 using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
+using Game.Domain.DomainModels.Messaging.Entities;
 
 namespace Game.Infrastructure.Contexts
 {
@@ -17,6 +18,9 @@ namespace Game.Infrastructure.Contexts
         public DbSet<Country> Countries { get; set; }
         public DbSet<DomainGame> Games { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<NegotiationChat> NegotiationChats { get; set; }
+        public DbSet<NegotiationRequest> NegotiationRequests { get; set; }
 
         public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
             : base(options) { }
@@ -45,6 +49,10 @@ namespace Game.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration<Sanction>(configuration);
 
             modelBuilder.ApplyConfiguration<Order>(configuration);
+
+            modelBuilder.ApplyConfiguration<Message>(configuration);
+            modelBuilder.ApplyConfiguration<NegotiationChat>(configuration);
+            modelBuilder.ApplyConfiguration<NegotiationRequest>(configuration);
 
             modelBuilder.Ignore<DomainEntity>();
 

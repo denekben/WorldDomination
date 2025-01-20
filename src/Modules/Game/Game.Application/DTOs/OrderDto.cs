@@ -9,6 +9,7 @@
         int BombsToBuyQuantity,
         List<Guid> CitiesToStrike,
         List<Guid> CountriesToSetSanctions,
+        Dictionary<Guid, int> CountriesToDonate,
         Guid RoomId
     );
 }

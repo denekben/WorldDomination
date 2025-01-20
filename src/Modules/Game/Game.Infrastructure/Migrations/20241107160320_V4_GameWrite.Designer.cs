@@ -140,7 +140,7 @@ namespace Game.Infrastructure.Migrations
 
             modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Sanction", b =>
                 {
-                    b.Property<Guid>("IssuserId")
+                    b.Property<Guid>("IssuerId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AudienceId")
@@ -149,7 +149,7 @@ namespace Game.Infrastructure.Migrations
                     b.Property<float>("SanctionPower")
                         .HasColumnType("real");
 
-                    b.HasKey("IssuserId", "AudienceId");
+                    b.HasKey("IssuerId", "AudienceId");
 
                     b.HasIndex("AudienceId");
 
@@ -855,15 +855,15 @@ namespace Game.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Issuser")
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Issuer")
                         .WithMany("Sanctions")
-                        .HasForeignKey("IssuserId")
+                        .HasForeignKey("IssuerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Audience");
 
-                    b.Navigation("Issuser");
+                    b.Navigation("Issuer");
                 });
 
             modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>

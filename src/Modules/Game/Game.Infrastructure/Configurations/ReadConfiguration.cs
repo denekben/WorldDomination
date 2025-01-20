@@ -1,17 +1,22 @@
-﻿using Game.Domain.DomainModels.ReadModels.Games;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.DomainModels.ReadModels.Games;
 using Game.Domain.DomainModels.ReadModels.Rooms;
 using Game.Domain.DomainModels.ReadModels.Users;
 using Game.Domain.ReadModels.Games;
+using Game.Domain.ReadModels.Messaging;
 using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WorldDomination.Shared.Domain;
 
 namespace Game.Infrastructure.Configurations
 {
     public class ReadConfiguration : IEntityTypeConfiguration<CityReadModel>, IEntityTypeConfiguration<CountryReadModel>,
         IEntityTypeConfiguration<GameReadModel>, IEntityTypeConfiguration<OrganizerReadModel>, IEntityTypeConfiguration<PlayerReadModel>,
         IEntityTypeConfiguration<RoomMemberReadModel>, IEntityTypeConfiguration<RoomReadModel>, IEntityTypeConfiguration<GameUserReadModel>,
-        IEntityTypeConfiguration<CountryPatternReadModel>, IEntityTypeConfiguration<CityPatternReadModel>, IEntityTypeConfiguration<SanctionReadModel>
+        IEntityTypeConfiguration<CountryPatternReadModel>, IEntityTypeConfiguration<CityPatternReadModel>, IEntityTypeConfiguration<SanctionReadModel>,
+        IEntityTypeConfiguration<OrderReadModel>, IEntityTypeConfiguration<MessageReadModel>, IEntityTypeConfiguration<NegotiationChatReadModel>,
+        IEntityTypeConfiguration<NegotiationRequestReadModel>
     {
         public void Configure(EntityTypeBuilder<CountryPatternReadModel> builder)
         {
@@ -53,9 +58,19 @@ namespace Game.Infrastructure.Configurations
                 .HasForeignKey(city => city.CountryId);
 
             builder
-                .HasMany(country=>country.Sanctions)
-                .WithOne(sanction=>sanction.Issuser)
-                .HasForeignKey(sanction=>sanction.IssuserId);
+                .HasMany(country=>country.OutgoingSanctions)
+                .WithOne(sanction=>sanction.Issuer)
+                .HasForeignKey(sanction=>sanction.IssuerId);
+
+            builder
+                .HasMany(country => country.IncomingSanctions)
+                .WithOne(sanction => sanction.Audience)
+                .HasForeignKey(sanction => sanction.AudienceId);
+
+            builder
+                .HasOne(country => country.Order)
+                .WithOne(order => order.Country)
+                .HasForeignKey<OrderReadModel>(order => order.CountryId);
 
             builder.ToTable("Countries");
         }
@@ -134,9 +149,68 @@ namespace Game.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<SanctionReadModel> builder)
         {
-            builder.HasKey(s => new { s.IssuserId, s.AudienceId });
+            builder.HasKey(s => new { s.IssuerId, s.AudienceId });
+
+            builder
+                .HasOne(s => s.Issuer)
+                .WithMany(c => c.OutgoingSanctions)
+                .HasForeignKey(s => s.IssuerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(s => s.Audience)
+                .WithMany(c => c.IncomingSanctions)
+                .HasForeignKey(s => s.AudienceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Sanctions");
+        }
+
+        public void Configure(EntityTypeBuilder<OrderReadModel> builder)
+        {
+            builder.HasKey(o => o.CountryId);
+
+            builder
+                .Property(o => o.CountriesToDonate)
+                .HasConversion(ctd => ctd.SerializeDictionaryForGuid(), ctd => ctd.DeserializeDictionaryForGuid());
+
+            builder.ToTable("Orders");
+        }
+
+        public void Configure(EntityTypeBuilder<MessageReadModel> builder)
+        {
+            builder.HasKey(m => m.Id);
+
+            //builder
+            //    .HasOne(m => m.Issuer)
+            //    .WithMany(i => i.Messages)
+            //    .HasForeignKey(m => m.IssuerId);
+
+            builder.ToTable("Messages");
+        }
+
+        public void Configure(EntityTypeBuilder<NegotiationChatReadModel> builder)
+        {
+            builder.HasKey(nc => nc.Id);
+
+            builder.ToTable("NegotiationChats");
+        }
+
+        public void Configure(EntityTypeBuilder<NegotiationRequestReadModel> builder)
+        {
+            builder.HasKey(nr => new { nr.IssuerCountryId, nr.AudienceCountryId, nr.IssuerMemberId });
+
+            builder
+                .HasOne(nr => nr.Issuer)
+                .WithMany(c => c.OutgoingRequests)
+                .HasForeignKey(c => c.IssuerCountryId);
+
+            builder
+                .HasOne(nr => nr.Audience)
+                .WithMany(c => c.IncomingRequests)
+                .HasForeignKey(c => c.AudienceCountryId);
+
+            builder.ToTable("NegotiationRequests");
         }
     }
 }

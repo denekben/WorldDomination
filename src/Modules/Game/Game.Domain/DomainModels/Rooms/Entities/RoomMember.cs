@@ -3,6 +3,7 @@ using Game.Domain.DomainModels.Users.Entities;
 using Game.Domain.DomainModels.Rooms.ValueObjects;
 using Game.Domain.DomainModels.Games.Entities;
 using WorldDomination.Shared.Exceptions.CustomExceptions;
+using Game.Domain.DomainModels.Messaging.Entities;
 
 namespace Game.Domain.DomainModels.Rooms.Entities
 {
@@ -18,6 +19,7 @@ namespace Game.Domain.DomainModels.Rooms.Entities
         public Country Country { get; private set; }
         public Room Room { get; private set; }
         public GameUser GameUser { get; private set; }
+        public List<Message> Messages { get; private set; }
 
         protected RoomMember() { }
 

@@ -1,5 +1,8 @@
-﻿using Game.Domain.DomainModels.ReadModels.Rooms;
+﻿using Game.Domain.DomainModels.Games.Entities;
+using Game.Domain.DomainModels.Messaging.Entities;
+using Game.Domain.DomainModels.ReadModels.Rooms;
 using Game.Domain.ReadModels.Games;
+using Game.Domain.ReadModels.Messaging;
 
 namespace Game.Domain.DomainModels.ReadModels.Games
 {
@@ -17,10 +20,15 @@ namespace Game.Domain.DomainModels.ReadModels.Games
 
         public List<RoomMemberReadModel> Players { get; private set; }
         public List<CityReadModel> Cities { get; private set; }
-        public List<SanctionReadModel> Sanctions { get; private set; }
+        public List<SanctionReadModel> OutgoingSanctions { get; private set; }
+        public List<SanctionReadModel> IncomingSanctions { get; private set; }
+        public List<NegotiationRequestReadModel> OutgoingRequests { get; private set; }
+        public List<NegotiationRequestReadModel> IncomingRequests { get; private set; }
         public Guid RoomId { get; private set; }
         public RoomReadModel Room { get; private set; }
         public Guid GameId { get; private set; }
         public GameReadModel Game { get; private set; }
+        public OrderReadModel Order { get; private set; }
+
     }
 }

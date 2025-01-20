@@ -81,6 +81,12 @@ namespace Game.Infrastructure.Migrations
                     b.Property<Guid?>("GameId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("HasAppliedOrder")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasValidatedOrder")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("HaveNuclearTechnology")
                         .HasColumnType("boolean");
 
@@ -96,9 +102,6 @@ namespace Game.Infrastructure.Migrations
 
                     b.Property<int>("NuclearTechnology")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("OrderApplied")
-                        .HasColumnType("boolean");
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uuid");
@@ -131,6 +134,9 @@ namespace Game.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("HasGameStateTimer")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("HasTeams")
                         .HasColumnType("boolean");
 
@@ -162,6 +168,10 @@ namespace Game.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("CountriesToDonate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("CountriesToSetSanctions")
                         .IsRequired()
                         .HasColumnType("text");
@@ -182,7 +192,7 @@ namespace Game.Infrastructure.Migrations
 
             modelBuilder.Entity("Game.Domain.DomainModels.Games.Entities.Sanction", b =>
                 {
-                    b.Property<Guid>("IssuserId")
+                    b.Property<Guid>("IssuerId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AudienceId")
@@ -191,11 +201,85 @@ namespace Game.Infrastructure.Migrations
                     b.Property<float>("SanctionPower")
                         .HasColumnType("real");
 
-                    b.HasKey("IssuserId", "AudienceId");
+                    b.HasKey("IssuerId", "AudienceId");
 
                     b.HasIndex("AudienceId");
 
                     b.ToTable("Sanctions", "Game");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IssuerGameUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IssuerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IssuerRoomId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("NegotiationChatId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NegotiationChatId");
+
+                    b.HasIndex("IssuerGameUserId", "IssuerRoomId");
+
+                    b.ToTable("Messages", "Game");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.NegotiationChat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FirstCountryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SecondCountryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FirstCountryId");
+
+                    b.HasIndex("SecondCountryId");
+
+                    b.ToTable("NegotiationChats", "Game");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.NegotiationRequest", b =>
+                {
+                    b.Property<Guid>("IssuerCountryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AudienceCountryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IssuerMemberId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsApplied")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("IssuerCountryId", "AudienceCountryId", "IssuerMemberId");
+
+                    b.HasIndex("AudienceCountryId");
+
+                    b.ToTable("NegotiationRequests", "Game");
                 });
 
             modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>
@@ -209,7 +293,7 @@ namespace Game.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 11, 27, 18, 29, 33, 367, DateTimeKind.Utc).AddTicks(2369));
+                        .HasDefaultValue(new DateTime(2025, 1, 20, 0, 51, 2, 451, DateTimeKind.Utc).AddTicks(55));
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -338,397 +422,397 @@ namespace Game.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("352ea753-519b-4905-8dee-cbfea72df901"),
+                            Id = new Guid("9a4c5f15-b5bc-4ac9-9abc-a94e00585fa7"),
                             CityImagePath = "",
                             CityName = "Москва",
-                            CountryId = new Guid("f1e0613a-1385-41ad-9d65-20dae1ace7ec"),
+                            CountryId = new Guid("00a2bc79-71ff-49b1-ab95-3e9e56a8ca48"),
                             IsCapital = true,
                             NormalizedName = "MOSCOW"
                         },
                         new
                         {
-                            Id = new Guid("e576a838-1129-4930-81f3-1ee0d3bf8413"),
+                            Id = new Guid("a44c89c3-2e2e-4bd1-bfeb-076b68ee0024"),
                             CityImagePath = "",
                             CityName = "Санкт-Петербург",
-                            CountryId = new Guid("f1e0613a-1385-41ad-9d65-20dae1ace7ec"),
+                            CountryId = new Guid("00a2bc79-71ff-49b1-ab95-3e9e56a8ca48"),
                             IsCapital = false,
                             NormalizedName = "SAINT_PETERSBURG"
                         },
                         new
                         {
-                            Id = new Guid("c292c459-6ec3-44f9-a1ff-482a6c573bcb"),
+                            Id = new Guid("63786dc1-e570-451d-b07f-eb007c78ad71"),
                             CityImagePath = "",
                             CityName = "Екатеринбург",
-                            CountryId = new Guid("f1e0613a-1385-41ad-9d65-20dae1ace7ec"),
+                            CountryId = new Guid("00a2bc79-71ff-49b1-ab95-3e9e56a8ca48"),
                             IsCapital = false,
                             NormalizedName = "YEKATERINBURG"
                         },
                         new
                         {
-                            Id = new Guid("819c7d4f-e988-49d1-9d60-75a88c6216c7"),
+                            Id = new Guid("6166f01b-9414-4ece-a832-7bb4fe2a7db1"),
                             CityImagePath = "",
                             CityName = "Новосибирск",
-                            CountryId = new Guid("f1e0613a-1385-41ad-9d65-20dae1ace7ec"),
+                            CountryId = new Guid("00a2bc79-71ff-49b1-ab95-3e9e56a8ca48"),
                             IsCapital = false,
                             NormalizedName = "NOVOSIBIRSK"
                         },
                         new
                         {
-                            Id = new Guid("539432fd-e994-457a-bd8a-c0156250b7de"),
+                            Id = new Guid("9bfff448-f560-4756-8978-c3b717336546"),
                             CityImagePath = "",
                             CityName = "Пекин",
-                            CountryId = new Guid("f440a13f-f7d1-4388-abf9-654ce0f89cca"),
+                            CountryId = new Guid("8729055c-441a-4434-ade4-c008f5913e98"),
                             IsCapital = true,
                             NormalizedName = "BEIJING"
                         },
                         new
                         {
-                            Id = new Guid("6a064602-7ab6-4008-b08d-328032ae0a37"),
+                            Id = new Guid("5cabbcd8-e5c5-4c5d-ae6a-4304580ff0f8"),
                             CityImagePath = "",
                             CityName = "Шанхай",
-                            CountryId = new Guid("f440a13f-f7d1-4388-abf9-654ce0f89cca"),
+                            CountryId = new Guid("8729055c-441a-4434-ade4-c008f5913e98"),
                             IsCapital = false,
                             NormalizedName = "SHANGHAI"
                         },
                         new
                         {
-                            Id = new Guid("320e89c4-f3db-40f6-8a7a-be6cb36990fa"),
+                            Id = new Guid("6d6819dc-7829-4231-889f-e1b5511a6b12"),
                             CityImagePath = "",
                             CityName = "Чунцин",
-                            CountryId = new Guid("f440a13f-f7d1-4388-abf9-654ce0f89cca"),
+                            CountryId = new Guid("8729055c-441a-4434-ade4-c008f5913e98"),
                             IsCapital = false,
                             NormalizedName = "CHONGQING"
                         },
                         new
                         {
-                            Id = new Guid("064324e3-01ab-4b01-90e8-251e2c37c5a9"),
+                            Id = new Guid("d01a74e2-30b4-4285-b8c7-1ea325c48fb4"),
                             CityImagePath = "",
                             CityName = "Тяньцзинь",
-                            CountryId = new Guid("f440a13f-f7d1-4388-abf9-654ce0f89cca"),
+                            CountryId = new Guid("8729055c-441a-4434-ade4-c008f5913e98"),
                             IsCapital = false,
                             NormalizedName = "TIANJIN"
                         },
                         new
                         {
-                            Id = new Guid("9ba4f34c-fe60-4f25-a0c1-84f3fce57efd"),
+                            Id = new Guid("2138b8c0-c8ff-40ea-a993-3f76e8e0904f"),
                             CityImagePath = "",
                             CityName = "Токио",
-                            CountryId = new Guid("dd90320c-d24a-4781-8b81-505928ac8609"),
+                            CountryId = new Guid("5a1cb394-54fc-4bda-b4fb-5ab8112888d7"),
                             IsCapital = true,
                             NormalizedName = "TOKYO"
                         },
                         new
                         {
-                            Id = new Guid("4775ce15-c28d-4e94-bba3-ee98b7617991"),
+                            Id = new Guid("cd6ea4cc-92c7-49b8-aaa1-60139c288935"),
                             CityImagePath = "",
                             CityName = "Йокогама",
-                            CountryId = new Guid("dd90320c-d24a-4781-8b81-505928ac8609"),
+                            CountryId = new Guid("5a1cb394-54fc-4bda-b4fb-5ab8112888d7"),
                             IsCapital = false,
                             NormalizedName = "YOKOHAMA"
                         },
                         new
                         {
-                            Id = new Guid("02771133-485a-4aee-bbf7-bef03772ce82"),
+                            Id = new Guid("65788472-65ca-4427-b6c2-a6a6b3469aa0"),
                             CityImagePath = "",
                             CityName = "Осака",
-                            CountryId = new Guid("dd90320c-d24a-4781-8b81-505928ac8609"),
+                            CountryId = new Guid("5a1cb394-54fc-4bda-b4fb-5ab8112888d7"),
                             IsCapital = false,
                             NormalizedName = "OSAKA"
                         },
                         new
                         {
-                            Id = new Guid("e40ff9eb-0d31-4b49-8293-f28380b6027f"),
+                            Id = new Guid("d78581de-41ca-45cf-89b5-16dd59fef178"),
                             CityImagePath = "",
                             CityName = "Нагоя",
-                            CountryId = new Guid("dd90320c-d24a-4781-8b81-505928ac8609"),
+                            CountryId = new Guid("5a1cb394-54fc-4bda-b4fb-5ab8112888d7"),
                             IsCapital = false,
                             NormalizedName = "NAGOYA"
                         },
                         new
                         {
-                            Id = new Guid("f46672de-57c6-4870-83db-1489fd8de18e"),
+                            Id = new Guid("f6a76f4a-ee56-49c3-85e3-cc10244c70ea"),
                             CityImagePath = "",
                             CityName = "Берлин",
-                            CountryId = new Guid("24ba4bb3-cc14-40eb-866a-539a98f3fab5"),
+                            CountryId = new Guid("de7fabf3-bcf5-45c0-a26b-9984aaadca14"),
                             IsCapital = false,
                             NormalizedName = "BERLIN"
                         },
                         new
                         {
-                            Id = new Guid("0efd09a0-455e-44c6-a788-d4e952ad07ea"),
+                            Id = new Guid("1a1877f1-88dc-47e5-8c59-0f4cb246c309"),
                             CityImagePath = "",
                             CityName = "Гамбург",
-                            CountryId = new Guid("24ba4bb3-cc14-40eb-866a-539a98f3fab5"),
+                            CountryId = new Guid("de7fabf3-bcf5-45c0-a26b-9984aaadca14"),
                             IsCapital = false,
                             NormalizedName = "HAMBURG"
                         },
                         new
                         {
-                            Id = new Guid("082c2cea-5754-427a-ab85-b94f8c38dfe4"),
+                            Id = new Guid("e3b0129d-62b9-459f-9708-719ddebeb258"),
                             CityImagePath = "",
                             CityName = "Мюнхен",
-                            CountryId = new Guid("24ba4bb3-cc14-40eb-866a-539a98f3fab5"),
+                            CountryId = new Guid("de7fabf3-bcf5-45c0-a26b-9984aaadca14"),
                             IsCapital = false,
                             NormalizedName = "MUNICH"
                         },
                         new
                         {
-                            Id = new Guid("35ce5002-ed80-409b-acb7-d1989f042533"),
+                            Id = new Guid("acbbe9b9-bbf2-4d6f-948e-7c5a6d8186e4"),
                             CityImagePath = "",
                             CityName = "Кёльн",
-                            CountryId = new Guid("24ba4bb3-cc14-40eb-866a-539a98f3fab5"),
+                            CountryId = new Guid("de7fabf3-bcf5-45c0-a26b-9984aaadca14"),
                             IsCapital = false,
                             NormalizedName = "COLOGNE"
                         },
                         new
                         {
-                            Id = new Guid("826c7d51-b427-4e78-9311-7b2d208cdd73"),
+                            Id = new Guid("77dc82a6-1d1d-4280-986d-29b4162ae012"),
                             CityImagePath = "",
                             CityName = "Париж",
-                            CountryId = new Guid("9ab8a4cc-edc6-4ce5-9030-10c13296768e"),
+                            CountryId = new Guid("849b0b80-1674-406c-bd9f-ab8c9d2e695f"),
                             IsCapital = true,
                             NormalizedName = "PARIS"
                         },
                         new
                         {
-                            Id = new Guid("864434b5-2d44-4bd8-b646-e57666ec773a"),
+                            Id = new Guid("433d6bcb-7ae9-471c-8f03-28b361b12bae"),
                             CityImagePath = "",
                             CityName = "Марсель",
-                            CountryId = new Guid("9ab8a4cc-edc6-4ce5-9030-10c13296768e"),
+                            CountryId = new Guid("849b0b80-1674-406c-bd9f-ab8c9d2e695f"),
                             IsCapital = false,
                             NormalizedName = "MARSEILLE"
                         },
                         new
                         {
-                            Id = new Guid("d41c75fd-b302-4904-af82-581ed693b5ff"),
+                            Id = new Guid("39db78cd-b657-42e5-9ead-9c6530e1cf38"),
                             CityImagePath = "",
                             CityName = "Лион",
-                            CountryId = new Guid("9ab8a4cc-edc6-4ce5-9030-10c13296768e"),
+                            CountryId = new Guid("849b0b80-1674-406c-bd9f-ab8c9d2e695f"),
                             IsCapital = false,
                             NormalizedName = "LYON"
                         },
                         new
                         {
-                            Id = new Guid("42cc834b-3da7-435a-8eae-565bd320b8a2"),
+                            Id = new Guid("124fdf70-3c49-4cc5-9c54-982b084aa6f7"),
                             CityImagePath = "",
                             CityName = "Тулуза",
-                            CountryId = new Guid("9ab8a4cc-edc6-4ce5-9030-10c13296768e"),
+                            CountryId = new Guid("849b0b80-1674-406c-bd9f-ab8c9d2e695f"),
                             IsCapital = false,
                             NormalizedName = "TOULOUSE"
                         },
                         new
                         {
-                            Id = new Guid("aea6e27f-045d-4afa-ae86-172a78cb2a3c"),
+                            Id = new Guid("e9c8d5b0-50c9-4c3f-affd-db5f01d026fc"),
                             CityImagePath = "",
                             CityName = "Вашингтон",
-                            CountryId = new Guid("67fb5864-33c9-4f0e-bc08-dcb435cb85ca"),
+                            CountryId = new Guid("4ff950e4-bfb2-4c2a-bc63-c72b507ee7d8"),
                             IsCapital = true,
                             NormalizedName = "WASHINGTON"
                         },
                         new
                         {
-                            Id = new Guid("19ae3fde-e8ed-467f-81ce-4ed4de90ff7c"),
+                            Id = new Guid("f619c53f-24f6-4bb5-8ce1-20b38910e91c"),
                             CityImagePath = "",
                             CityName = "Нью-Йорк",
-                            CountryId = new Guid("67fb5864-33c9-4f0e-bc08-dcb435cb85ca"),
+                            CountryId = new Guid("4ff950e4-bfb2-4c2a-bc63-c72b507ee7d8"),
                             IsCapital = false,
                             NormalizedName = "NEW_YORK_CITY"
                         },
                         new
                         {
-                            Id = new Guid("2b01a9d2-9e93-4525-b2c7-1b843112a2bc"),
+                            Id = new Guid("44502b74-61ec-4890-a5dd-d0403f404a52"),
                             CityImagePath = "",
                             CityName = "Лос-Анджелес",
-                            CountryId = new Guid("67fb5864-33c9-4f0e-bc08-dcb435cb85ca"),
+                            CountryId = new Guid("4ff950e4-bfb2-4c2a-bc63-c72b507ee7d8"),
                             IsCapital = false,
                             NormalizedName = "LOS_ANGELES"
                         },
                         new
                         {
-                            Id = new Guid("d97ea31e-4ec2-43c7-ae9d-20d6d9c6bc82"),
+                            Id = new Guid("cb8a9aba-66b5-45c0-9e45-24ccb649057a"),
                             CityImagePath = "",
                             CityName = "Чикаго",
-                            CountryId = new Guid("67fb5864-33c9-4f0e-bc08-dcb435cb85ca"),
+                            CountryId = new Guid("4ff950e4-bfb2-4c2a-bc63-c72b507ee7d8"),
                             IsCapital = false,
                             NormalizedName = "CHICAGO"
                         },
                         new
                         {
-                            Id = new Guid("30315ae7-541d-4523-832b-1efdf0fadb9d"),
+                            Id = new Guid("21389196-bad4-47b3-8830-256accb5e4bc"),
                             CityImagePath = "",
                             CityName = "Пхеньян",
-                            CountryId = new Guid("dec95200-c630-4f46-9a73-1297609ec9d7"),
+                            CountryId = new Guid("67b2bccc-5f79-43ce-9a9e-a41f50723ede"),
                             IsCapital = true,
                             NormalizedName = "PYONGYANG"
                         },
                         new
                         {
-                            Id = new Guid("1f3f4140-3bb8-4bf7-9d64-fb9c19f41b3e"),
+                            Id = new Guid("d371da0c-9768-4b16-8d72-fee257d07b2e"),
                             CityImagePath = "",
                             CityName = "Хамхын",
-                            CountryId = new Guid("dec95200-c630-4f46-9a73-1297609ec9d7"),
+                            CountryId = new Guid("67b2bccc-5f79-43ce-9a9e-a41f50723ede"),
                             IsCapital = false,
                             NormalizedName = "HAMHUNG"
                         },
                         new
                         {
-                            Id = new Guid("015e1ea4-1a4a-48db-aa3c-b26c1bdb5cf1"),
+                            Id = new Guid("29bb7415-80df-48f6-9651-74d411e5d6fb"),
                             CityImagePath = "",
                             CityName = "Чхонджин",
-                            CountryId = new Guid("dec95200-c630-4f46-9a73-1297609ec9d7"),
+                            CountryId = new Guid("67b2bccc-5f79-43ce-9a9e-a41f50723ede"),
                             IsCapital = false,
                             NormalizedName = "CHONJIN"
                         },
                         new
                         {
-                            Id = new Guid("97813bf5-fa53-4484-9d4e-a052f03f821a"),
+                            Id = new Guid("a827bb57-36db-45a8-8826-492f01dbbbc4"),
                             CityImagePath = "",
                             CityName = "Нампхо",
-                            CountryId = new Guid("dec95200-c630-4f46-9a73-1297609ec9d7"),
+                            CountryId = new Guid("67b2bccc-5f79-43ce-9a9e-a41f50723ede"),
                             IsCapital = false,
                             NormalizedName = "NAMPO"
                         },
                         new
                         {
-                            Id = new Guid("2aa4f4fe-6cda-4fdc-b3f8-dcb082017831"),
+                            Id = new Guid("f71b4ede-fbc8-4746-a0a5-057128c91b97"),
                             CityImagePath = "",
                             CityName = "Тегеран",
-                            CountryId = new Guid("ea48ff85-f721-4dd5-bf1c-448b9473a5fc"),
+                            CountryId = new Guid("ce14ea5a-408c-496d-8945-f02ad99864c8"),
                             IsCapital = true,
                             NormalizedName = "TEHRAN"
                         },
                         new
                         {
-                            Id = new Guid("cff641e1-c608-4d50-a403-e71ef1a73177"),
+                            Id = new Guid("9bd081f0-3651-41af-96e4-bb705e870d4d"),
                             CityImagePath = "",
                             CityName = "Мешхед",
-                            CountryId = new Guid("ea48ff85-f721-4dd5-bf1c-448b9473a5fc"),
+                            CountryId = new Guid("ce14ea5a-408c-496d-8945-f02ad99864c8"),
                             IsCapital = false,
                             NormalizedName = "MASHHAD"
                         },
                         new
                         {
-                            Id = new Guid("28ac411d-d3d7-4397-9050-dd8c3438c2e3"),
+                            Id = new Guid("47b50272-251c-4e1c-a5a1-b2c60f43c44f"),
                             CityImagePath = "",
                             CityName = "Исфахан",
-                            CountryId = new Guid("ea48ff85-f721-4dd5-bf1c-448b9473a5fc"),
+                            CountryId = new Guid("ce14ea5a-408c-496d-8945-f02ad99864c8"),
                             IsCapital = false,
                             NormalizedName = "ISFAHAN"
                         },
                         new
                         {
-                            Id = new Guid("ef6f40e3-a6a3-4222-bf88-f92fa410b659"),
+                            Id = new Guid("0d9af802-ebd6-434e-9806-40bcf9d7b3e8"),
                             CityImagePath = "",
                             CityName = "Кередж",
-                            CountryId = new Guid("ea48ff85-f721-4dd5-bf1c-448b9473a5fc"),
+                            CountryId = new Guid("ce14ea5a-408c-496d-8945-f02ad99864c8"),
                             IsCapital = false,
                             NormalizedName = "KARAJ"
                         },
                         new
                         {
-                            Id = new Guid("4495e717-886d-4a73-b3aa-8b10c0cb2fbf"),
+                            Id = new Guid("7680a2c1-644e-4dbc-bcbd-26e57d664102"),
                             CityImagePath = "",
                             CityName = "Гавана",
-                            CountryId = new Guid("08a703c2-f882-4047-b049-e8d4c6882edc"),
+                            CountryId = new Guid("7a7d6392-bb98-466b-ad91-5e08d2fa1e20"),
                             IsCapital = true,
                             NormalizedName = "HAVANA"
                         },
                         new
                         {
-                            Id = new Guid("0caff32e-e0e3-436a-9644-e3aa00cb421e"),
+                            Id = new Guid("5e5cf244-931b-4a0f-8f55-6ebcaae898bc"),
                             CityImagePath = "",
                             CityName = "Санктьяго-де-Куба",
-                            CountryId = new Guid("08a703c2-f882-4047-b049-e8d4c6882edc"),
+                            CountryId = new Guid("7a7d6392-bb98-466b-ad91-5e08d2fa1e20"),
                             IsCapital = false,
                             NormalizedName = "SANTIAGO_DE_CUBA"
                         },
                         new
                         {
-                            Id = new Guid("408cfc3d-f5b1-4b0c-8051-cf2eeb159449"),
+                            Id = new Guid("419e8322-42df-404b-977a-baf8dff2b7e5"),
                             CityImagePath = "",
                             CityName = "Камагуэй",
-                            CountryId = new Guid("08a703c2-f882-4047-b049-e8d4c6882edc"),
+                            CountryId = new Guid("7a7d6392-bb98-466b-ad91-5e08d2fa1e20"),
                             IsCapital = false,
                             NormalizedName = "CAMAGUEY"
                         },
                         new
                         {
-                            Id = new Guid("cffafda2-7765-4d08-a84b-e308c5ac6b97"),
+                            Id = new Guid("e911205b-92cc-45b0-9083-3b2b729cd5b7"),
                             CityImagePath = "",
                             CityName = "Ольгин",
-                            CountryId = new Guid("08a703c2-f882-4047-b049-e8d4c6882edc"),
+                            CountryId = new Guid("7a7d6392-bb98-466b-ad91-5e08d2fa1e20"),
                             IsCapital = false,
                             NormalizedName = "OLGUIN"
                         },
                         new
                         {
-                            Id = new Guid("b7b19c13-19ab-46c9-b457-1b4e3a90a8bb"),
+                            Id = new Guid("b564aab1-6026-4a99-9735-838e9d57a32f"),
                             CityImagePath = "",
                             CityName = "Берн",
-                            CountryId = new Guid("24d3615b-4417-4b3d-afd6-0f40060d03f9"),
+                            CountryId = new Guid("c7f66ea7-7519-4982-9069-92376d8fc32a"),
                             IsCapital = true,
                             NormalizedName = "BERNE"
                         },
                         new
                         {
-                            Id = new Guid("2b27c088-d091-449b-b7fb-c63e66adf4c3"),
+                            Id = new Guid("8bb58ae3-4c0f-49fa-bac0-806c39859610"),
                             CityImagePath = "",
                             CityName = "Цюрих",
-                            CountryId = new Guid("24d3615b-4417-4b3d-afd6-0f40060d03f9"),
+                            CountryId = new Guid("c7f66ea7-7519-4982-9069-92376d8fc32a"),
                             IsCapital = false,
                             NormalizedName = "ZURICH"
                         },
                         new
                         {
-                            Id = new Guid("ebccc2b1-dd5b-4c61-b13d-280389e51abe"),
+                            Id = new Guid("ea834f6f-f2b2-4939-8148-8e6ef0a7d2d6"),
                             CityImagePath = "",
                             CityName = "Женева",
-                            CountryId = new Guid("24d3615b-4417-4b3d-afd6-0f40060d03f9"),
+                            CountryId = new Guid("c7f66ea7-7519-4982-9069-92376d8fc32a"),
                             IsCapital = false,
                             NormalizedName = "GENEVA"
                         },
                         new
                         {
-                            Id = new Guid("92f9f1c3-e667-4f86-bfba-5d836f1d3c7a"),
+                            Id = new Guid("4193ca24-9643-4eb4-b039-008e7897b86d"),
                             CityImagePath = "",
                             CityName = "Базель",
-                            CountryId = new Guid("24d3615b-4417-4b3d-afd6-0f40060d03f9"),
+                            CountryId = new Guid("c7f66ea7-7519-4982-9069-92376d8fc32a"),
                             IsCapital = false,
                             NormalizedName = "BASEL"
                         },
                         new
                         {
-                            Id = new Guid("e5c6cec6-b847-404b-a080-812bbba49483"),
+                            Id = new Guid("dd67860e-2152-40dc-a573-98a3c70583a5"),
                             CityImagePath = "",
                             CityName = "Лондон",
-                            CountryId = new Guid("6a26a5f3-8a6e-40b9-a046-066f960bab4d"),
+                            CountryId = new Guid("140c5d96-76fb-4212-9ced-3df524723952"),
                             IsCapital = true,
                             NormalizedName = "LONDON"
                         },
                         new
                         {
-                            Id = new Guid("d4782290-54f8-4518-950d-edc946ffdb08"),
+                            Id = new Guid("11de504b-caae-4696-a0e7-0a67f47b9f0a"),
                             CityImagePath = "",
                             CityName = "Бирмингем",
-                            CountryId = new Guid("6a26a5f3-8a6e-40b9-a046-066f960bab4d"),
+                            CountryId = new Guid("140c5d96-76fb-4212-9ced-3df524723952"),
                             IsCapital = false,
                             NormalizedName = "BIRMINGHAM"
                         },
                         new
                         {
-                            Id = new Guid("bc1844d5-c0f2-4f95-b662-fcd5d1bbf25a"),
+                            Id = new Guid("8934ff58-c65c-439f-af45-8e1dcec3d2dc"),
                             CityImagePath = "",
                             CityName = "Глазго",
-                            CountryId = new Guid("6a26a5f3-8a6e-40b9-a046-066f960bab4d"),
+                            CountryId = new Guid("140c5d96-76fb-4212-9ced-3df524723952"),
                             IsCapital = false,
                             NormalizedName = "GLASGOW"
                         },
                         new
                         {
-                            Id = new Guid("d2c880db-dbf9-4b7f-92d4-22c58a84c467"),
+                            Id = new Guid("6df25cd9-2903-4556-ab21-cccd835c38c9"),
                             CityImagePath = "",
                             CityName = "Манчестер",
-                            CountryId = new Guid("6a26a5f3-8a6e-40b9-a046-066f960bab4d"),
+                            CountryId = new Guid("140c5d96-76fb-4212-9ced-3df524723952"),
                             IsCapital = false,
                             NormalizedName = "MANCHESTER"
                         });
@@ -758,77 +842,77 @@ namespace Game.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f1e0613a-1385-41ad-9d65-20dae1ace7ec"),
+                            Id = new Guid("00a2bc79-71ff-49b1-ab95-3e9e56a8ca48"),
                             CountryName = "Россия",
                             FlagImagePath = "",
                             NormalizedName = "RUSSIA"
                         },
                         new
                         {
-                            Id = new Guid("f440a13f-f7d1-4388-abf9-654ce0f89cca"),
+                            Id = new Guid("8729055c-441a-4434-ade4-c008f5913e98"),
                             CountryName = "Китай",
                             FlagImagePath = "",
                             NormalizedName = "CHINA"
                         },
                         new
                         {
-                            Id = new Guid("dd90320c-d24a-4781-8b81-505928ac8609"),
+                            Id = new Guid("5a1cb394-54fc-4bda-b4fb-5ab8112888d7"),
                             CountryName = "Япония",
                             FlagImagePath = "",
                             NormalizedName = "JAPAN"
                         },
                         new
                         {
-                            Id = new Guid("24ba4bb3-cc14-40eb-866a-539a98f3fab5"),
+                            Id = new Guid("de7fabf3-bcf5-45c0-a26b-9984aaadca14"),
                             CountryName = "Германия",
                             FlagImagePath = "",
                             NormalizedName = "GERMANY"
                         },
                         new
                         {
-                            Id = new Guid("9ab8a4cc-edc6-4ce5-9030-10c13296768e"),
+                            Id = new Guid("849b0b80-1674-406c-bd9f-ab8c9d2e695f"),
                             CountryName = "Франция",
                             FlagImagePath = "",
                             NormalizedName = "FRANCE"
                         },
                         new
                         {
-                            Id = new Guid("67fb5864-33c9-4f0e-bc08-dcb435cb85ca"),
+                            Id = new Guid("4ff950e4-bfb2-4c2a-bc63-c72b507ee7d8"),
                             CountryName = "США",
                             FlagImagePath = "",
                             NormalizedName = "UNITED_STATES"
                         },
                         new
                         {
-                            Id = new Guid("dec95200-c630-4f46-9a73-1297609ec9d7"),
+                            Id = new Guid("67b2bccc-5f79-43ce-9a9e-a41f50723ede"),
                             CountryName = "Северная Корея",
                             FlagImagePath = "",
                             NormalizedName = "NORTH_KOREA"
                         },
                         new
                         {
-                            Id = new Guid("ea48ff85-f721-4dd5-bf1c-448b9473a5fc"),
+                            Id = new Guid("ce14ea5a-408c-496d-8945-f02ad99864c8"),
                             CountryName = "Иран",
                             FlagImagePath = "",
                             NormalizedName = "IRAN"
                         },
                         new
                         {
-                            Id = new Guid("08a703c2-f882-4047-b049-e8d4c6882edc"),
+                            Id = new Guid("7a7d6392-bb98-466b-ad91-5e08d2fa1e20"),
                             CountryName = "Куба",
                             FlagImagePath = "",
                             NormalizedName = "CUBA"
                         },
                         new
                         {
-                            Id = new Guid("24d3615b-4417-4b3d-afd6-0f40060d03f9"),
+                            Id = new Guid("c7f66ea7-7519-4982-9069-92376d8fc32a"),
                             CountryName = "Швейцария",
                             FlagImagePath = "",
                             NormalizedName = "SWITZERLAND"
                         },
                         new
                         {
-                            Id = new Guid("6a26a5f3-8a6e-40b9-a046-066f960bab4d"),
+                            Id = new Guid("140c5d96-76fb-4212-9ced-3df524723952"),
                             CountryName = "Великобритания",
                             FlagImagePath = "",
                             NormalizedName = "GREAT_BRITAIN"
@@ -908,15 +992,68 @@ namespace Game.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Issuser")
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Issuer")
                         .WithMany("OutgoingSanctions")
-                        .HasForeignKey("IssuserId")
+                        .HasForeignKey("IssuerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Audience");
 
-                    b.Navigation("Issuser");
+                    b.Navigation("Issuer");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.Message", b =>
+                {
+                    b.HasOne("Game.Domain.DomainModels.Messaging.Entities.NegotiationChat", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("NegotiationChatId");
+
+                    b.HasOne("Game.Domain.DomainModels.Rooms.Entities.RoomMember", "Issuer")
+                        .WithMany("Messages")
+                        .HasForeignKey("IssuerGameUserId", "IssuerRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issuer");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.NegotiationChat", b =>
+                {
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "FirstCountry")
+                        .WithMany()
+                        .HasForeignKey("FirstCountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "SecondCountry")
+                        .WithMany()
+                        .HasForeignKey("SecondCountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FirstCountry");
+
+                    b.Navigation("SecondCountry");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.NegotiationRequest", b =>
+                {
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Audience")
+                        .WithMany("IncomingRequests")
+                        .HasForeignKey("AudienceCountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Game.Domain.DomainModels.Games.Entities.Country", "Issuer")
+                        .WithMany("OutgoingRequests")
+                        .HasForeignKey("IssuerCountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Audience");
+
+                    b.Navigation("Issuer");
                 });
 
             modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>
@@ -971,10 +1108,14 @@ namespace Game.Infrastructure.Migrations
                 {
                     b.Navigation("Cities");
 
+                    b.Navigation("IncomingRequests");
+
                     b.Navigation("IncomingSanctions");
 
                     b.Navigation("Order")
                         .IsRequired();
+
+                    b.Navigation("OutgoingRequests");
 
                     b.Navigation("OutgoingSanctions");
 
@@ -986,6 +1127,11 @@ namespace Game.Infrastructure.Migrations
                     b.Navigation("Countries");
                 });
 
+            modelBuilder.Entity("Game.Domain.DomainModels.Messaging.Entities.NegotiationChat", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.Room", b =>
                 {
                     b.Navigation("Countries");
@@ -994,6 +1140,11 @@ namespace Game.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("RoomMembers");
+                });
+
+            modelBuilder.Entity("Game.Domain.DomainModels.Rooms.Entities.RoomMember", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Game.Domain.DomainModels.Users.Entities.GameUser", b =>

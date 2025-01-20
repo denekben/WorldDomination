@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Game.Infrastructure.Realtime
+namespace Game.Infrastructure.Hubs
 {
     [Authorize]
     public sealed class GameModuleHub : Hub
@@ -26,11 +26,11 @@ namespace Game.Infrastructure.Realtime
         public override async Task OnConnectedAsync()
         {
             var userId = new Guid(Context.UserIdentifier);
-            var roomId = (await _dbContext.RoomMembers.FirstOrDefaultAsync(m => m.GameUserId == userId))?.RoomId.ToString();
-            var countryId = (await _dbContext.RoomMembers.FirstOrDefaultAsync(m => m.GameUserId == userId))?.CountryId.ToString();
+            var roomMember = await _dbContext.RoomMembers.FirstOrDefaultAsync(m => m.GameUserId == userId);
+            var roomId = roomMember?.RoomId.ToString();
+            var countryId = roomMember?.CountryId.ToString();
 
-            if (roomId != null)
-                await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             if (countryId != null)
                 await Groups.AddToGroupAsync(Context.ConnectionId, countryId);
 

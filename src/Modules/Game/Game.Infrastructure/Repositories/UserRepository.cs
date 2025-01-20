@@ -35,11 +35,6 @@ namespace Game.Infrastructure.Repositories
             return user;
         }
 
-        public Task<GameUser?> GetAsync(IdValueObject firstId, IdValueObject? secondId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task UpdateAsync(GameUser user)
         {
             _users.Update(user);

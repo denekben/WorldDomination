@@ -40,6 +40,7 @@ namespace Game.Application.UseCases.Orders.Commands.Handlers
                 cOrder.BombsToBuyQuantity,
                 cOrder.CitiesToStrike,
                 cOrder.CountriesToSetSanctions,
+                cOrder.CountriesToDonate,
                 cOrder.RoomId) ??
                 throw new BadRequestException("Cannot create order");
 

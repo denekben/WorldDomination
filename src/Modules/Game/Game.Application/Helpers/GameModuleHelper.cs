@@ -45,6 +45,7 @@ namespace Game.Application.Helpers
             else
             {
                 await _countryRepository.DeleteAsync(latestCountry);
+                await _notifications.CountryDeleted(member.RoomId, member.CountryId);
             }
         }
     }

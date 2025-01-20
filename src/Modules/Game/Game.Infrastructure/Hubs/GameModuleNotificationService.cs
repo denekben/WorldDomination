@@ -1,14 +1,8 @@
 ﻿using Game.Application.DTOs;
 using Game.Application.Services;
-using Game.Domain.DomainModels.Games.Entities;
-using Game.Domain.DomainModels.Games.ValueObjects;
-using Game.Domain.DomainModels.Rooms.Entities;
-using Game.Infrastructure.Mappers;
 using Microsoft.AspNetCore.SignalR;
-using System.Diagnostics.Metrics;
-using DomainGame = Game.Domain.DomainModels.Games.Entities.Game;
 
-namespace Game.Infrastructure.Realtime
+namespace Game.Infrastructure.Hubs
 {
     internal class GameModuleNotificationService : IGameModuleNotificationService
     {
@@ -19,9 +13,9 @@ namespace Game.Infrastructure.Realtime
             _hubContext = hubContext;
         }
 
-        public async Task RoomCreated(Room room)
+        // Room
+        public async Task RoomCreated(RoomDto roomDto)
         {
-            var roomDto = room.AsRoomDto();
             await _hubContext.Clients.All.SendAsync(nameof(RoomCreated), roomDto);
         }
 
@@ -35,15 +29,13 @@ namespace Game.Infrastructure.Realtime
             await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(RoomClosedForRoom), roomId);
         }
 
-        public async Task MemberJoinedRoomForAll(RoomMember member)
+        public async Task MemberJoinedRoomForAll(RoomMemberDto memberDto)
         {
-            var memberDto = member.AsRoomMemberDto();
             await _hubContext.Clients.All.SendAsync(nameof(MemberJoinedRoomForAll), memberDto);
         }
 
-        public async Task MemberJoinedRoomForRoom(RoomMember member)
+        public async Task MemberJoinedRoomForRoom(RoomMemberDto memberDto)
         {
-            var memberDto = member.AsRoomMemberDto();
             await _hubContext.Clients.Group(memberDto.RoomId.ToString()).SendAsync(nameof(MemberJoinedRoomForRoom), memberDto);
         }
 
@@ -57,6 +49,7 @@ namespace Game.Infrastructure.Realtime
             await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(MemberLeftRoomForRoom), memberId);
         }
 
+        // Game
         public async Task GameCreatedForAll(Guid roomId)
         {
             await _hubContext.Clients.All.SendAsync(nameof(GameCreatedForAll), roomId);
@@ -72,9 +65,10 @@ namespace Game.Infrastructure.Realtime
             await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(MemberPromotedToOrganizer), memberId);
         }
 
-        public async Task CountryCreated(Country country, Guid roomId)
+        // Country
+        public async Task CountryCreated(CountryDto countryDto, Guid roomId)
         {
-            await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(CountryCreated), country);
+            await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(CountryCreated), countryDto);
         }
 
         public async Task MemberJoinedCountry(Guid memberId, Guid roomId, Guid countryId)
@@ -92,11 +86,29 @@ namespace Game.Infrastructure.Realtime
             await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(MemberLeftCountry), (memberId, countryId));
         }
 
+        public Task CountryDeleted(Guid roomId, Guid countryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Order
         public async Task OrderSent(Guid countryId, Guid roomId)
         {
             await _hubContext.Clients.Group(countryId.ToString()).SendAsync(nameof(OrderSent));
         }
 
+        public async Task OrderChanged(OrderDto orderDto, string callerId)
+        {
+            await _hubContext.Clients.GroupExcept(orderDto.CountryId.ToString(), callerId).SendAsync(nameof(OrderChanged), orderDto);
+        }
+
+        // Donations
+        public Task DonationSent(CountryDto countryDto, Guid countryToDonateId, int donationValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Game
         public async Task GameStateChanged(string gameState, Guid roomId)
         {
             await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(GameStateChanged), gameState);
@@ -107,9 +119,25 @@ namespace Game.Infrastructure.Realtime
             await _hubContext.Clients.Group(roomId.ToString()).SendAsync(nameof(GameEnded));
         }
 
-        public async Task OrderChanged(OrderDto orderDto, string callerId)
+        // Messages
+        public Task MessageSent(RoomMemberDto memberDto, string messageText, Guid chatId)
         {
-            await _hubContext.Clients.GroupExcept(orderDto.CountryId.ToString(), callerId).SendAsync(nameof(OrderChanged), orderDto);
+            throw new NotImplementedException();
+        }
+
+        public Task NegotiationRequestSent(Guid issuerCountryId, Guid audienceCountryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task NegotiationRequestApplied(Guid issuerCountryId, Guid audienceCountryId, Guid issuerMemberId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task NegotiationTerminated(Guid firstCountryId, Guid secondCountryId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

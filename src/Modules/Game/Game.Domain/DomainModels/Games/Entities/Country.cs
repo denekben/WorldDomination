@@ -6,6 +6,7 @@ using WorldDomination.Shared.Exceptions.CustomExceptions;
 using Game.Domain.DomainModels.Rooms.ValueObjects;
 using Game.Domain.Interfaces.Countries;
 using Microsoft.Extensions.DependencyInjection;
+using Game.Domain.DomainModels.Messaging.Entities;
 
 
 namespace Game.Domain.DomainModels.Games.Entities
@@ -30,6 +31,8 @@ namespace Game.Domain.DomainModels.Games.Entities
         public List<City> Cities { get; private set; } = [];
         public List<Sanction> OutgoingSanctions { get; private set; } = [];
         public List<Sanction> IncomingSanctions { get; private set; } = [];
+        public List<NegotiationRequest> OutgoingRequests { get; private set; } = [];
+        public List<NegotiationRequest> IncomingRequests { get; private set; } = [];
         public IdValueObject RoomId { get; private set; }
         public Room Room { get; private set; }
         public IdValueObject? GameId { get; private set; }
@@ -147,6 +150,11 @@ namespace Game.Domain.DomainModels.Games.Entities
             ];
         }
 
+        public void AcceptDonation(int donationValue)
+        {
+            Budget += donationValue;
+        }
+
         public void UpdateState(int ecologyLevel)
         {
             // Updating Budget
@@ -240,6 +248,13 @@ namespace Game.Domain.DomainModels.Games.Entities
             if (order.CountriesToSetSanctions.Except(countries.Select(c => c.Id)).Any() || order.CountriesToSetSanctions.Contains(Id))
                 throw new BusinessRuleValidationException("Can send sanctions for only other Countries in Room");
 
+            // Donations
+            if (order.CountriesToDonate.ContainsKey(Id))
+                throw new BusinessRuleValidationException("Cannot donate to itself");
+
+            if (order.CountriesToDonate.Keys.Except(countries.Select(c => c.Id)).Any())
+                throw new BusinessRuleValidationException("Can only donate to countries in room");
+
             HasValidatedOrder = true;
         }
 
@@ -285,6 +300,15 @@ namespace Game.Domain.DomainModels.Games.Entities
             {
                 OutgoingSanctions.Add(Sanction.Create(Id, countryId, _strategy.SanctionPower));
             }
+
+            foreach (var country in countries)
+            {
+                if (order.CountriesToDonate.TryGetValue(country.Id, out int value))
+                {
+                    country.AcceptDonation(value);
+                }
+            }
+
             HasAppliedOrder = true;
         }
     }
