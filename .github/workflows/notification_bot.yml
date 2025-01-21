@@ -13,6 +13,7 @@ jobs:
           format: markdown
           message: |
             ```
+            Repository: ${{ github.repository }}
             Commit SHA: ${{ github.sha }}
             Author: ${{ github.actor }}
             Message: ${{ github.event.head_commit.message }}
