@@ -52,6 +52,8 @@ namespace Game.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration<MessageReadModel>(configuration);
             modelBuilder.ApplyConfiguration<NegotiationChatReadModel>(configuration);
             modelBuilder.ApplyConfiguration<NegotiationRequestReadModel>(configuration);
+
+            modelBuilder.ApplyConfiguration<GameEventReadModel>(configuration);
         }
     }
 }

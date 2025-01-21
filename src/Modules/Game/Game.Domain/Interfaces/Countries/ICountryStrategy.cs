@@ -11,7 +11,7 @@ namespace Game.Domain.Interfaces.Countries
         int CityDevelopmentCost { get; }
         int EcologyDevelopmentCost { get; }
         int SanctionQuantityInRoundLimit { get; }
-        float SanctionPower { get; }
+        int SanctionPower { get; }
 
         float NuclearDefenseChance { get; } 
         float SanctionPowerCoefficient { get; } 
@@ -24,6 +24,8 @@ namespace Game.Domain.Interfaces.Countries
         float NuclearShieldCostCoefficient { get; }
         float CityIncomeCoefficient { get; }
 
-        int CalculateCityIncome(Country country, City city, EcologyLevel ecologyLevel, List<Sanction> sanctions);
+        int CalculateCityIncome(Country country, City city, EcologyLevel ecologyLevel);
+
+        int CalculateSanctionCost(List<Sanction> incomingSanctions);
     }
 }

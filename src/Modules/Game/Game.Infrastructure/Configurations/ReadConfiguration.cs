@@ -16,7 +16,7 @@ namespace Game.Infrastructure.Configurations
         IEntityTypeConfiguration<RoomMemberReadModel>, IEntityTypeConfiguration<RoomReadModel>, IEntityTypeConfiguration<GameUserReadModel>,
         IEntityTypeConfiguration<CountryPatternReadModel>, IEntityTypeConfiguration<CityPatternReadModel>, IEntityTypeConfiguration<SanctionReadModel>,
         IEntityTypeConfiguration<OrderReadModel>, IEntityTypeConfiguration<MessageReadModel>, IEntityTypeConfiguration<NegotiationChatReadModel>,
-        IEntityTypeConfiguration<NegotiationRequestReadModel>
+        IEntityTypeConfiguration<NegotiationRequestReadModel>, IEntityTypeConfiguration<GameEventReadModel>
     {
         public void Configure(EntityTypeBuilder<CountryPatternReadModel> builder)
         {
@@ -211,6 +211,13 @@ namespace Game.Infrastructure.Configurations
                 .HasForeignKey(c => c.AudienceCountryId);
 
             builder.ToTable("NegotiationRequests");
+        }
+
+        public void Configure(EntityTypeBuilder<GameEventReadModel> builder)
+        {
+            builder.HasKey(ge => ge.Id);
+
+            builder.ToTable("GameEvents");
         }
     }
 }

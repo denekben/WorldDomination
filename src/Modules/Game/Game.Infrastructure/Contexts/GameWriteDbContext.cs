@@ -7,6 +7,7 @@ using Game.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using WorldDomination.Shared.Domain;
 using Game.Domain.DomainModels.Messaging.Entities;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Game.Infrastructure.Contexts
 {
@@ -21,6 +22,7 @@ namespace Game.Infrastructure.Contexts
         public DbSet<Message> Messages { get; set; }
         public DbSet<NegotiationChat> NegotiationChats { get; set; }
         public DbSet<NegotiationRequest> NegotiationRequests { get; set; }
+        public DbSet<GameEvent> Events { get; set; }
 
         public GameWriteDbContext(DbContextOptions<GameWriteDbContext> options) 
             : base(options) { }
@@ -53,6 +55,8 @@ namespace Game.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration<Message>(configuration);
             modelBuilder.ApplyConfiguration<NegotiationChat>(configuration);
             modelBuilder.ApplyConfiguration<NegotiationRequest>(configuration);
+
+            modelBuilder.ApplyConfiguration<GameEvent>(configuration);
 
             modelBuilder.Ignore<DomainEntity>();
 

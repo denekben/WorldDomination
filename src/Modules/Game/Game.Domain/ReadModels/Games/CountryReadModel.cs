@@ -17,6 +17,10 @@ namespace Game.Domain.DomainModels.ReadModels.Games
         public bool HaveNuclearTechnology { get; private set; }
         public int NuclearTecnology { get; private set; }
         public int Income { get; private set; }
+        public bool HasAppliedOrder { get; private set; }
+        public bool HasValidatedOrder { get; private set; }
+        public uint GoodEventQuantity { get; private set; }
+        public uint BadEventQuantity { get; private set; }
 
         public List<RoomMemberReadModel> Players { get; private set; }
         public List<CityReadModel> Cities { get; private set; }

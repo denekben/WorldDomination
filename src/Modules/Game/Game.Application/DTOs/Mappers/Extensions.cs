@@ -63,5 +63,15 @@ namespace Game.Application.DTOs.Mappers
                 players
             );
         }
+
+        public static GameEventDto AsGameEventDto(this GameEvent gameEvent)
+        {
+            return new GameEventDto(
+                gameEvent.Id,
+                gameEvent.Quality,
+                gameEvent.Title,
+                gameEvent.Description
+            );
+        }
     }
 }

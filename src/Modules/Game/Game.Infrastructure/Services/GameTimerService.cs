@@ -3,6 +3,7 @@ using Game.Application.DTOs.Mappers;
 using Game.Application.Services;
 using Game.Domain.DomainModels.Games.ValueObjects;
 using Game.Domain.Interfaces.Repositories;
+using Game.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,12 +16,12 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
     private const int _orderMakingInterval = 60_000;
 
     private readonly ILogger<GameTimerService> _logger;
-    private readonly IGameModuleNotificationService _notifications;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ConcurrentDictionary<Guid, Timer> _gameTimers = new ConcurrentDictionary<Guid, Timer>();
     private bool _isRunning;
 
-    public GameTimerService(ILogger<GameTimerService> logger, IServiceScopeFactory serviceScopeFactory)
+    public GameTimerService(ILogger<GameTimerService> logger,
+        IServiceScopeFactory serviceScopeFactory)
     {
         _logger = logger;
         _serviceScopeFactory = serviceScopeFactory;
@@ -90,12 +91,12 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
 
         using (var scope = _serviceScopeFactory.CreateScope()) 
         {
+            var eventRepository = scope.ServiceProvider.GetRequiredService<IEventRepository>();
             var gameRepository = scope.ServiceProvider.GetRequiredService<IGameRepository>(); 
             var notifications = scope.ServiceProvider.GetRequiredService<IGameModuleNotificationService>();
 
             var game = await gameRepository.GetAsync(gameId, GameIncludes.CountriesWithCitiesWithOrders)
             ?? throw new BadRequestException($"Cannot find Game {gameId}");
-
             game.ChangeState();
 
             if (game.GameState == GameState.Debates)
@@ -110,7 +111,18 @@ public class GameTimerService : IHostedService, IDisposable, IGameTimerService
                     country.UpdateState(game.EcologyLevel);
                     foreach (var countryToDonate in country.Order.CountriesToDonate)
                     {
-                        await _notifications.DonationSent(country.AsCountryDto(), countryToDonate.Key, countryToDonate.Value);
+                        await notifications.DonationSent(country.AsCountryDto(), countryToDonate.Key, countryToDonate.Value);
+                    }
+
+                    if (game.CurrentRound != 1)
+                    {
+                        var eventQuality = country.GetGameEventQuality();
+
+                        var gameEvent = await eventRepository.GetByQualityAsync(eventQuality);
+
+                        country.ApplyGameEvent(gameEvent, game.EcologyLevel);
+
+                        await notifications.CountryGotEvent(gameEvent.AsGameEventDto(), country.Id);
                     }
                 }
             }

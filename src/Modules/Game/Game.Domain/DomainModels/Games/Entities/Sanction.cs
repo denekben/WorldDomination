@@ -16,14 +16,14 @@ namespace Game.Domain.DomainModels.Games.Entities
         private Sanction() { }
 
         private Sanction(Guid issuerId, Guid audienceId, 
-            float sanctionPower)
+            int sanctionPower)
         {
             IssuerId = issuerId;
             AudienceId = audienceId;
             SanctionPower = SanctionPower.Create(sanctionPower);
         }
 
-        public static Sanction Create(Guid issuerId, Guid audienceId, float sanctionPower)
+        public static Sanction Create(Guid issuerId, Guid audienceId, int sanctionPower)
         {
             if (issuerId == audienceId)
                 throw new BusinessRuleValidationException("Sanction Issuer cannot be Sanction Audience");

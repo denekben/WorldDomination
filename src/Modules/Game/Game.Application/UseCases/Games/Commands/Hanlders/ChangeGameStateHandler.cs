@@ -14,15 +14,17 @@ namespace Game.Application.UseCases.Games.Commands.Hanlders
         private readonly IRoomMemberRepository _roomMemberRepository;
         private readonly IGameRepository _gameRepository;
         private readonly IGameModuleNotificationService _notifications;
+        private readonly IEventRepository _eventRepository;
         private readonly ILogger<ChangeGameStateHandler> _logger;
 
         public ChangeGameStateHandler(IRoomMemberRepository roomMemberRepository,
             IGameRepository gameRepository, IGameModuleNotificationService notifications,
-            ILogger<ChangeGameStateHandler> logger)
+            IEventRepository eventRepository, ILogger<ChangeGameStateHandler> logger)
         {
             _roomMemberRepository = roomMemberRepository;
             _gameRepository = gameRepository;
             _notifications = notifications;
+            _eventRepository = eventRepository;
             _logger = logger;
         }
 
@@ -47,7 +49,9 @@ namespace Game.Application.UseCases.Games.Commands.Hanlders
                 foreach (var country in game.Countries)
                 {
                     if (country.HasValidatedOrder)
+                    {
                         country.ApplyOrder(country.Order, game.Countries, game);
+                    }
                 }
 
                 foreach (var country in game.Countries)
@@ -56,6 +60,17 @@ namespace Game.Application.UseCases.Games.Commands.Hanlders
                     foreach(var countryToDonate in country.Order.CountriesToDonate)
                     {
                         await _notifications.DonationSent(country.AsCountryDto(), countryToDonate.Key, countryToDonate.Value);
+                    }
+
+                    if (game.CurrentRound != 1)
+                    {
+                        var eventQuality = country.GetGameEventQuality();
+
+                        var gameEvent = await _eventRepository.GetByQualityAsync(eventQuality);
+
+                        country.ApplyGameEvent(gameEvent, game.EcologyLevel);
+
+                        await _notifications.CountryGotEvent(gameEvent.AsGameEventDto(), country.Id);
                     }
                 }
             }

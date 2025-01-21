@@ -12,6 +12,7 @@ namespace Game.Application.Services
         Task MinisterPromotedToPresident(Guid memberId, Guid roomId, Guid countryId);
         Task MemberLeftCountry(Guid memberId, Guid roomId, Guid countryId);
         Task CountryDeleted(Guid roomId, Guid countryId);
+        Task CountryGotEvent(GameEventDto gameEvent, Guid countryId);
 
         // Room
         Task RoomCreated(RoomDto roomDto);

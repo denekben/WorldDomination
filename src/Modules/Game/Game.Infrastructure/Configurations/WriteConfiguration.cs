@@ -17,7 +17,7 @@ namespace Game.Infrastructure.Configurations
         IEntityTypeConfiguration<Country>, IEntityTypeConfiguration<DomainGame>, IEntityTypeConfiguration<Organizer>,
         IEntityTypeConfiguration<Player>, IEntityTypeConfiguration<Room>, IEntityTypeConfiguration<GameUser>, IEntityTypeConfiguration<RoomMember>,
         IEntityTypeConfiguration<Sanction>, IEntityTypeConfiguration<Order>, IEntityTypeConfiguration<Message>, IEntityTypeConfiguration<NegotiationChat>,
-        IEntityTypeConfiguration<NegotiationRequest>
+        IEntityTypeConfiguration<NegotiationRequest>, IEntityTypeConfiguration<GameEvent>
     {
         public void Configure(EntityTypeBuilder<CountryPattern> builder)
         {
@@ -415,6 +415,23 @@ namespace Game.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("NegotiationRequests");
+        }
+
+        public void Configure(EntityTypeBuilder<GameEvent> builder)
+        {
+            builder.HasKey(ge=>ge.Id);
+
+            builder
+                .Property(ge => ge.Id)
+                .HasConversion(id=>id.Value, id=>new IdValueObject(id));
+
+            builder
+                .Property(ge => ge.Quality)
+                .HasConversion(q=>q.Value, q=>GameEventQuality.Create(q));
+
+            builder.ToTable("GameEvents");
+
+            builder.HasData(Seed.Seed.Events);
         }
     }
 }

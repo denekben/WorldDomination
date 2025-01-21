@@ -16,7 +16,7 @@ namespace Game.Domain.DomainModels.Games.Strategies.DefaultStrategy
         private const int _defaultCityDevelopmentCost = 150;
         private const int _defaultEcologyDevelopmentCost = 50;
         private const int _defualtSanctionQuantityInRoundLimit = 2;
-        private const float _defaultSanctionPower = 1.0f;
+        private const int _defaultSanctionPower = 50;
 
         public int NuclearTechnologyCost => (int) (_defaultNuclearTechnologyCost * NuclearTechnologyCostCoefficient);
         public int BombCost => (int) (_defaultBombCost * NuclearBombCostCoefficient);
@@ -24,7 +24,7 @@ namespace Game.Domain.DomainModels.Games.Strategies.DefaultStrategy
         public int CityDevelopmentCost => (int) (_defaultCityDevelopmentCost * CityDevelopmentCostCoefficient);
         public int EcologyDevelopmentCost => _defaultEcologyDevelopmentCost;
         public int SanctionQuantityInRoundLimit => _defualtSanctionQuantityInRoundLimit;
-        public float SanctionPower => _defaultSanctionPower * SanctionPowerCoefficient;
+        public int SanctionPower => (int) (_defaultSanctionPower * SanctionPowerCoefficient);
 
         public virtual float SanctionPowerCoefficient => 1.0f;
         public virtual float EcologyImpactCoefficient => 1.0f;
@@ -38,7 +38,7 @@ namespace Game.Domain.DomainModels.Games.Strategies.DefaultStrategy
         public virtual float DestroyedCityIncomeCoefficient => 0.0f;
         public virtual int LastHopeNuclearBombQuantity => 0;
 
-        public virtual int CalculateCityIncome(Country country, City city, EcologyLevel ecologyLevel, List<Sanction> incomingSanctions)
+        public virtual int CalculateCityIncome(Country country, City city, EcologyLevel ecologyLevel)
         {
             if (city is null)
                 throw new BadRequestException("City is null");
@@ -46,7 +46,6 @@ namespace Game.Domain.DomainModels.Games.Strategies.DefaultStrategy
             if (country is null)
                 throw new BadRequestException("Country is null");
 
-            var sanctionsPower = incomingSanctions.Sum(s => s.SanctionPower);
 
             if (!city.IsAlive)
             {
@@ -56,23 +55,29 @@ namespace Game.Domain.DomainModels.Games.Strategies.DefaultStrategy
                 {
                     var maxIncome = country.Cities
                         .Where(c => c.IsAlive)
-                        .Max(c => CityIncome(c, ecologyLevel, sanctionsPower));
+                        .Max(c => CityIncome(c, ecologyLevel));
 
                     return (int)(maxIncome * DestroyedCityIncomeCoefficient);
                 }
             }
             else
             {
-                return CityIncome(city, ecologyLevel, sanctionsPower);
+                return CityIncome(city, ecologyLevel);
             }
         }
 
-        private int CityIncome(City city, EcologyLevel ecologyLevel, float sanctionsPower)
+        public int CalculateSanctionCost(List<Sanction> incomingSanctions)
+        {
+            var sanctionsPower = incomingSanctions.Sum(s => s.SanctionPower);
+
+            return (int) (SanctionPowerImpactCoefficient * sanctionsPower);
+        }
+
+        private int CityIncome(City city, EcologyLevel ecologyLevel)
         {
             return city.IsAlive 
-                ? (int) (city.DevelopmentLevel
-                    * (1 - EcologyImpactCoefficient * (1 - ecologyLevel))
-                    * (1 - SanctionPowerImpactCoefficient * sanctionsPower)
+                ? (int)(city.DevelopmentLevel
+                    * (100 - EcologyImpactCoefficient * (100 - ecologyLevel))
                     * CityIncomeCoefficient
                     * _globalIncomeCoefficient)
                 : 0;

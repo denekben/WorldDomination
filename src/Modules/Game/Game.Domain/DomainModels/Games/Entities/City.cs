@@ -14,7 +14,7 @@ namespace Game.Domain.DomainModels.Games.Entities
         public string CityImagePath { get; private set; }
         public bool IsAlive { get; private set; }
         public bool HaveShield { get; private set; }
-        public DevelopmentLevel DevelopmentLevel { get; private set; }
+        public DevelopmentLevel DevelopmentLevel { get; set; }
         public LivingLevel LivingLevel { get; private set; }
 
         public IdValueObject CountryId { get; private set; }

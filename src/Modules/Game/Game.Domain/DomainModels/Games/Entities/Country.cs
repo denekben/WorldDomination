@@ -26,6 +26,8 @@ namespace Game.Domain.DomainModels.Games.Entities
         public Income Income { get; private set; }
         public bool HasAppliedOrder { get; private set; }
         public bool HasValidatedOrder { get; private set; }
+        public uint GoodEventQuantity { get; private set; } = 0;
+        public uint BadEventQuantity { get; private set; } = 0;
 
         public List<RoomMember> Players { get; private set; } = [];
         public List<City> Cities { get; private set; } = [];
@@ -164,8 +166,12 @@ namespace Game.Domain.DomainModels.Games.Entities
             Income = 0;
             foreach(var city in Cities)
             {
-                Income += _strategy.CalculateCityIncome(this, city, ecologyLevel, IncomingSanctions);
+                Income += _strategy.CalculateCityIncome(this, city, ecologyLevel);
             }
+
+            Income -= _strategy.CalculateSanctionCost(IncomingSanctions);
+            if (Income < 0)
+                Income = 0;
 
             // Updating flags
             HasAppliedOrder = false;
@@ -310,6 +316,111 @@ namespace Game.Domain.DomainModels.Games.Entities
             }
 
             HasAppliedOrder = true;
+        }
+
+        public string GetGameEventQuality()
+        {
+            var pValue = new Random().NextDouble();
+
+            if(pValue < 0.5)
+            {
+                return GameEventQuality.Neutral;
+            }
+            else if (pValue < ((BadEventQuantity + 1) / (BadEventQuantity + GoodEventQuantity + 2) * 0.5 + 0.5))
+            {
+                return GameEventQuality.Good;
+            }
+            else
+            {
+                return GameEventQuality.Bad;
+            }
+        }
+
+        public void ApplyGameEvent(GameEvent gameEvent, int ecologyLevel)
+        {
+            if(gameEvent.Title == "Градостроительные ошибки")
+            {
+                foreach(var city in Cities)
+                {
+                    city.DevelopmentLevel = (int) (city.DevelopmentLevel * 0.95);
+                }
+            }
+
+            if(gameEvent.Title == "Стагфляция")
+            {
+                Income = (int) (Income * 0.85);
+            }
+
+            if(gameEvent.Title == "Дефолт")
+            {
+                Budget -= 200;
+            }
+
+            if(gameEvent.Title == "Военные хищения")
+            {
+                if(NuclearTechnology > 0)
+                {
+                    NuclearTechnology -= 1;
+                }
+            }
+
+            if (gameEvent.Title == "Международная изоляция")
+            {
+                Income = 0;
+                foreach (var city in Cities)
+                {
+                    Income += _strategy.CalculateCityIncome(this, city, ecologyLevel);
+                }
+
+                Income -= (int) (1.5 * _strategy.CalculateSanctionCost(IncomingSanctions));
+                if (Income < 0)
+                    Income = 0;
+            }
+
+            if (gameEvent.Title == "Урбанизация")
+            {
+                foreach (var city in Cities)
+                {
+                    city.DevelopmentLevel = (int)(city.DevelopmentLevel * 1.05);
+                }
+            }
+
+            if (gameEvent.Title == "Особая экономическая зона")
+            {
+                Income = (int)(Income * 1.15);
+            }
+
+            if (gameEvent.Title == "Рост экономики")
+            {
+                Budget += 200;
+            }
+
+            if (gameEvent.Title == "Военная реформа")
+            {
+                foreach(var city in Cities)
+                {
+                    if(!city.HaveShield)
+                    {
+                        city.SetShield();
+                        return;
+                    }
+                }
+            }
+
+            if (gameEvent.Title == "Суверенитет")
+            {
+                Income = 0;
+                foreach (var city in Cities)
+                {
+                    Income += _strategy.CalculateCityIncome(this, city, ecologyLevel);
+                }
+
+                Income -= (int)(0.5 * _strategy.CalculateSanctionCost(IncomingSanctions));
+                if (Income < 0)
+                {
+                    Income = 0;
+                }
+            }
         }
     }
 }

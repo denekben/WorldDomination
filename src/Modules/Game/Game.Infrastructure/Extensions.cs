@@ -26,6 +26,7 @@ namespace Game.Infrastructure
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<INegotiationChatRepository, NegotiationChatRepository>();
             services.AddScoped<INegotiationRequestRepository, NegotiationRequestRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
 
             services.AddPostgres<GameWriteDbContext>();
             services.AddPostgres<GameReadDbContext>(QueryTrackingBehavior.NoTracking);

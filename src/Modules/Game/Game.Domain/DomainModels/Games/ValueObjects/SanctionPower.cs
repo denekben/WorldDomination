@@ -4,17 +4,17 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
 {
     public sealed record SanctionPower
     {
-        private const float _minValue = 0.0f;
-        private const float _defaultValue = 1.0f;
+        private const int _minValue = 0;
+        private const int _defaultValue = 50;
 
-        public float Value { get; private set; }
+        public int Value { get; private set; }
 
-        private SanctionPower(float value)
+        private SanctionPower(int value)
         {
             Value = value;
         }
 
-        public static SanctionPower Create(float value = _defaultValue)
+        public static SanctionPower Create(int value = _defaultValue)
         {
             if (value < _minValue)
                 throw new InvalidArgumentDomainException($"SanctionPower value {value} is invalid");
@@ -22,7 +22,7 @@ namespace Game.Domain.DomainModels.Games.ValueObjects
             return new SanctionPower(value);
         }
 
-        public static implicit operator float(SanctionPower value) => Create(value);
-        public static implicit operator SanctionPower(float value) => new SanctionPower(value);
+        public static implicit operator int(SanctionPower value) => Create(value);
+        public static implicit operator SanctionPower(int value) => new SanctionPower(value);
     }
 }

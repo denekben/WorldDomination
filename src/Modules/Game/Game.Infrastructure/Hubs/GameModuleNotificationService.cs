@@ -139,5 +139,10 @@ namespace Game.Infrastructure.Hubs
         {
             throw new NotImplementedException();
         }
+
+        public Task CountryGotEvent(GameEventDto gameEvent, Guid countryId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
